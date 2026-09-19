@@ -1,26 +1,150 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary-navy: #0f2e5c;
+  --primary-navy-dark: #0a1f3d;
+  --primary-navy-light: #1b365d;
+  --accent-gold: #c99736;
+  --accent-gold-light: #e6b75c;
+  --govt-saffron: #ff9933;
+  --govt-white: #ffffff;
+  --govt-green: #138808;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Classical Government Header & Official Borders */
+.govt-header-gradient {
+  background: linear-gradient(135deg, #0a1f3d 0%, #0f2e5c 60%, #163e7a 100%);
+}
+
+.govt-gold-border {
+  border-color: #c99736;
+}
+
+/* Leaflet Cadastral Plot Label */
+.cadastral-label {
+  background: rgba(15, 46, 92, 0.92) !important;
+  color: #ffffff !important;
+  border: 1px solid #c99736 !important;
+  border-radius: 3px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 5px !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+}
+
+.cadastral-border-label {
+  background: rgba(10, 31, 61, 0.85) !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(201, 151, 54, 0.7) !important;
+  border-radius: 3px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 1px 4px !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+.cadastral-border-label-active {
+  background: #facc15 !important;
+  color: #0f2e5c !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.8) !important;
+}
+
+.cadastral-label-sub {
+  font-size: 9px;
+  color: #fbbf24;
+  font-weight: normal;
+  display: block;
+}
+
+/* Official Government Stamp Boxes */
+.stamp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: "Courier New", Courier, monospace, serif;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 4px;
+}
+
+.stamp-clean {
+  border-color: #15803d;
+  color: #14532d;
+  background-color: #f0fdf4;
+}
+
+.stamp-danger {
+  border-color: #b91c1c;
+  color: #7f1d1d;
+  background-color: #fef2f2;
+}
+
+.stamp-warning {
+  border-color: #d97706;
+  color: #78350f;
+  background-color: #fffbeb;
+}
+
+.stamp-buffer {
+  border-color: #0284c7;
+  color: #075985;
+  background-color: #f0f9ff;
+}
+
+/* Clean classical scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Official Print Stylesheet for Dossier */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-dossier, #printable-dossier * {
+    visibility: visible;
+  }
+  #printable-dossier {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
 }
