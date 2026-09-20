@@ -43,49 +43,15 @@ export default function MapComponent({
   const esriLayerRef = useRef<L.TileLayer | null>(null);
 
   // Precise coordinates for Saderbal Cadastral Zone & All-India center
-  const srinagarCenter: [number, number] = [34.1260, 74.8373];
+  const srinagarCenter: [number, number] = [34.1246, 74.8325];
   const indiaCenter: [number, number] = [22.9734, 78.6569];
 
   // Helper to re-render parcel centroid badges
-  // Helper to re-render parcel centroid badges with zoom awareness
+  // Per user requirement: "yaha map pr bs border show kr and yr k267 krke show mt kr"
+  // Keep the satellite view pristine with only clean house boundary outlines visible
   const refreshLabels = (map: L.Map, geojson: L.GeoJSON) => {
     if (!markersGroupRef.current) return;
     markersGroupRef.current.clearLayers();
-
-    const zoom = map.getZoom();
-
-    geojson.eachLayer((layer: any) => {
-      if (layer.feature && layer.getBounds) {
-        const khasraNo = layer.feature.properties?.khasraNo;
-        const center = layer.getBounds().getCenter();
-        const isSelected = String(khasraNo) === String(selectedKhasra);
-
-        // Hide non-selected labels at low zoom (< 16) to avoid clutter
-        if (zoom < 16 && !isSelected) {
-          return;
-        }
-
-        // At zoom 16-17, show alternating or selected labels to prevent crowding
-        if (zoom < 18 && !isSelected && parseInt(khasraNo, 10) % 2 !== 0) {
-          return;
-        }
-
-        const plotLabel = lang === "hi" ? `ख.${khasraNo}` : `K.${khasraNo}`;
-
-        const labelHtml = `
-          <div class="cadastral-border-label ${isSelected ? "cadastral-border-label-active" : ""}">
-            ${isSelected ? `<span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping mr-1"></span>` : ""}${plotLabel}
-          </div>
-        `;
-        const divIcon = L.divIcon({
-          className: "custom-cadastral-divicon",
-          html: labelHtml,
-          iconSize: isSelected ? [64, 22] : [48, 18],
-          iconAnchor: isSelected ? [32, 11] : [24, 9]
-        });
-        L.marker(center, { icon: divIcon, interactive: false }).addTo(markersGroupRef.current!);
-      }
-    });
   };
 
   // Helper to get active GeoJSON data (either from Supabase prop or fallback)

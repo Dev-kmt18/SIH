@@ -1,1842 +1,3611 @@
--- ==============================================================================
--- BHOOMI-SUTRA: 200 HIGH-PRECISION CADASTRAL PARCEL BOUNDARIES (SARBALDAL, SRINAGAR)
--- MATCHING SATELLITE IMAGERY BUILDINGS & PROPERTY COMPOUNDS
--- ==============================================================================
+-- ============================================================================
+-- BHOOMI-SUTRA GIS: 200 High-Precision Cadastral Parcels for Sarbaldal / Saderbal
+-- Extracted directly from satellite imagery with closed house compound boundaries
+-- DATASET_TYPE: DEMO_ONLY (Flagged is_demo_data = true)
+-- ============================================================================
 
-ALTER TABLE public.parcels ADD COLUMN IF NOT EXISTS parcel_id TEXT;
-ALTER TABLE public.parcels ADD COLUMN IF NOT EXISTS dataset_type TEXT NOT NULL DEFAULT 'DEMO_ONLY';
-ALTER TABLE public.parcels ADD COLUMN IF NOT EXISTS is_demo_data BOOLEAN NOT NULL DEFAULT true;
-ALTER TABLE public.parcels ADD COLUMN IF NOT EXISTS data_origin_tag TEXT NOT NULL DEFAULT 'SYNTHETIC_DEMO';
-ALTER TABLE public.parcels ADD COLUMN IF NOT EXISTS verification_disclaimer TEXT DEFAULT 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.';
+BEGIN;
+DELETE FROM parcels WHERE is_demo_data = true;
 
-INSERT INTO public.parcels (
+INSERT INTO parcels (
     parcel_id, khasra_no, upin, state, district, tehsil, mouza,
     area_kanal, area_marla, area_sqft, land_type,
     latitude, longitude, geometry,
     legal_status, encumbrance_status,
     ownership_details, valuation_details, litigation_details, mortgage_details,
-    documents_details, provenance_details, is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
-) VALUES
-(
-    'SB-DEMO-0329', '329', 'DEMO-JK-01-02-0329-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.3, 6347.9, 'Residential',
-    34.126139, 74.841618, ST_GeomFromText('POLYGON((74.8417 34.126172, 74.841743 34.126188, 74.841817 34.126054, 74.841552 34.125953, 74.841477 34.126088, 74.841555 34.126118, 74.84156 34.126108, 74.841615 34.126129, 74.841534 34.126275, 74.841623 34.126309, 74.8417 34.126172))', 4326),
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0329', '329', 'DEMO-JK-01-02-0329-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.14, 2.7, 745.0, 'Residential',
+    34.126012, 74.830073, ST_GeomFromText('POLYGON((74.830026 34.126047, 74.830121 34.126047, 74.830121 34.125976, 74.830026 34.125976, 74.830026 34.126047))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 001", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 001", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1000", "khata_no": "DEMO-KT-2000", "mutation_history": [{"mutation_no": "DEMO-MUT-3000", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 5829109, "stamp_duty": 291455, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5000", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0330', '330', 'DEMO-JK-01-02-0330-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.8, 5377.8, 'Residential',
-    34.123254, 74.83968, ST_GeomFromText('POLYGON((74.839736 34.123365, 74.83975 34.123168, 74.839845 34.123173, 74.83985 34.1231, 74.839582 34.123087, 74.839577 34.123157, 74.839608 34.123158, 74.839594 34.123359, 74.839629 34.12336, 74.839628 34.123381, 74.839681 34.123383, 74.839683 34.123363, 74.839736 34.123365))', 4326),
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "34", "mutation_history": [{"mutation_no": "MUT-SB-1000", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10121465, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 10121465, "stamp_duty": 506073, "stamp_duty_rate": "5% (Demo)", "registration_fee": 121458, "effective_year": "2025-26", "government_rate_inr": 10121465, "market_estimate_inr": 12955475, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0330', '330', 'DEMO-JK-01-02-0330-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.19, 3.8, 1022.0, 'Residential',
+    34.125997, 74.830172, ST_GeomFromText('POLYGON((74.830102 34.126031, 74.8302 34.126031, 74.830227 34.126013, 74.830227 34.125955, 74.830102 34.125955, 74.830102 34.126031))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "34", "mutation_history": [{"mutation_no": "MUT-SB-1001", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14266924, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 14266924, "stamp_duty": 713346, "stamp_duty_rate": "5% (Demo)", "registration_fee": 171203, "effective_year": "2025-26", "government_rate_inr": 14266924, "market_estimate_inr": 18261663, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0331', '331', 'DEMO-JK-01-02-0331-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.7, 1004.0, 'Residential',
+    34.126023, 74.832324, ST_GeomFromText('POLYGON((74.832278 34.12607, 74.832377 34.126066, 74.832371 34.125974, 74.83227 34.125981, 74.832278 34.12607))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "34", "mutation_history": [{"mutation_no": "MUT-SB-1002", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14376145, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 14376145, "stamp_duty": 718807, "stamp_duty_rate": "5% (Demo)", "registration_fee": 172514, "effective_year": "2025-26", "government_rate_inr": 14376145, "market_estimate_inr": 18401466, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0332', '332', 'DEMO-JK-01-02-0332-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.09, 1.7, 471.0, 'Residential',
+    34.126059, 74.832429, ST_GeomFromText('POLYGON((74.832386 34.126091, 74.832461 34.126091, 74.832461 34.126049, 74.83245 34.126033, 74.832386 34.126033, 74.832386 34.126091))', 4326),
     'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 002", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 002", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1001", "khata_no": "DEMO-KT-2001", "mutation_history": [{"mutation_no": "DEMO-MUT-3001", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 5185207, "stamp_duty": 259260, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5001", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0331', '331', 'DEMO-JK-01-02-0331-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 6.4, 12630.3, 'Residential',
-    34.126573, 74.841039, ST_GeomFromText('POLYGON((74.841131 34.126845, 74.841186 34.126832, 74.841232 34.126805, 74.841255 34.126759, 74.841259 34.12672, 74.841077 34.126603, 74.841053 34.126573, 74.841045 34.126541, 74.841021 34.126339, 74.840978 34.126307, 74.840917 34.126304, 74.840856 34.126318, 74.840821 34.126355, 74.84085 34.126606, 74.840905 34.126686, 74.841131 34.126845))', 4326),
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "34", "mutation_history": [{"mutation_no": "MUT-SB-1003", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 6914620, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 6914620, "stamp_duty": 345731, "stamp_duty_rate": "5% (Demo)", "registration_fee": 82975, "effective_year": "2025-26", "government_rate_inr": 6914620, "market_estimate_inr": 8850714, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0333', '333', 'DEMO-JK-01-02-0333-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.47, 9.4, 2558.0, 'Residential',
+    34.125977, 74.833241, ST_GeomFromText('POLYGON((74.83317 34.126058, 74.833313 34.126058, 74.833313 34.125896, 74.83317 34.125896, 74.83317 34.126058))', 4326),
     'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 003", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 003", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1002", "khata_no": "DEMO-KT-2002", "mutation_history": [{"mutation_no": "DEMO-MUT-3002", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 12757879, "stamp_duty": 637894, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4002"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5002", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0332', '332', 'DEMO-JK-01-02-0332-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    6, 16.2, 37087.1, 'Commercial',
-    34.122838, 74.840837, ST_GeomFromText('POLYGON((74.840588 34.122704, 74.840616 34.122889, 74.840709 34.12288, 74.840724 34.122981, 74.840614 34.122992, 74.840641 34.12318, 74.8407 34.123174, 74.841137 34.12313, 74.841109 34.122945, 74.841025 34.122953, 74.84101 34.122849, 74.841087 34.122842, 74.84106 34.12266, 74.841008 34.122665, 74.840959 34.12233, 74.840596 34.122366, 74.840644 34.122698, 74.840588 34.122704))', 4326),
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "35", "mutation_history": [{"mutation_no": "MUT-SB-1004", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 38521777, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 38521777, "stamp_duty": 1926089, "stamp_duty_rate": "5% (Demo)", "registration_fee": 462261, "effective_year": "2025-26", "government_rate_inr": 38521777, "market_estimate_inr": 49307875, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90004", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0334', '334', 'DEMO-JK-01-02-0334-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.6, 984.0, 'Residential',
+    34.125849, 74.830268, ST_GeomFromText('POLYGON((74.830205 34.125884, 74.830294 34.125884, 74.830319 34.125867, 74.830319 34.125804, 74.830205 34.125804, 74.830205 34.125884))', 4326),
     'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 004", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 004", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1003", "khata_no": "DEMO-KT-2003", "mutation_history": [{"mutation_no": "DEMO-MUT-3003", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 39164522, "stamp_duty": 1958226, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1003", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-04-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5003", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0333', '333', 'DEMO-JK-01-02-0333-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    11, 2.5, 60581.7, 'Mixed Use',
-    34.124771, 74.839364, ST_GeomFromText('POLYGON((74.839415 34.125702, 74.839709 34.125679, 74.83964 34.125077, 74.839645 34.125077, 74.839638 34.125011, 74.839628 34.124931, 74.83962 34.124932, 74.839601 34.124751, 74.839595 34.124676, 74.839549 34.124317, 74.839253 34.12434, 74.839264 34.12444, 74.839138 34.12445, 74.839081 34.123959, 74.838854 34.123977, 74.838921 34.124553, 74.839144 34.124536, 74.839141 34.124514, 74.839273 34.124504, 74.839326 34.124957, 74.839315 34.124958, 74.839322 34.125017, 74.839328 34.125077, 74.839343 34.125076, 74.839415 34.125702))', 4326),
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "35", "mutation_history": [{"mutation_no": "MUT-SB-1005", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 15173568, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 15173568, "stamp_duty": 758678, "stamp_duty_rate": "5% (Demo)", "registration_fee": 182083, "effective_year": "2025-26", "government_rate_inr": 15173568, "market_estimate_inr": 19422167, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-405", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Tariq Ahmad Lone (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0335', '335', 'DEMO-JK-01-02-0335-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.35, 7.0, 1908.0, 'Residential',
+    34.1259, 74.832358, ST_GeomFromText('POLYGON((74.832271 34.125949, 74.832453 34.125946, 74.832446 34.12585, 74.832263 34.125856, 74.832271 34.125949))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "35", "mutation_history": [{"mutation_no": "MUT-SB-1006", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 30135970, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 30135970, "stamp_duty": 1506798, "stamp_duty_rate": "5% (Demo)", "registration_fee": 361632, "effective_year": "2025-26", "government_rate_inr": 30135970, "market_estimate_inr": 38574042, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0336', '336', 'DEMO-JK-01-02-0336-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.17, 3.3, 900.0, 'Residential',
+    34.125931, 74.832459, ST_GeomFromText('POLYGON((74.832398 34.125973, 74.832504 34.125973, 74.832504 34.125917, 74.832493 34.125895, 74.832398 34.125895, 74.832398 34.125973))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "12", "khata_no": "35", "mutation_history": [{"mutation_no": "MUT-SB-1007", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 12225759, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 12225759, "stamp_duty": 611288, "stamp_duty_rate": "5% (Demo)", "registration_fee": 146709, "effective_year": "2025-26", "government_rate_inr": 12225759, "market_estimate_inr": 15648972, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0337', '337', 'DEMO-JK-01-02-0337-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.48, 9.7, 2635.0, 'Residential',
+    34.125939, 74.832797, ST_GeomFromText('POLYGON((74.832721 34.126017, 74.832873 34.126017, 74.832873 34.12586, 74.832721 34.12586, 74.832721 34.126017))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 005", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 005", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1004", "khata_no": "DEMO-KT-2004", "mutation_history": [{"mutation_no": "DEMO-MUT-3004", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 66756694, "stamp_duty": 3337835, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5004", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0334', '334', 'DEMO-JK-01-02-0334-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    3, 4.1, 17463.3, 'Agricultural',
-    34.127103, 74.842195, ST_GeomFromText('POLYGON((74.84255 34.127263, 74.84256 34.127177, 74.84249 34.127171, 74.842494 34.127132, 74.842495 34.127132, 74.842505 34.127055, 74.84257 34.12706, 74.842576 34.127004, 74.84238 34.126988, 74.842365 34.127115, 74.842349 34.127114, 74.842345 34.127149, 74.84195 34.127117, 74.841964 34.126999, 74.842023 34.127004, 74.842039 34.126871, 74.841824 34.126854, 74.841809 34.126985, 74.841847 34.126988, 74.841837 34.127075, 74.841648 34.12706, 74.841637 34.127153, 74.841792 34.127166, 74.841788 34.127197, 74.842344 34.127242, 74.84234 34.12727, 74.842467 34.12728, 74.84247 34.127256, 74.84255 34.127263))', 4326),
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "36", "mutation_history": [{"mutation_no": "MUT-SB-1008", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 36779145, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 36779145, "stamp_duty": 1838957, "stamp_duty_rate": "5% (Demo)", "registration_fee": 441350, "effective_year": "2025-26", "government_rate_inr": 36779145, "market_estimate_inr": 47077306, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0338', '338', 'DEMO-JK-01-02-0338-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.25, 5.0, 1348.0, 'Residential',
+    34.125864, 74.832857, ST_GeomFromText('POLYGON((74.832799 34.125914, 74.832881 34.125914, 74.832904 34.125898, 74.832904 34.125796, 74.832799 34.125796, 74.832799 34.125914))', 4326),
     'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 006", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 006", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1005", "khata_no": "DEMO-KT-2005", "mutation_history": [{"mutation_no": "DEMO-MUT-3005", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 20045110, "stamp_duty": 1002256, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4005"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5005", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0335', '335', 'DEMO-JK-01-02-0335-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    3, 16.0, 20702.3, 'Residential',
-    34.125462, 74.840915, ST_GeomFromText('POLYGON((74.840898 34.12518, 74.84076 34.125191, 74.840766 34.125237, 74.840684 34.125244, 74.840703 34.12541, 74.840685 34.125412, 74.840693 34.125485, 74.840712 34.125484, 74.840731 34.125638, 74.84082 34.125631, 74.840831 34.125724, 74.840915 34.125716, 74.840924 34.125788, 74.84139 34.125749, 74.841378 34.125641, 74.841327 34.125646, 74.841319 34.125585, 74.840949 34.125616, 74.840955 34.125668, 74.840908 34.125672, 74.840909 34.12568, 74.840861 34.125684, 74.840854 34.125628, 74.840928 34.125622, 74.84088 34.125228, 74.84081 34.125233, 74.840807 34.125206, 74.840899 34.125198, 74.8409 34.125212, 74.841102 34.125201, 74.841092 34.125077, 74.840891 34.125088, 74.840898 34.12518))', 4326),
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "36", "mutation_history": [{"mutation_no": "MUT-SB-1009", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 19306425, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 19306425, "stamp_duty": 965321, "stamp_duty_rate": "5% (Demo)", "registration_fee": 231677, "effective_year": "2025-26", "government_rate_inr": 19306425, "market_estimate_inr": 24712224, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90009", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0339', '339', 'DEMO-JK-01-02-0339-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.7, 735.0, 'Residential',
+    34.125961, 74.832871, ST_GeomFromText('POLYGON((74.83283 34.126, 74.832919 34.125996, 74.832913 34.125921, 74.832822 34.125928, 74.83283 34.126))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 007", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 007", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1006", "khata_no": "DEMO-KT-2006", "mutation_history": [{"mutation_no": "DEMO-MUT-3006", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 24713489, "stamp_duty": 1235674, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5006", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0336', '336', 'DEMO-JK-01-02-0336-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 5.4, 1465.6, 'Residential',
-    34.123423, 74.83893, ST_GeomFromText('POLYGON((74.838839 34.123462, 74.839026 34.123455, 74.839021 34.123384, 74.838835 34.123391, 74.838839 34.123462))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 008", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 008", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1007", "khata_no": "DEMO-KT-2007", "mutation_history": [{"mutation_no": "DEMO-MUT-3007", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 1816860, "stamp_duty": 90843, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1007", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-08-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5007", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0337', '337', 'DEMO-JK-01-02-0337-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.8, 3765.6, 'Residential',
-    34.123665, 74.840178, ST_GeomFromText('POLYGON((74.840084 34.123755, 74.840288 34.123741, 74.840271 34.123575, 74.840067 34.123589, 74.840084 34.123755))', 4326),
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "36", "mutation_history": [{"mutation_no": "MUT-SB-1010", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10793861, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 10793861, "stamp_duty": 539693, "stamp_duty_rate": "5% (Demo)", "registration_fee": 129526, "effective_year": "2025-26", "government_rate_inr": 10793861, "market_estimate_inr": 13816142, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0340', '340', 'DEMO-JK-01-02-0340-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.67, 13.3, 3626.0, 'Residential',
+    34.125846, 74.833358, ST_GeomFromText('POLYGON((74.833252 34.125946, 74.833432 34.125946, 74.833432 34.125813, 74.833421 34.125762, 74.833252 34.125762, 74.833252 34.125946))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "36", "mutation_history": [{"mutation_no": "MUT-SB-1011", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 54608082, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 54608082, "stamp_duty": 2730404, "stamp_duty_rate": "5% (Demo)", "registration_fee": 655297, "effective_year": "2025-26", "government_rate_inr": 54608082, "market_estimate_inr": 69898345, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-411", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Parvaiz Ahmad Ganie (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0341', '341', 'DEMO-JK-01-02-0341-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.25, 5.0, 1358.0, 'Residential',
+    34.125825, 74.833485, ST_GeomFromText('POLYGON((74.833432 34.125883, 74.833538 34.125883, 74.833538 34.125767, 74.833432 34.125767, 74.833432 34.125883))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "37", "mutation_history": [{"mutation_no": "MUT-SB-1012", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 20945265, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 20945265, "stamp_duty": 1047263, "stamp_duty_rate": "5% (Demo)", "registration_fee": 251343, "effective_year": "2025-26", "government_rate_inr": 20945265, "market_estimate_inr": 26809939, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0342', '342', 'DEMO-JK-01-02-0342-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.14, 2.7, 737.0, 'Residential',
+    34.125919, 74.833956, ST_GeomFromText('POLYGON((74.833895 34.125947, 74.83398 34.125947, 74.834004 34.125931, 74.834004 34.125884, 74.833895 34.125884, 74.833895 34.125947))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "37", "mutation_history": [{"mutation_no": "MUT-SB-1013", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11640922, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 11640922, "stamp_duty": 582046, "stamp_duty_rate": "5% (Demo)", "registration_fee": 139691, "effective_year": "2025-26", "government_rate_inr": 11640922, "market_estimate_inr": 14900380, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0343', '343', 'DEMO-JK-01-02-0343-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.7, 1005.0, 'Residential',
+    34.125832, 74.834851, ST_GeomFromText('POLYGON((74.8348 34.125875, 74.834909 34.125871, 74.834903 34.125788, 74.834791 34.125794, 74.8348 34.125875))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 009", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 009", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1008", "khata_no": "DEMO-KT-2008", "mutation_history": [{"mutation_no": "DEMO-MUT-3008", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 4840992, "stamp_duty": 242050, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4008"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5008", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0338', '338', 'DEMO-JK-01-02-0338-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 5.3, 1436.3, 'Commercial',
-    34.124348, 74.839321, ST_GeomFromText('POLYGON((74.839219 34.124386, 74.839429 34.124371, 74.839423 34.124309, 74.839213 34.124325, 74.839219 34.124386))', 4326),
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "37", "mutation_history": [{"mutation_no": "MUT-SB-1014", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13653478, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 13653478, "stamp_duty": 682674, "stamp_duty_rate": "5% (Demo)", "registration_fee": 163842, "effective_year": "2025-26", "government_rate_inr": 13653478, "market_estimate_inr": 17476452, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90014", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0344', '344', 'DEMO-JK-01-02-0344-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.7, 999.0, 'Residential',
+    34.125703, 74.829863, ST_GeomFromText('POLYGON((74.8298 34.125749, 74.829908 34.125749, 74.829908 34.125688, 74.829897 34.125664, 74.8298 34.125664, 74.8298 34.125749))', 4326),
     'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 010", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 010", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1009", "khata_no": "DEMO-KT-2009", "mutation_history": [{"mutation_no": "DEMO-MUT-3009", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 1912429, "stamp_duty": 95621, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5009", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0339', '339', 'DEMO-JK-01-02-0339-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3602.5, 'Mixed Use',
-    34.126185, 74.840588, ST_GeomFromText('POLYGON((74.840531 34.126306, 74.840671 34.126295, 74.840645 34.126064, 74.840505 34.126075, 74.840531 34.126306))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 011", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 011", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1010", "khata_no": "DEMO-KT-2010", "mutation_history": [{"mutation_no": "DEMO-MUT-3010", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 4962121, "stamp_duty": 248106, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5010", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0340', '340', 'DEMO-JK-01-02-0340-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 18.6, 10513.2, 'Agricultural',
-    34.125617, 74.839183, ST_GeomFromText('POLYGON((74.839119 34.125876, 74.839307 34.12586, 74.839247 34.125359, 74.839059 34.125374, 74.839119 34.125876))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 012", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 012", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1011", "khata_no": "DEMO-KT-2011", "mutation_history": [{"mutation_no": "DEMO-MUT-3011", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 14963691, "stamp_duty": 748185, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1011", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-03-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4011"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5011", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0341', '341', 'DEMO-JK-01-02-0341-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 5.8, 1569.6, 'Residential',
-    34.12519, 74.840209, ST_GeomFromText('POLYGON((74.840167 34.125267, 74.840262 34.125262, 74.84025 34.125113, 74.840155 34.125118, 74.840167 34.125267))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 013", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 013", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1012", "khata_no": "DEMO-KT-2012", "mutation_history": [{"mutation_no": "DEMO-MUT-3012", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 2306116, "stamp_duty": 115306, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5012", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0342', '342', 'DEMO-JK-01-02-0342-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.5, 4759.4, 'Residential',
-    34.126256, 74.840342, ST_GeomFromText('POLYGON((74.840187 34.126334, 74.840511 34.12631, 74.840497 34.126178, 74.840173 34.126202, 74.840187 34.126334))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 014", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 014", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1013", "khata_no": "DEMO-KT-2013", "mutation_history": [{"mutation_no": "DEMO-MUT-3013", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 7211212, "stamp_duty": 360561, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5013", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0343', '343', 'DEMO-JK-01-02-0343-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 1.8, 501.2, 'Residential',
-    34.122825, 74.84201, ST_GeomFromText('POLYGON((74.841973 34.122856, 74.842052 34.12285, 74.842046 34.122793, 74.841967 34.122799, 74.841973 34.122856))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 015", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 015", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1014", "khata_no": "DEMO-KT-2014", "mutation_history": [{"mutation_no": "DEMO-MUT-3014", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 782406, "stamp_duty": 39120, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4014"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5014", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0344', '344', 'DEMO-JK-01-02-0344-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    3, 10.3, 19149.2, 'Commercial',
-    34.125866, 74.839606, ST_GeomFromText('POLYGON((74.839244 34.126011, 74.839994 34.125949, 74.839967 34.12572, 74.839217 34.125782, 74.839244 34.126011))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 016", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 016", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1015", "khata_no": "DEMO-KT-2015", "mutation_history": [{"mutation_no": "DEMO-MUT-3015", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 17584206, "stamp_duty": 879210, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1015", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-07-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5015", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0345', '345', 'DEMO-JK-01-02-0345-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 9.3, 13429.8, 'Mixed Use',
-    34.126748, 74.842227, ST_GeomFromText('POLYGON((74.841859 34.126804, 74.842574 34.126861, 74.842594 34.126693, 74.841879 34.126635, 74.841859 34.126804))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 017", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 017", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1016", "khata_no": "DEMO-KT-2016", "mutation_history": [{"mutation_no": "DEMO-MUT-3016", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 12948843, "stamp_duty": 647442, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5016", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0346', '346', 'DEMO-JK-01-02-0346-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.6, 4514.2, 'Agricultural',
-    34.12347, 74.838684, ST_GeomFromText('POLYGON((74.838586 34.123572, 74.8388 34.123559, 74.838783 34.123369, 74.838569 34.123382, 74.838586 34.123572))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 018", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 018", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1017", "khata_no": "DEMO-KT-2017", "mutation_history": [{"mutation_no": "DEMO-MUT-3017", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 4559798, "stamp_duty": 227990, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4017"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5017", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0347', '347', 'DEMO-JK-01-02-0347-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.0, 4363.6, 'Residential',
-    34.123524, 74.83992, ST_GeomFromText('POLYGON((74.839767 34.123599, 74.84009 34.123569, 74.840073 34.123448, 74.839751 34.123478, 74.839767 34.123599))', 4326),
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "13", "khata_no": "37", "mutation_history": [{"mutation_no": "MUT-SB-1015", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13944437, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 13944437, "stamp_duty": 697222, "stamp_duty_rate": "5% (Demo)", "registration_fee": 167333, "effective_year": "2025-26", "government_rate_inr": 13944437, "market_estimate_inr": 17848879, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0345', '345', 'DEMO-JK-01-02-0345-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.6, 986.0, 'Residential',
+    34.125761, 74.830235, ST_GeomFromText('POLYGON((74.830177 34.1258, 74.830293 34.1258, 74.830293 34.125723, 74.830177 34.125723, 74.830177 34.1258))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 019", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 019", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1018", "khata_no": "DEMO-KT-2018", "mutation_history": [{"mutation_no": "DEMO-MUT-3018", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 4608026, "stamp_duty": 230401, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5018", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0348', '348', 'DEMO-JK-01-02-0348-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.1, 3844.8, 'Residential',
-    34.123307, 74.83998, ST_GeomFromText('POLYGON((74.840047 34.123484, 74.84001 34.123124, 74.839914 34.123131, 74.839951 34.123491, 74.840047 34.123484))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 020", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 020", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1019", "khata_no": "DEMO-KT-2019", "mutation_history": [{"mutation_no": "DEMO-MUT-3019", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 4236694, "stamp_duty": 211835, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1019", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-02-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5019", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0349', '349', 'DEMO-JK-01-02-0349-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.8, 3216.9, 'Residential',
-    34.125837, 74.840115, ST_GeomFromText('POLYGON((74.839963 34.1258, 74.839976 34.125899, 74.840267 34.125874, 74.840254 34.125775, 74.839963 34.1258))', 4326),
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "38", "mutation_history": [{"mutation_no": "MUT-SB-1016", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14128291, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 14128291, "stamp_duty": 706415, "stamp_duty_rate": "5% (Demo)", "registration_fee": 169539, "effective_year": "2025-26", "government_rate_inr": 14128291, "market_estimate_inr": 18084212, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0346', '346', 'DEMO-JK-01-02-0346-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.22, 4.3, 1173.0, 'Residential',
+    34.125662, 74.830732, ST_GeomFromText('POLYGON((74.830639 34.125693, 74.83077 34.125693, 74.830807 34.125668, 74.830807 34.125627, 74.830639 34.125627, 74.830639 34.125693))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "38", "mutation_history": [{"mutation_no": "MUT-SB-1017", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17238055, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 17238055, "stamp_duty": 861903, "stamp_duty_rate": "5% (Demo)", "registration_fee": 206857, "effective_year": "2025-26", "government_rate_inr": 17238055, "market_estimate_inr": 22064710, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-417", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Nazir Ahmad Naqash (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0347', '347', 'DEMO-JK-01-02-0347-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.4, 644.0, 'Residential',
+    34.125672, 74.830864, ST_GeomFromText('POLYGON((74.830828 34.125709, 74.830908 34.125706, 74.830901 34.125632, 74.83082 34.125639, 74.830828 34.125709))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "38", "mutation_history": [{"mutation_no": "MUT-SB-1018", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9700414, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 9700414, "stamp_duty": 485021, "stamp_duty_rate": "5% (Demo)", "registration_fee": 116405, "effective_year": "2025-26", "government_rate_inr": 9700414, "market_estimate_inr": 12416530, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0348', '348', 'DEMO-JK-01-02-0348-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.3, 6.0, 1644.0, 'Residential',
+    34.12571, 74.831964, ST_GeomFromText('POLYGON((74.831883 34.125769, 74.832021 34.125769, 74.832021 34.12569, 74.832011 34.12566, 74.831883 34.12566, 74.831883 34.125769))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 021", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 021", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1020", "khata_no": "DEMO-KT-2020", "mutation_history": [{"mutation_no": "DEMO-MUT-3020", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 3692493, "stamp_duty": 184625, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1200000, "cersai_id": "DEMO-CERSAI-4020"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5020", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0350', '350', 'DEMO-JK-01-02-0350-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 5.0, 1354.2, 'Commercial',
-    34.125296, 74.840428, ST_GeomFromText('POLYGON((74.840377 34.125354, 74.840488 34.125348, 74.840479 34.125238, 74.840368 34.125244, 74.840377 34.125354))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 022", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 022", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1021", "khata_no": "DEMO-KT-2021", "mutation_history": [{"mutation_no": "DEMO-MUT-3021", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 1616584, "stamp_duty": 80829, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5021", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0351', '351', 'DEMO-JK-01-02-0351-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 5.4, 1482.4, 'Mixed Use',
-    34.126157, 74.840213, ST_GeomFromText('POLYGON((74.84017 34.126227, 74.840271 34.126219, 74.840256 34.126087, 74.840156 34.126094, 74.84017 34.126227))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 023", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 023", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1022", "khata_no": "DEMO-KT-2022", "mutation_history": [{"mutation_no": "DEMO-MUT-3022", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 1837686, "stamp_duty": 91884, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5022", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0352', '352', 'DEMO-JK-01-02-0352-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 10.2, 2766.6, 'Agricultural',
-    34.12589, 74.839166, ST_GeomFromText('POLYGON((74.839073 34.125961, 74.839273 34.125944, 74.839258 34.12582, 74.839058 34.125837, 74.839073 34.125961))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 024", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 024", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1023", "khata_no": "DEMO-KT-2023", "mutation_history": [{"mutation_no": "DEMO-MUT-3023", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 3556694, "stamp_duty": 177835, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1023", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-06-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1650000, "cersai_id": "DEMO-CERSAI-4023"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5023", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0353', '353', 'DEMO-JK-01-02-0353-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 8.8, 13295.4, 'Residential',
-    34.126157, 74.840045, ST_GeomFromText('POLYGON((74.839948 34.12641, 74.840192 34.126393, 74.840142 34.125903, 74.839898 34.12592, 74.839948 34.12641))', 4326),
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "38", "mutation_history": [{"mutation_no": "MUT-SB-1019", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 25367443, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 25367443, "stamp_duty": 1268372, "stamp_duty_rate": "5% (Demo)", "registration_fee": 304409, "effective_year": "2025-26", "government_rate_inr": 25367443, "market_estimate_inr": 32470327, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90019", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0349', '349', 'DEMO-JK-01-02-0349-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.15, 3.1, 842.0, 'Residential',
+    34.125683, 74.832175, ST_GeomFromText('POLYGON((74.832136 34.125733, 74.832213 34.125733, 74.832213 34.125634, 74.832136 34.125634, 74.832136 34.125733))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 025", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 025", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1024", "khata_no": "DEMO-KT-2024", "mutation_history": [{"mutation_no": "DEMO-MUT-3024", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 17702782, "stamp_duty": 885139, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5024", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0354', '354', 'DEMO-JK-01-02-0354-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 10.8, 13839.9, 'Residential',
-    34.126182, 74.839223, ST_GeomFromText('POLYGON((74.839128 34.126445, 74.839372 34.126428, 74.839319 34.125918, 74.839075 34.125935, 74.839128 34.126445))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 026", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 026", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1025", "khata_no": "DEMO-KT-2025", "mutation_history": [{"mutation_no": "DEMO-MUT-3025", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 19063223, "stamp_duty": 953161, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5025", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0355', '355', 'DEMO-JK-01-02-0355-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.5, 5319.1, 'Residential',
-    34.125076, 74.841199, ST_GeomFromText('POLYGON((74.841177 34.125329, 74.841273 34.125322, 74.841221 34.124824, 74.841125 34.124831, 74.841177 34.125329))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 027", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 027", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1026", "khata_no": "DEMO-KT-2026", "mutation_history": [{"mutation_no": "DEMO-MUT-3026", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 7570803, "stamp_duty": 378540, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2100000, "cersai_id": "DEMO-CERSAI-4026"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5026", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0356', '356', 'DEMO-JK-01-02-0356-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 12.8, 3496.0, 'Commercial',
-    34.123238, 74.840123, ST_GeomFromText('POLYGON((74.840035 34.123326, 74.840234 34.123306, 74.840212 34.12315, 74.840012 34.123169, 74.840035 34.123326))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 028", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 028", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1027", "khata_no": "DEMO-KT-2027", "mutation_history": [{"mutation_no": "DEMO-MUT-3027", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 5136455, "stamp_duty": 256823, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1027", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-01-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5027", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0357', '357', 'DEMO-JK-01-02-0357-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.0, 5177.8, 'Mixed Use',
-    34.124662, 74.84008, ST_GeomFromText('POLYGON((74.839992 34.124786, 74.84019 34.124774, 74.840169 34.124538, 74.839971 34.124551, 74.839992 34.124786))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 029", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 029", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1028", "khata_no": "DEMO-KT-2028", "mutation_history": [{"mutation_no": "DEMO-MUT-3028", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 7845152, "stamp_duty": 392258, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5028", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0358', '358', 'DEMO-JK-01-02-0358-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 6.6, 1783.9, 'Agricultural',
-    34.123745, 74.83979, ST_GeomFromText('POLYGON((74.839698 34.123705, 74.839706 34.123796, 74.839883 34.123785, 74.839874 34.123694, 74.839698 34.123705))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 030", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 030", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1029", "khata_no": "DEMO-KT-2029", "mutation_history": [{"mutation_no": "DEMO-MUT-3029", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 2784784, "stamp_duty": 139239, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2550000, "cersai_id": "DEMO-CERSAI-4029"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5029", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0359', '359', 'DEMO-JK-01-02-0359-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 8.5, 2305.1, 'Residential',
-    34.126612, 74.83901, ST_GeomFromText('POLYGON((74.838868 34.126625, 74.839134 34.126688, 74.839159 34.126616, 74.838997 34.126577, 74.838893 34.126552, 74.838868 34.126625))', 4326),
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "39", "mutation_history": [{"mutation_no": "MUT-SB-1020", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13294519, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 13294519, "stamp_duty": 664726, "stamp_duty_rate": "5% (Demo)", "registration_fee": 159534, "effective_year": "2025-26", "government_rate_inr": 13294519, "market_estimate_inr": 17016984, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0350', '350', 'DEMO-JK-01-02-0350-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.4, 665.0, 'Residential',
+    34.125666, 74.83226, ST_GeomFromText('POLYGON((74.832198 34.125692, 74.832285 34.125692, 74.832309 34.125676, 74.832309 34.125636, 74.832198 34.125636, 74.832198 34.125692))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "39", "mutation_history": [{"mutation_no": "MUT-SB-1021", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9039461, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 9039461, "stamp_duty": 451973, "stamp_duty_rate": "5% (Demo)", "registration_fee": 108474, "effective_year": "2025-26", "government_rate_inr": 9039461, "market_estimate_inr": 11570510, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0351', '351', 'DEMO-JK-01-02-0351-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.4, 1742.0, 'Residential',
+    34.125688, 74.832584, ST_GeomFromText('POLYGON((74.832524 34.125751, 74.832651 34.125748, 74.832645 34.125623, 74.832516 34.12563, 74.832524 34.125751))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 031", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 031", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1030", "khata_no": "DEMO-KT-2030", "mutation_history": [{"mutation_no": "DEMO-MUT-3030", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 2116713, "stamp_duty": 105836, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5030", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0360', '360', 'DEMO-JK-01-02-0360-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 6.6, 1802.2, 'Residential',
-    34.123707, 74.839988, ST_GeomFromText('POLYGON((74.839897 34.123758, 74.840092 34.123739, 74.84008 34.123656, 74.839885 34.123676, 74.839897 34.123758))', 4326),
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "39", "mutation_history": [{"mutation_no": "MUT-SB-1022", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 24318327, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 24318327, "stamp_duty": 1215916, "stamp_duty_rate": "5% (Demo)", "registration_fee": 291820, "effective_year": "2025-26", "government_rate_inr": 24318327, "market_estimate_inr": 31127459, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0352', '352', 'DEMO-JK-01-02-0352-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.2, 880.0, 'Residential',
+    34.125755, 74.83294, ST_GeomFromText('POLYGON((74.832866 34.12579, 74.832992 34.12579, 74.832992 34.125744, 74.832982 34.125726, 74.832866 34.125726, 74.832866 34.12579))', 4326),
     'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 032", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 032", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1031", "khata_no": "DEMO-KT-2031", "mutation_history": [{"mutation_no": "DEMO-MUT-3031", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 1737658, "stamp_duty": 86883, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1031", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-05-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5031", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0361', '361', 'DEMO-JK-01-02-0361-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 1.5, 11297.0, 'Residential',
-    34.122488, 74.841795, ST_GeomFromText('POLYGON((74.841543 34.122606, 74.84207 34.122563, 74.842047 34.122371, 74.841521 34.122413, 74.841543 34.122606))', 4326),
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "14", "khata_no": "39", "mutation_history": [{"mutation_no": "MUT-SB-1023", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 12612857, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 12612857, "stamp_duty": 630643, "stamp_duty_rate": "5% (Demo)", "registration_fee": 151354, "effective_year": "2025-26", "government_rate_inr": 12612857, "market_estimate_inr": 16144457, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-423", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Riyaz Ahmad Khanday (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0353', '353', 'DEMO-JK-01-02-0353-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.3, 627.0, 'Residential',
+    34.125799, 74.833075, ST_GeomFromText('POLYGON((74.833035 34.125834, 74.833115 34.125834, 74.833115 34.125763, 74.833035 34.125763, 74.833035 34.125834))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 033", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 033", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1032", "khata_no": "DEMO-KT-2032", "mutation_history": [{"mutation_no": "DEMO-MUT-3032", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 11411111, "stamp_duty": 570556, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4032"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5032", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0362', '362', 'DEMO-JK-01-02-0362-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 1.3, 11231.0, 'Commercial',
-    34.124959, 74.8399, ST_GeomFromText('POLYGON((74.839556 34.125046, 74.839845 34.125012, 74.839897 34.125013, 74.840289 34.124971, 74.840284 34.124904, 74.840279 34.124836, 74.839517 34.124913, 74.839536 34.124979, 74.839556 34.125046))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 034", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 034", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1033", "khata_no": "DEMO-KT-2033", "mutation_history": [{"mutation_no": "DEMO-MUT-3033", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 11860101, "stamp_duty": 593005, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5033", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0363', '363', 'DEMO-JK-01-02-0363-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    6, 16.6, 37189.3, 'Mixed Use',
-    34.125357, 74.839987, ST_GeomFromText('POLYGON((74.840149 34.125698, 74.84006 34.125704, 74.840021 34.125315, 74.839904 34.125323, 74.839898 34.125263, 74.840086 34.125247, 74.840084 34.125233, 74.840124 34.12523, 74.84012 34.125198, 74.84008 34.125201, 74.84007 34.125125, 74.839886 34.125141, 74.839884 34.125119, 74.840084 34.125098, 74.840059 34.12493, 74.839867 34.12495, 74.839862 34.124911, 74.839813 34.124913, 74.839815 34.124953, 74.839601 34.124966, 74.839618 34.125147, 74.839832 34.125133, 74.839839 34.125195, 74.839828 34.125196, 74.839827 34.125184, 74.839621 34.1252, 74.839626 34.125241, 74.839585 34.125244, 74.839591 34.125302, 74.839632 34.125299, 74.839635 34.125326, 74.839841 34.12531, 74.839838 34.125286, 74.839848 34.125285, 74.839862 34.125419, 74.839879 34.125741, 74.839884 34.125787, 74.839995 34.125783, 74.840067 34.125775, 74.840064 34.125741, 74.840154 34.125735, 74.840158 34.125769, 74.840456 34.125744, 74.840461 34.125784, 74.840621 34.125771, 74.840616 34.125731, 74.840695 34.125725, 74.840673 34.125544, 74.840136 34.125588, 74.840149 34.125698))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 035", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 035", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1034", "khata_no": "DEMO-KT-2034", "mutation_history": [{"mutation_no": "DEMO-MUT-3034", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 40979945, "stamp_duty": 2048997, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5034", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0364', '364', 'DEMO-JK-01-02-0364-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 18.5, 10492.7, 'Agricultural',
-    34.125912, 74.840333, ST_GeomFromText('POLYGON((74.840243 34.126172, 74.84049 34.126153, 74.84044 34.125726, 74.840304 34.125737, 74.840315 34.125838, 74.840205 34.125847, 74.840243 34.126172))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 036", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 036", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1035", "khata_no": "DEMO-KT-2035", "mutation_history": [{"mutation_no": "DEMO-MUT-3035", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 12043962, "stamp_duty": 602198, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1035", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-09-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4035"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5035", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0365', '365', 'DEMO-JK-01-02-0365-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.4, 5001.6, 'Residential',
-    34.125024, 74.841049, ST_GeomFromText('POLYGON((74.841107 34.125291, 74.841197 34.125278, 74.841103 34.124848, 74.840924 34.124875, 74.840936 34.124932, 74.841025 34.124919, 74.841107 34.125291))', 4326),
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "40", "mutation_history": [{"mutation_no": "MUT-SB-1024", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9214860, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 9214860, "stamp_duty": 460743, "stamp_duty_rate": "5% (Demo)", "registration_fee": 110578, "effective_year": "2025-26", "government_rate_inr": 9214860, "market_estimate_inr": 11795021, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90024", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0354', '354', 'DEMO-JK-01-02-0354-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.6, 704.0, 'Residential',
+    34.125773, 74.83331, ST_GeomFromText('POLYGON((74.833267 34.125809, 74.833327 34.125809, 74.833344 34.125798, 74.833344 34.125725, 74.833267 34.125725, 74.833267 34.125809))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 037", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 037", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1036", "khata_no": "DEMO-KT-2036", "mutation_history": [{"mutation_no": "DEMO-MUT-3036", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 5970689, "stamp_duty": 298534, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5036", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0366', '366', 'DEMO-JK-01-02-0366-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 9.2, 2492.4, 'Residential',
-    34.126185, 74.840861, ST_GeomFromText('POLYGON((74.840812 34.12629, 74.840949 34.126284, 74.840939 34.126112, 74.840831 34.126116, 74.840833 34.126155, 74.840804 34.126156, 74.840812 34.12629))', 4326),
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "40", "mutation_history": [{"mutation_no": "MUT-SB-1025", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10600201, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 10600201, "stamp_duty": 530010, "stamp_duty_rate": "5% (Demo)", "registration_fee": 127202, "effective_year": "2025-26", "government_rate_inr": 10600201, "market_estimate_inr": 13568257, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0355', '355', 'DEMO-JK-01-02-0355-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.35, 6.9, 1881.0, 'Residential',
+    34.125681, 74.833357, ST_GeomFromText('POLYGON((74.833276 34.125733, 74.833445 34.125729, 74.833439 34.125628, 74.833268 34.125634, 74.833276 34.125733))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "40", "mutation_history": [{"mutation_no": "MUT-SB-1026", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 29018375, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 29018375, "stamp_duty": 1450919, "stamp_duty_rate": "5% (Demo)", "registration_fee": 348220, "effective_year": "2025-26", "government_rate_inr": 29018375, "market_estimate_inr": 37143520, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0356', '356', 'DEMO-JK-01-02-0356-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.55, 10.9, 2978.0, 'Residential',
+    34.125736, 74.833727, ST_GeomFromText('POLYGON((74.833604 34.125807, 74.833813 34.125807, 74.833813 34.125714, 74.833802 34.125677, 74.833604 34.125677, 74.833604 34.125807))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "40", "mutation_history": [{"mutation_no": "MUT-SB-1027", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 47028889, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 47028889, "stamp_duty": 2351444, "stamp_duty_rate": "5% (Demo)", "registration_fee": 564347, "effective_year": "2025-26", "government_rate_inr": 47028889, "market_estimate_inr": 60196978, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0357', '357', 'DEMO-JK-01-02-0357-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.1, 851.0, 'Residential',
+    34.125684, 74.833872, ST_GeomFromText('POLYGON((74.833825 34.125725, 74.833919 34.125725, 74.833919 34.125643, 74.833825 34.125643, 74.833825 34.125725))', 4326),
+    'NOT_VERIFIED', 'UNKNOWN',
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "41", "mutation_history": [{"mutation_no": "MUT-SB-1028", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11566899, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 11566899, "stamp_duty": 578345, "stamp_duty_rate": "5% (Demo)", "registration_fee": 138803, "effective_year": "2025-26", "government_rate_inr": 11566899, "market_estimate_inr": 14805631, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0358', '358', 'DEMO-JK-01-02-0358-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.43, 8.6, 2331.0, 'Residential',
+    34.125816, 74.833886, ST_GeomFromText('POLYGON((74.833799 34.125875, 74.833921 34.125875, 74.833956 34.125852, 74.833956 34.125738, 74.833799 34.125738, 74.833799 34.125875))', 4326),
+    'RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "41", "mutation_history": [{"mutation_no": "MUT-SB-1029", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32528998, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 32528998, "stamp_duty": 1626450, "stamp_duty_rate": "5% (Demo)", "registration_fee": 390348, "effective_year": "2025-26", "government_rate_inr": 32528998, "market_estimate_inr": 41637117, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-429", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Mushtaq Ahmad Shah (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90029", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0359', '359', 'DEMO-JK-01-02-0359-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.23, 4.5, 1231.0, 'Residential',
+    34.125623, 74.831991, ST_GeomFromText('POLYGON((74.831933 34.125669, 74.832056 34.125666, 74.832049 34.125574, 74.831925 34.125581, 74.831933 34.125669))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "41", "mutation_history": [{"mutation_no": "MUT-SB-1030", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17641014, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 17641014, "stamp_duty": 882051, "stamp_duty_rate": "5% (Demo)", "registration_fee": 211692, "effective_year": "2025-26", "government_rate_inr": 17641014, "market_estimate_inr": 22580498, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0360', '360', 'DEMO-JK-01-02-0360-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.45, 9.0, 2439.0, 'Residential',
+    34.125618, 74.83319, ST_GeomFromText('POLYGON((74.83309 34.125689, 74.83326 34.125689, 74.83326 34.125594, 74.83325 34.125558, 74.83309 34.125558, 74.83309 34.125689))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "15", "khata_no": "41", "mutation_history": [{"mutation_no": "MUT-SB-1031", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 35837041, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 35837041, "stamp_duty": 1791852, "stamp_duty_rate": "5% (Demo)", "registration_fee": 430044, "effective_year": "2025-26", "government_rate_inr": 35837041, "market_estimate_inr": 45871412, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0361', '361', 'DEMO-JK-01-02-0361-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.22, 4.3, 1179.0, 'Residential',
+    34.125515, 74.833344, ST_GeomFromText('POLYGON((74.833284 34.125559, 74.833404 34.125559, 74.833404 34.12547, 74.833284 34.12547, 74.833284 34.125559))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "42", "mutation_history": [{"mutation_no": "MUT-SB-1032", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17758921, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 17758921, "stamp_duty": 887946, "stamp_duty_rate": "5% (Demo)", "registration_fee": 213107, "effective_year": "2025-26", "government_rate_inr": 17758921, "market_estimate_inr": 22731419, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0362', '362', 'DEMO-JK-01-02-0362-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.37, 7.5, 2039.0, 'Residential',
+    34.125589, 74.833573, ST_GeomFromText('POLYGON((74.833496 34.125647, 74.833604 34.125647, 74.833634 34.125627, 74.833634 34.125511, 74.833496 34.125511, 74.833496 34.125647))', 4326),
     'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 038", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 038", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1037", "khata_no": "DEMO-KT-2037", "mutation_history": [{"mutation_no": "DEMO-MUT-3037", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 3089752, "stamp_duty": 154488, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5037", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0367', '367', 'DEMO-JK-01-02-0367-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    4, 6.6, 23563.3, 'Residential',
-    34.126498, 74.83967, ST_GeomFromText('POLYGON((74.83904 34.126456, 74.839057 34.126627, 74.8403 34.12654, 74.840283 34.12637, 74.83904 34.126456))', 4326),
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "42", "mutation_history": [{"mutation_no": "MUT-SB-1033", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 31458600, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 31458600, "stamp_duty": 1572930, "stamp_duty_rate": "5% (Demo)", "registration_fee": 377503, "effective_year": "2025-26", "government_rate_inr": 31458600, "market_estimate_inr": 40267008, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0363', '363', 'DEMO-JK-01-02-0363-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.72, 14.5, 3935.0, 'Residential',
+    34.125562, 74.833818, ST_GeomFromText('POLYGON((74.833699 34.125636, 74.833944 34.125632, 74.833937 34.125486, 74.833691 34.125492, 74.833699 34.125636))', 4326),
     'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 039", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 039", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1038", "khata_no": "DEMO-KT-2038", "mutation_history": [{"mutation_no": "DEMO-MUT-3038", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 30292580, "stamp_duty": 1514629, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4038"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5038", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0368', '368', 'DEMO-JK-01-02-0368-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 11.9, 8680.7, 'Commercial',
-    34.125939, 74.841172, ST_GeomFromText('POLYGON((74.841129 34.126136, 74.841342 34.126123, 74.841308 34.125733, 74.841095 34.125746, 74.841105 34.125859, 74.841133 34.125857, 74.841148 34.12603, 74.84112 34.126031, 74.841129 34.126136))', 4326),
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "42", "mutation_history": [{"mutation_no": "MUT-SB-1034", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 62147013, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 62147013, "stamp_duty": 3107351, "stamp_duty_rate": "5% (Demo)", "registration_fee": 745764, "effective_year": "2025-26", "government_rate_inr": 62147013, "market_estimate_inr": 79548177, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90034", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0364', '364', 'DEMO-JK-01-02-0364-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.34, 6.7, 1833.0, 'Residential',
+    34.125594, 74.834368, ST_GeomFromText('POLYGON((74.834298 34.12567, 74.834419 34.12567, 74.834419 34.12557, 74.834408 34.125531, 74.834298 34.125531, 74.834298 34.12567))', 4326),
     'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 040", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 040", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1039", "khata_no": "DEMO-KT-2039", "mutation_history": [{"mutation_no": "DEMO-MUT-3039", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 11558324, "stamp_duty": 577916, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1039", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-04-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5039", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0369', '369', 'DEMO-JK-01-02-0369-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.5, 5040.3, 'Mixed Use',
-    34.123461, 74.839276, ST_GeomFromText('POLYGON((74.839163 34.123516, 74.839282 34.123509, 74.839353 34.123561, 74.839398 34.123518, 74.839483 34.123436, 74.839326 34.123323, 74.839239 34.123406, 74.839154 34.12341, 74.83909 34.123469, 74.839163 34.123516))', 4326),
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "42", "mutation_history": [{"mutation_no": "MUT-SB-1035", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 24916947, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 24916947, "stamp_duty": 1245847, "stamp_duty_rate": "5% (Demo)", "registration_fee": 299003, "effective_year": "2025-26", "government_rate_inr": 24916947, "market_estimate_inr": 31893692, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-435", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Nissar Ahmad Malik (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0365', '365', 'DEMO-JK-01-02-0365-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.45, 9.0, 2438.0, 'Residential',
+    34.125561, 74.834553, ST_GeomFromText('POLYGON((74.834473 34.12563, 74.834633 34.12563, 74.834633 34.125492, 74.834473 34.125492, 74.834473 34.12563))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "43", "mutation_history": [{"mutation_no": "MUT-SB-1036", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 34029930, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 34029930, "stamp_duty": 1701496, "stamp_duty_rate": "5% (Demo)", "registration_fee": 408359, "effective_year": "2025-26", "government_rate_inr": 34029930, "market_estimate_inr": 43558310, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0366', '366', 'DEMO-JK-01-02-0366-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.4, 654.0, 'Residential',
+    34.125364, 74.831046, ST_GeomFromText('POLYGON((74.830976 34.125387, 74.831074 34.125387, 74.831102 34.125369, 74.831102 34.125338, 74.830976 34.125338, 74.830976 34.125387))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "43", "mutation_history": [{"mutation_no": "MUT-SB-1037", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9367262, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 9367262, "stamp_duty": 468363, "stamp_duty_rate": "5% (Demo)", "registration_fee": 112407, "effective_year": "2025-26", "government_rate_inr": 9367262, "market_estimate_inr": 11990095, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0367', '367', 'DEMO-JK-01-02-0367-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.6, 12.1, 3289.0, 'Residential',
+    34.125386, 74.831281, ST_GeomFromText('POLYGON((74.831179 34.125457, 74.83139 34.125454, 74.831384 34.125312, 74.83117 34.125319, 74.831179 34.125457))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 041", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 041", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1040", "khata_no": "DEMO-KT-2040", "mutation_history": [{"mutation_no": "DEMO-MUT-3040", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 6942562, "stamp_duty": 347128, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5040", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0370', '370', 'DEMO-JK-01-02-0370-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.0, 4640.4, 'Agricultural',
-    34.126424, 74.842054, ST_GeomFromText('POLYGON((74.841899 34.12641, 74.841977 34.126439, 74.841982 34.126429, 74.8421 34.126473, 74.842095 34.126483, 74.842165 34.126509, 74.842239 34.126374, 74.841972 34.126274, 74.841899 34.12641))', 4326),
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "43", "mutation_history": [{"mutation_no": "MUT-SB-1038", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 48324499, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 48324499, "stamp_duty": 2416225, "stamp_duty_rate": "5% (Demo)", "registration_fee": 579894, "effective_year": "2025-26", "government_rate_inr": 48324499, "market_estimate_inr": 61855359, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0368', '368', 'DEMO-JK-01-02-0368-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.3, 6.1, 1650.0, 'Residential',
+    34.125348, 74.831567, ST_GeomFromText('POLYGON((74.831501 34.125421, 74.831614 34.125421, 74.831614 34.125324, 74.831603 34.125287, 74.831501 34.125287, 74.831501 34.125421))', 4326),
     'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 042", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 042", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1041", "khata_no": "DEMO-KT-2041", "mutation_history": [{"mutation_no": "DEMO-MUT-3041", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 6604793, "stamp_duty": 330240, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4041"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5041", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0371', '371', 'DEMO-JK-01-02-0371-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.8, 3212.3, 'Residential',
-    34.126932, 74.84055, ST_GeomFromText('POLYGON((74.840552 34.126966, 74.840553 34.126986, 74.840604 34.126983, 74.840602 34.126963, 74.840619 34.126962, 74.840605 34.126806, 74.840426 34.126817, 74.840439 34.126972, 74.840552 34.126966))', 4326),
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "16", "khata_no": "43", "mutation_history": [{"mutation_no": "MUT-SB-1039", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 24841341, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 24841341, "stamp_duty": 1242067, "stamp_duty_rate": "5% (Demo)", "registration_fee": 298096, "effective_year": "2025-26", "government_rate_inr": 24841341, "market_estimate_inr": 31796916, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90039", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0369', '369', 'DEMO-JK-01-02-0369-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.15, 2.9, 795.0, 'Residential',
+    34.125468, 74.832126, ST_GeomFromText('POLYGON((74.832065 34.125498, 74.832187 34.125498, 74.832187 34.125439, 74.832065 34.125439, 74.832065 34.125498))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 043", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 043", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1042", "khata_no": "DEMO-KT-2042", "mutation_history": [{"mutation_no": "DEMO-MUT-3042", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 4719633, "stamp_duty": 235982, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5042", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0372', '372', 'DEMO-JK-01-02-0372-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.0, 4633.6, 'Residential',
-    34.126451, 74.842405, ST_GeomFromText('POLYGON((74.842251 34.126437, 74.842329 34.126466, 74.842334 34.126456, 74.842452 34.126501, 74.842447 34.12651, 74.842517 34.126536, 74.84259 34.126401, 74.842324 34.126301, 74.842251 34.126437))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 044", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 044", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1043", "khata_no": "DEMO-KT-2043", "mutation_history": [{"mutation_no": "DEMO-MUT-3043", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 7020606, "stamp_duty": 351030, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1043", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-08-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5043", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0373', '373', 'DEMO-JK-01-02-0373-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.4, 3652.1, 'Residential',
-    34.127117, 74.841561, ST_GeomFromText('POLYGON((74.841616 34.127145, 74.84168 34.127053, 74.841518 34.126975, 74.841447 34.127077, 74.841518 34.127111, 74.841473 34.127187, 74.841593 34.127235, 74.84164 34.127155, 74.841616 34.127145))', 4326),
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "44", "mutation_history": [{"mutation_no": "MUT-SB-1040", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 12261450, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 12261450, "stamp_duty": 613072, "stamp_duty_rate": "5% (Demo)", "registration_fee": 147137, "effective_year": "2025-26", "government_rate_inr": 12261450, "market_estimate_inr": 15694656, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0370', '370', 'DEMO-JK-01-02-0370-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.7, 732.0, 'Residential',
+    34.125415, 74.832209, ST_GeomFromText('POLYGON((74.832152 34.125444, 74.832233 34.125444, 74.832255 34.125429, 74.832255 34.125378, 74.832152 34.125378, 74.832152 34.125444))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "44", "mutation_history": [{"mutation_no": "MUT-SB-1041", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11567872, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 11567872, "stamp_duty": 578394, "stamp_duty_rate": "5% (Demo)", "registration_fee": 138814, "effective_year": "2025-26", "government_rate_inr": 11567872, "market_estimate_inr": 14806876, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-441", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Mohammad Shafi Matoo (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0371', '371', 'DEMO-JK-01-02-0371-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.44, 8.8, 2394.0, 'Residential',
+    34.12537, 74.832481, ST_GeomFromText('POLYGON((74.832399 34.125434, 74.832571 34.125431, 74.832564 34.125304, 74.832391 34.12531, 74.832399 34.125434))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "44", "mutation_history": [{"mutation_no": "MUT-SB-1042", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32537832, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 32537832, "stamp_duty": 1626892, "stamp_duty_rate": "5% (Demo)", "registration_fee": 390454, "effective_year": "2025-26", "government_rate_inr": 32537832, "market_estimate_inr": 41648425, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0372', '372', 'DEMO-JK-01-02-0372-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.14, 2.8, 758.0, 'Residential',
+    34.125429, 74.832692, ST_GeomFromText('POLYGON((74.832634 34.125467, 74.832735 34.125467, 74.832735 34.125417, 74.832724 34.125398, 74.832634 34.125398, 74.832634 34.125467))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "44", "mutation_history": [{"mutation_no": "MUT-SB-1043", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10579297, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 10579297, "stamp_duty": 528965, "stamp_duty_rate": "5% (Demo)", "registration_fee": 126952, "effective_year": "2025-26", "government_rate_inr": 10579297, "market_estimate_inr": 13541500, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0373', '373', 'DEMO-JK-01-02-0373-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.4, 658.0, 'Residential',
+    34.125444, 74.833247, ST_GeomFromText('POLYGON((74.833214 34.125488, 74.833281 34.125488, 74.833281 34.125399, 74.833214 34.125399, 74.833214 34.125488))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 045", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 045", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1044", "khata_no": "DEMO-KT-2044", "mutation_history": [{"mutation_no": "DEMO-MUT-3044", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 5701166, "stamp_duty": 285058, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4044"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5044", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0374', '374', 'DEMO-JK-01-02-0374-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 9.0, 2443.3, 'Commercial',
-    34.127027, 74.841339, ST_GeomFromText('POLYGON((74.841294 34.12702, 74.841275 34.127099, 74.841344 34.12711, 74.84136 34.127046, 74.841403 34.127062, 74.841458 34.126964, 74.841317 34.126909, 74.841261 34.127006, 74.841294 34.12702))', 4326),
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "45", "mutation_history": [{"mutation_no": "MUT-SB-1044", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9431710, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 9431710, "stamp_duty": 471586, "stamp_duty_rate": "5% (Demo)", "registration_fee": 113181, "effective_year": "2025-26", "government_rate_inr": 9431710, "market_estimate_inr": 12072589, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90044", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0374', '374', 'DEMO-JK-01-02-0374-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.96, 19.2, 5218.0, 'Residential',
+    34.125449, 74.83365, ST_GeomFromText('POLYGON((74.833496 34.125527, 74.833712 34.125527, 74.833773 34.125487, 74.833773 34.125352, 74.833496 34.125352, 74.833496 34.125527))', 4326),
     'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 046", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 046", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1045", "khata_no": "DEMO-KT-2045", "mutation_history": [{"mutation_no": "DEMO-MUT-3045", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 2243618, "stamp_duty": 112181, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5045", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0375', '375', 'DEMO-JK-01-02-0375-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.0, 4616.7, 'Mixed Use',
-    34.126398, 74.841725, ST_GeomFromText('POLYGON((74.84157 34.126384, 74.841648 34.126413, 74.841653 34.126403, 74.841772 34.126447, 74.841766 34.126457, 74.841836 34.126483, 74.84191 34.126348, 74.841644 34.126249, 74.84157 34.126384))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 047", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 047", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1046", "khata_no": "DEMO-KT-2046", "mutation_history": [{"mutation_no": "DEMO-MUT-3046", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 4451364, "stamp_duty": 222568, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5046", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0376', '376', 'DEMO-JK-01-02-0376-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    3, 10.2, 19111.1, 'Agricultural',
-    34.124927, 74.840506, ST_GeomFromText('POLYGON((74.840788 34.12509, 74.840642 34.124908, 74.840745 34.124713, 74.840524 34.124633, 74.840416 34.124838, 74.840207 34.12485, 74.840226 34.125057, 74.840439 34.125044, 74.840571 34.125209, 74.840788 34.12509))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 048", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 048", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1047", "khata_no": "DEMO-KT-2047", "mutation_history": [{"mutation_no": "DEMO-MUT-3047", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 19304141, "stamp_duty": 965207, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1047", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-03-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4047"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5047", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0377', '377', 'DEMO-JK-01-02-0377-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    11, 5.2, 61319.0, 'Residential',
-    34.129059, 74.842443, ST_GeomFromText('POLYGON((74.842117 34.129461, 74.842385 34.129505, 74.842407 34.129512, 74.842509 34.129249, 74.84252 34.129222, 74.842879 34.129301, 74.843037 34.128825, 74.842682 34.12874, 74.842795 34.128408, 74.842542 34.12834, 74.842401 34.128672, 74.842358 34.12867, 74.842185 34.129103, 74.842252 34.12911, 74.842205 34.129219, 74.842169 34.129213, 74.842082 34.129455, 74.842117 34.129461))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 049", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 049", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1048", "khata_no": "DEMO-KT-2048", "mutation_history": [{"mutation_no": "DEMO-MUT-3048", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 64753765, "stamp_duty": 3237688, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5048", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0378', '378', 'DEMO-JK-01-02-0378-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    11, 11.4, 62985.5, 'Residential',
-    34.129424, 74.837196, ST_GeomFromText('POLYGON((74.837275 34.128917, 74.837653 34.129278, 74.837758 34.129278, 74.837883 34.129358, 74.837863 34.129536, 74.837723 34.129646, 74.837612 34.129629, 74.837188 34.129945, 74.837077 34.129801, 74.836984 34.129774, 74.836937 34.129715, 74.836952 34.12964, 74.837006 34.129599, 74.83698 34.129521, 74.836916 34.129509, 74.836865 34.129444, 74.836876 34.129365, 74.836937 34.129309, 74.837015 34.129299, 74.837047 34.129216, 74.83698 34.12918, 74.836989 34.129106, 74.837041 34.129052, 74.837156 34.129052, 74.837275 34.128917))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 050", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 050", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1049", "khata_no": "DEMO-KT-2049", "mutation_history": [{"mutation_no": "DEMO-MUT-3049", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 69405510, "stamp_duty": 3470276, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5049", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0379', '379', 'DEMO-JK-01-02-0379-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 2.7, 6176.3, 'Residential',
-    34.127978, 74.836098, ST_GeomFromText('POLYGON((74.836014 34.128183, 74.836141 34.128193, 74.836188 34.127772, 74.83605 34.127765, 74.836014 34.128183))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 051", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 051", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1050", "khata_no": "DEMO-KT-2050", "mutation_history": [{"mutation_no": "DEMO-MUT-3050", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 7089417, "stamp_duty": 354471, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1200000, "cersai_id": "DEMO-CERSAI-4050"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5050", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0380', '380', 'DEMO-JK-01-02-0380-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.4, 6362.3, 'Commercial',
-    34.129177, 74.835891, ST_GeomFromText('POLYGON((74.835808 34.129305, 74.835949 34.129313, 74.835959 34.129179, 74.836076 34.129185, 74.836084 34.129074, 74.83572 34.129055, 74.835712 34.129148, 74.83582 34.129154, 74.835808 34.129305))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 052", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 052", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1051", "khata_no": "DEMO-KT-2051", "mutation_history": [{"mutation_no": "DEMO-MUT-3051", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 7595032, "stamp_duty": 379752, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1051", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-07-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5051", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0381', '381', 'DEMO-JK-01-02-0381-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 15.1, 15012.8, 'Mixed Use',
-    34.127432, 74.836802, ST_GeomFromText('POLYGON((74.836422 34.127515, 74.836551 34.12752, 74.83656 34.127355, 74.836711 34.12736, 74.836703 34.127525, 74.836882 34.127531, 74.836891 34.127367, 74.83706 34.127373, 74.837051 34.127537, 74.837175 34.127541, 74.837188 34.127291, 74.836435 34.127265, 74.836422 34.127515))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 053", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 053", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1052", "khata_no": "DEMO-KT-2052", "mutation_history": [{"mutation_no": "DEMO-MUT-3052", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 18610909, "stamp_duty": 930545, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5052", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0382', '382', 'DEMO-JK-01-02-0382-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    4, 1.9, 22308.2, 'Agricultural',
-    34.127492, 74.838041, ST_GeomFromText('POLYGON((74.83749 34.12757, 74.837716 34.127578, 74.837726 34.127411, 74.837943 34.12742, 74.837934 34.127587, 74.838134 34.127594, 74.838143 34.127427, 74.838376 34.127436, 74.838366 34.127603, 74.838574 34.127611, 74.838588 34.127356, 74.837504 34.127314, 74.83749 34.12757))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 054", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 054", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1053", "khata_no": "DEMO-KT-2053", "mutation_history": [{"mutation_no": "DEMO-MUT-3053", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 28679045, "stamp_duty": 1433952, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1650000, "cersai_id": "DEMO-CERSAI-4053"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5053", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0383', '383', 'DEMO-JK-01-02-0383-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 15.3, 15049.3, 'Residential',
-    34.128189, 74.8341, ST_GeomFromText('POLYGON((74.833963 34.128546, 74.834016 34.128016, 74.834066 34.128016, 74.83409 34.127988, 74.834279 34.127995, 74.834185 34.12857, 74.833963 34.128546))', 4326),
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "45", "mutation_history": [{"mutation_no": "MUT-SB-1045", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 76662517, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 76662517, "stamp_duty": 3833126, "stamp_duty_rate": "5% (Demo)", "registration_fee": 919950, "effective_year": "2025-26", "government_rate_inr": 76662517, "market_estimate_inr": 98128022, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0375', '375', 'DEMO-JK-01-02-0375-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.8, 16.1, 4375.0, 'Residential',
+    34.125486, 74.833959, ST_GeomFromText('POLYGON((74.833827 34.12556, 74.834099 34.125557, 74.834093 34.12541, 74.833819 34.125417, 74.833827 34.12556))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 055", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 055", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1054", "khata_no": "DEMO-KT-2054", "mutation_history": [{"mutation_no": "DEMO-MUT-3054", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 20038095, "stamp_duty": 1001905, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5054", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0384', '384', 'DEMO-JK-01-02-0384-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 3.7, 11907.8, 'Residential',
-    34.128999, 74.83536, ST_GeomFromText('POLYGON((74.835092 34.129105, 74.83524 34.129213, 74.835384 34.129112, 74.835384 34.129064, 74.835421 34.129084, 74.835515 34.129084, 74.835557 34.128992, 74.835557 34.128907, 74.83545 34.128911, 74.8354 34.128867, 74.835314 34.128775, 74.835138 34.12888, 74.835228 34.128992, 74.835092 34.129105))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 056", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 056", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1055", "khata_no": "DEMO-KT-2055", "mutation_history": [{"mutation_no": "DEMO-MUT-3055", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 16401928, "stamp_duty": 820096, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1055", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-02-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5055", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0385', '385', 'DEMO-JK-01-02-0385-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    10, 1.2, 54763.6, 'Residential',
-    34.125803, 74.838528, ST_GeomFromText('POLYGON((74.838709 34.126112, 74.838602 34.126121, 74.838616 34.126231, 74.838495 34.126242, 74.838483 34.126151, 74.838427 34.126155, 74.838414 34.126053, 74.838254 34.126067, 74.838164 34.125377, 74.838395 34.125356, 74.838376 34.125208, 74.838582 34.125189, 74.838598 34.125313, 74.838773 34.125298, 74.838862 34.12598, 74.838693 34.125995, 74.838709 34.126112))', 4326),
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "45", "mutation_history": [{"mutation_no": "MUT-SB-1046", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 65882965, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 65882965, "stamp_duty": 3294148, "stamp_duty_rate": "5% (Demo)", "registration_fee": 790596, "effective_year": "2025-26", "government_rate_inr": 65882965, "market_estimate_inr": 84330195, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0376', '376', 'DEMO-JK-01-02-0376-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.96, 19.3, 5250.0, 'Residential',
+    34.125429, 74.834367, ST_GeomFromText('POLYGON((74.834196 34.125519, 74.834484 34.125519, 74.834484 34.1254, 74.834473 34.125353, 74.834196 34.125353, 74.834196 34.125519))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "17", "khata_no": "45", "mutation_history": [{"mutation_no": "MUT-SB-1047", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 80998023, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 80998023, "stamp_duty": 4049901, "stamp_duty_rate": "5% (Demo)", "registration_fee": 971976, "effective_year": "2025-26", "government_rate_inr": 80998023, "market_estimate_inr": 103677469, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-447", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Irfan Ahmad Ahanger (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0377', '377', 'DEMO-JK-01-02-0377-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.2, 866.0, 'Residential',
+    34.125403, 74.834655, ST_GeomFromText('POLYGON((74.834618 34.125456, 74.834692 34.125456, 74.834692 34.12535, 74.834618 34.12535, 74.834618 34.125456))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "46", "mutation_history": [{"mutation_no": "MUT-SB-1048", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13679694, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 13679694, "stamp_duty": 683985, "stamp_duty_rate": "5% (Demo)", "registration_fee": 164156, "effective_year": "2025-26", "government_rate_inr": 13679694, "market_estimate_inr": 17510008, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0378', '378', 'DEMO-JK-01-02-0378-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.24, 4.8, 1312.0, 'Residential',
+    34.1255, 74.834673, ST_GeomFromText('POLYGON((74.834603 34.125542, 74.834701 34.125542, 74.834728 34.125524, 74.834728 34.125445, 74.834603 34.125445, 74.834603 34.125542))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 057", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 057", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1056", "khata_no": "DEMO-KT-2056", "mutation_history": [{"mutation_no": "DEMO-MUT-3056", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 77946354, "stamp_duty": 3897318, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2100000, "cersai_id": "DEMO-CERSAI-4056"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5056", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0386', '386', 'DEMO-JK-01-02-0386-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5207.8, 'Commercial',
-    34.125504, 74.838029, ST_GeomFromText('POLYGON((74.837866 34.125583, 74.837976 34.125498, 74.837964 34.125394, 74.838234 34.125372, 74.838252 34.125521, 74.838007 34.125541, 74.837906 34.125619, 74.837866 34.125583))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 058", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 058", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1057", "khata_no": "DEMO-KT-2057", "mutation_history": [{"mutation_no": "DEMO-MUT-3057", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 7651497, "stamp_duty": 382575, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5057", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0387', '387', 'DEMO-JK-01-02-0387-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 6.9, 1881.6, 'Mixed Use',
-    34.125258, 74.837794, ST_GeomFromText('POLYGON((74.83774 34.125331, 74.837863 34.125323, 74.837848 34.125185, 74.837725 34.125194, 74.83774 34.125331))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 059", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 059", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1058", "khata_no": "DEMO-KT-2058", "mutation_history": [{"mutation_no": "DEMO-MUT-3058", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 2850909, "stamp_duty": 142545, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5058", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0388', '388', 'DEMO-JK-01-02-0388-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    23, 1.5, 125651.7, 'Agricultural',
-    34.124072, 74.841139, ST_GeomFromText('POLYGON((74.840707 34.124923, 74.840578 34.123865, 74.841004 34.12383, 74.840995 34.123757, 74.841206 34.123739, 74.841218 34.123832, 74.841639 34.123797, 74.841765 34.124835, 74.840707 34.124923))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 060", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 060", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1059", "khata_no": "DEMO-KT-2059", "mutation_history": [{"mutation_no": "DEMO-MUT-3059", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 196150496, "stamp_duty": 9807525, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1059", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-06-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2550000, "cersai_id": "DEMO-CERSAI-4059"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5059", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0389', '389', 'DEMO-JK-01-02-0389-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 2.5, 667.8, 'Residential',
-    34.124234, 74.840286, ST_GeomFromText('POLYGON((74.840238 34.124266, 74.840235 34.124205, 74.840334 34.124202, 74.840337 34.124263, 74.840238 34.124266))', 4326),
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "46", "mutation_history": [{"mutation_no": "MUT-SB-1049", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17830636, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 17830636, "stamp_duty": 891532, "stamp_duty_rate": "5% (Demo)", "registration_fee": 213968, "effective_year": "2025-26", "government_rate_inr": 17830636, "market_estimate_inr": 22823214, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90049", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0379', '379', 'DEMO-JK-01-02-0379-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.58, 11.6, 3156.0, 'Residential',
+    34.125283, 74.830031, ST_GeomFromText('POLYGON((74.829918 34.125346, 74.830151 34.125343, 74.830145 34.125219, 74.82991 34.125226, 74.829918 34.125346))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 061", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 061", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1060", "khata_no": "DEMO-KT-2060", "mutation_history": [{"mutation_no": "DEMO-MUT-3060", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 613223, "stamp_duty": 30661, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5060", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0390', '390', 'DEMO-JK-01-02-0390-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 16.8, 15471.2, 'Residential',
-    34.12346, 74.842328, ST_GeomFromText('POLYGON((74.842017 34.123651, 74.842 34.123472, 74.842384 34.123447, 74.84237 34.123296, 74.842584 34.123283, 74.842615 34.123612, 74.842017 34.123651))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 062", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 062", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1061", "khata_no": "DEMO-KT-2061", "mutation_history": [{"mutation_no": "DEMO-MUT-3061", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 14917135, "stamp_duty": 745857, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5061", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0391', '391', 'DEMO-JK-01-02-0391-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.9, 3795.2, 'Residential',
-    34.12641, 74.841274, ST_GeomFromText('POLYGON((74.841187 34.126506, 74.841161 34.126337, 74.841361 34.126315, 74.841387 34.126484, 74.841187 34.126506))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 063", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 063", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1062", "khata_no": "DEMO-KT-2062", "mutation_history": [{"mutation_no": "DEMO-MUT-3062", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 3833535, "stamp_duty": 191677, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4062"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5062", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0392', '392', 'DEMO-JK-01-02-0392-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.4, 4464.9, 'Commercial',
-    34.126359, 74.839612, ST_GeomFromText('POLYGON((74.839352 34.126415, 74.839344 34.126339, 74.839873 34.126303, 74.83988 34.126379, 74.839352 34.126415))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 064", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 064", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1063", "khata_no": "DEMO-KT-2063", "mutation_history": [{"mutation_no": "DEMO-MUT-3063", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 4715000, "stamp_duty": 235750, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1063", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-01-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5063", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0393', '393', 'DEMO-JK-01-02-0393-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    3, 6.3, 18041.4, 'Mixed Use',
-    34.126659, 74.840756, ST_GeomFromText('POLYGON((74.840564 34.126957, 74.840501 34.126408, 74.840676 34.126394, 74.840711 34.126696, 74.840849 34.126685, 74.84084 34.126605, 74.840936 34.126598, 74.840974 34.126925, 74.840564 34.126957))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 065", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 065", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1064", "khata_no": "DEMO-KT-2064", "mutation_history": [{"mutation_no": "DEMO-MUT-3064", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 19880331, "stamp_duty": 994017, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5064", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0394', '394', 'DEMO-JK-01-02-0394-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.6, 4798.8, 'Agricultural',
-    34.126903, 74.841155, ST_GeomFromText('POLYGON((74.84101 34.126965, 74.8411 34.126776, 74.841299 34.126841, 74.841209 34.12703, 74.84101 34.126965))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 066", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 066", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1065", "khata_no": "DEMO-KT-2065", "mutation_history": [{"mutation_no": "DEMO-MUT-3065", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 5508264, "stamp_duty": 275413, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4065"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5065", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0395', '395', 'DEMO-JK-01-02-0395-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 1.7, 11355.3, 'Residential',
-    34.126737, 74.841491, ST_GeomFromText('POLYGON((74.841565 34.12698, 74.841202 34.12683, 74.841403 34.126497, 74.841608 34.126582, 74.84155 34.126679, 74.841517 34.126665, 74.841503 34.126687, 74.841463 34.12667, 74.841444 34.126702, 74.841477 34.126715, 74.841456 34.126751, 74.84147 34.126756, 74.841442 34.126804, 74.841537 34.126843, 74.841564 34.1268, 74.841652 34.126836, 74.841565 34.12698))', 4326),
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "46", "mutation_history": [{"mutation_no": "MUT-SB-1050", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 44052283, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 44052283, "stamp_duty": 2202614, "stamp_duty_rate": "5% (Demo)", "registration_fee": 528627, "effective_year": "2025-26", "government_rate_inr": 44052283, "market_estimate_inr": 56386922, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0380', '380', 'DEMO-JK-01-02-0380-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.26, 5.3, 1440.0, 'Residential',
+    34.125178, 74.831066, ST_GeomFromText('POLYGON((74.830997 34.125239, 74.831115 34.125239, 74.831115 34.125158, 74.831104 34.125127, 74.830997 34.125127, 74.830997 34.125239))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "46", "mutation_history": [{"mutation_no": "MUT-SB-1051", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 20635140, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 20635140, "stamp_duty": 1031757, "stamp_duty_rate": "5% (Demo)", "registration_fee": 247622, "effective_year": "2025-26", "government_rate_inr": 20635140, "market_estimate_inr": 26412979, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0381', '381', 'DEMO-JK-01-02-0381-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.98, 19.6, 5328.0, 'Residential',
+    34.12522, 74.831589, ST_GeomFromText('POLYGON((74.831464 34.125316, 74.831714 34.125316, 74.831714 34.125123, 74.831464 34.125123, 74.831464 34.125316))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 067", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 067", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1066", "khata_no": "DEMO-KT-2066", "mutation_history": [{"mutation_no": "DEMO-MUT-3066", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 13555455, "stamp_duty": 677773, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5066", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0396', '396', 'DEMO-JK-01-02-0396-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.5, 5031.3, 'Residential',
-    34.125602, 74.839461, ST_GeomFromText('POLYGON((74.839387 34.125735, 74.839353 34.125488, 74.839535 34.12547, 74.839569 34.125717, 74.839387 34.125735))', 4326),
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "47", "mutation_history": [{"mutation_no": "MUT-SB-1052", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 78277040, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 78277040, "stamp_duty": 3913852, "stamp_duty_rate": "5% (Demo)", "registration_fee": 939324, "effective_year": "2025-26", "government_rate_inr": 78277040, "market_estimate_inr": 100194611, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0382', '382', 'DEMO-JK-01-02-0382-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.2, 1139.0, 'Residential',
+    34.125201, 74.831752, ST_GeomFromText('POLYGON((74.831685 34.12524, 74.831778 34.12524, 74.831805 34.125222, 74.831805 34.125152, 74.831685 34.125152, 74.831685 34.12524))', 4326),
     'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 068", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 068", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1067", "khata_no": "DEMO-KT-2067", "mutation_history": [{"mutation_no": "DEMO-MUT-3067", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 6237149, "stamp_duty": 311857, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1067", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-05-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5067", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0397', '397', 'DEMO-JK-01-02-0397-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.5, 4764.2, 'Residential',
-    34.125594, 74.839626, ST_GeomFromText('POLYGON((74.839545 34.125715, 74.839519 34.125488, 74.839707 34.125473, 74.839733 34.125701, 74.839545 34.125715))', 4326),
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "47", "mutation_history": [{"mutation_no": "MUT-SB-1053", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17156108, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 17156108, "stamp_duty": 857805, "stamp_duty_rate": "5% (Demo)", "registration_fee": 205873, "effective_year": "2025-26", "government_rate_inr": 17156108, "market_estimate_inr": 21959818, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-453", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Abdul Rashid Wani (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0383', '383', 'DEMO-JK-01-02-0383-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.4, 1732.0, 'Residential',
+    34.125283, 74.831781, ST_GeomFromText('POLYGON((74.831702 34.125332, 74.831868 34.125328, 74.831861 34.125233, 74.831694 34.125239, 74.831702 34.125332))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 069", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 069", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1068", "khata_no": "DEMO-KT-2068", "mutation_history": [{"mutation_no": "DEMO-MUT-3068", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 6124775, "stamp_duty": 306239, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4068"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5068", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0398', '398', 'DEMO-JK-01-02-0398-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.3, 4983.2, 'Commercial',
-    34.124746, 74.840361, ST_GeomFromText('POLYGON((74.840244 34.124845, 74.840221 34.124671, 74.840478 34.124648, 74.840501 34.124821, 74.840244 34.124845))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 070", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 070", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1069", "khata_no": "DEMO-KT-2069", "mutation_history": [{"mutation_no": "DEMO-MUT-3069", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 6635115, "stamp_duty": 331756, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5069", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0399', '399', 'DEMO-JK-01-02-0399-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 2.6, 720.3, 'Mixed Use',
-    34.123524, 74.839722, ST_GeomFromText('POLYGON((74.839687 34.123568, 74.839678 34.123486, 74.839757 34.123481, 74.839766 34.123563, 74.839687 34.123568))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 071", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 071", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1070", "khata_no": "DEMO-KT-2070", "mutation_history": [{"mutation_no": "DEMO-MUT-3070", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 992149, "stamp_duty": 49607, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5070", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0400', '400', 'DEMO-JK-01-02-0400-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 3.5, 966.2, 'Agricultural',
-    34.124732, 74.839591, ST_GeomFromText('POLYGON((74.839536 34.124772, 74.839652 34.124767, 74.839646 34.124691, 74.839531 34.124697, 74.839536 34.124772))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 072", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 072", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1071", "khata_no": "DEMO-KT-2071", "mutation_history": [{"mutation_no": "DEMO-MUT-3071", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 1375216, "stamp_duty": 68761, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1071", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-09-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4071"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5071", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0401', '401', 'DEMO-JK-01-02-0401-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 3.1, 839.4, 'Residential',
-    34.125834, 74.839939, ST_GeomFromText('POLYGON((74.839909 34.125888, 74.839895 34.125787, 74.839969 34.12578, 74.839983 34.125882, 74.839909 34.125888))', 4326),
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "47", "mutation_history": [{"mutation_no": "MUT-SB-1054", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 26724421, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 26724421, "stamp_duty": 1336221, "stamp_duty_rate": "5% (Demo)", "registration_fee": 320693, "effective_year": "2025-26", "government_rate_inr": 26724421, "market_estimate_inr": 34207259, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90054", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0384', '384', 'DEMO-JK-01-02-0384-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.46, 9.3, 2520.0, 'Residential',
+    34.125242, 74.832256, ST_GeomFromText('POLYGON((74.832162 34.12532, 74.832322 34.12532, 74.832322 34.125216, 74.832311 34.125176, 74.832162 34.125176, 74.832162 34.12532))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 073", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 073", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1072", "khata_no": "DEMO-KT-2072", "mutation_history": [{"mutation_no": "DEMO-MUT-3072", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 1233278, "stamp_duty": 61664, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5072", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0402', '402', 'DEMO-JK-01-02-0402-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.7, 5097.1, 'Residential',
-    34.12784, 74.836786, ST_GeomFromText('POLYGON((74.836613 34.1279, 74.836936 34.127924, 74.836951 34.127781, 74.836643 34.127754, 74.836613 34.1279))', 4326),
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "18", "khata_no": "47", "mutation_history": [{"mutation_no": "MUT-SB-1055", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 39797889, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 39797889, "stamp_duty": 1989894, "stamp_duty_rate": "5% (Demo)", "registration_fee": 477575, "effective_year": "2025-26", "government_rate_inr": 39797889, "market_estimate_inr": 50941298, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0385', '385', 'DEMO-JK-01-02-0385-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.2, 4.0, 1083.0, 'Residential',
+    34.12519, 74.83314, ST_GeomFromText('POLYGON((74.833086 34.125235, 74.833195 34.125235, 74.833195 34.125145, 74.833086 34.125145, 74.833086 34.125235))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "48", "mutation_history": [{"mutation_no": "MUT-SB-1056", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14721482, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 14721482, "stamp_duty": 736074, "stamp_duty_rate": "5% (Demo)", "registration_fee": 176658, "effective_year": "2025-26", "government_rate_inr": 14721482, "market_estimate_inr": 18843497, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0386', '386', 'DEMO-JK-01-02-0386-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.4, 1747.0, 'Residential',
+    34.125305, 74.8332, ST_GeomFromText('POLYGON((74.833121 34.125354, 74.833232 34.125354, 74.833264 34.125333, 74.833264 34.125241, 74.833121 34.125241, 74.833121 34.125354))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "48", "mutation_history": [{"mutation_no": "MUT-SB-1057", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 24386698, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 24386698, "stamp_duty": 1219335, "stamp_duty_rate": "5% (Demo)", "registration_fee": 292640, "effective_year": "2025-26", "government_rate_inr": 24386698, "market_estimate_inr": 31214973, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0387', '387', 'DEMO-JK-01-02-0387-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.46, 9.3, 2525.0, 'Residential',
+    34.125171, 74.833423, ST_GeomFromText('POLYGON((74.833323 34.125227, 74.833531 34.125224, 74.833524 34.125113, 74.833315 34.125119, 74.833323 34.125227))', 4326),
+    'NOT_VERIFIED', 'UNKNOWN',
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "48", "mutation_history": [{"mutation_no": "MUT-SB-1058", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 36165930, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 36165930, "stamp_duty": 1808296, "stamp_duty_rate": "5% (Demo)", "registration_fee": 433991, "effective_year": "2025-26", "government_rate_inr": 36165930, "market_estimate_inr": 46292390, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0388', '388', 'DEMO-JK-01-02-0388-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.28, 5.7, 1543.0, 'Residential',
+    34.1253, 74.83351, ST_GeomFromText('POLYGON((74.83344 34.125364, 74.833561 34.125364, 74.833561 34.12528, 74.83355 34.125247, 74.83344 34.125247, 74.83344 34.125364))', 4326),
+    'RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "48", "mutation_history": [{"mutation_no": "MUT-SB-1059", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 22672823, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 22672823, "stamp_duty": 1133641, "stamp_duty_rate": "5% (Demo)", "registration_fee": 272074, "effective_year": "2025-26", "government_rate_inr": 22672823, "market_estimate_inr": 29021213, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-459", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Javid Ahmad Sofi (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90059", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0389', '389', 'DEMO-JK-01-02-0389-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.4, 8.0, 2179.0, 'Residential',
+    34.125297, 74.833641, ST_GeomFromText('POLYGON((74.833572 34.125368, 74.83371 34.125368, 74.83371 34.125225, 74.833572 34.125225, 74.833572 34.125368))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "49", "mutation_history": [{"mutation_no": "MUT-SB-1060", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32814999, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 32814999, "stamp_duty": 1640750, "stamp_duty_rate": "5% (Demo)", "registration_fee": 393780, "effective_year": "2025-26", "government_rate_inr": 32814999, "market_estimate_inr": 42003199, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0390', '390', 'DEMO-JK-01-02-0390-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.17, 3.3, 900.0, 'Residential',
+    34.125339, 74.833926, ST_GeomFromText('POLYGON((74.833868 34.125374, 74.833949 34.125374, 74.833972 34.125359, 74.833972 34.125294, 74.833868 34.125294, 74.833868 34.125374))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "49", "mutation_history": [{"mutation_no": "MUT-SB-1061", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13878212, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 13878212, "stamp_duty": 693911, "stamp_duty_rate": "5% (Demo)", "registration_fee": 166539, "effective_year": "2025-26", "government_rate_inr": 13878212, "market_estimate_inr": 17764111, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0391', '391', 'DEMO-JK-01-02-0391-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.56, 11.2, 3045.0, 'Residential',
+    34.125308, 74.83407, ST_GeomFromText('POLYGON((74.833989 34.125391, 74.834158 34.125387, 74.834152 34.125224, 74.833981 34.12523, 74.833989 34.125391))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "49", "mutation_history": [{"mutation_no": "MUT-SB-1062", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 48090444, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 48090444, "stamp_duty": 2404522, "stamp_duty_rate": "5% (Demo)", "registration_fee": 577085, "effective_year": "2025-26", "government_rate_inr": 48090444, "market_estimate_inr": 61555768, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0392', '392', 'DEMO-JK-01-02-0392-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.6, 717.0, 'Residential',
+    34.1251, 74.830189, ST_GeomFromText('POLYGON((74.830133 34.125137, 74.83023 34.125137, 74.83023 34.125088, 74.830219 34.125069, 74.830133 34.125069, 74.830133 34.125137))', 4326),
     'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 074", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 074", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1073", "khata_no": "DEMO-KT-2073", "mutation_history": [{"mutation_no": "DEMO-MUT-3073", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 7722879, "stamp_duty": 386144, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5073", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0403', '403', 'DEMO-JK-01-02-0403-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 20.0, 5436.9, 'Residential',
-    34.129376, 74.835155, ST_GeomFromText('POLYGON((74.835315 34.129379, 74.835119 34.129369, 74.835098 34.129511, 74.835014 34.129509, 74.83505 34.129235, 74.835336 34.12925, 74.835315 34.129379))', 4326),
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "19", "khata_no": "49", "mutation_history": [{"mutation_no": "MUT-SB-1063", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9741464, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 9741464, "stamp_duty": 487073, "stamp_duty_rate": "5% (Demo)", "registration_fee": 116898, "effective_year": "2025-26", "government_rate_inr": 9741464, "market_estimate_inr": 12469074, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0393', '393', 'DEMO-JK-01-02-0393-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.33, 6.7, 1819.0, 'Residential',
+    34.125079, 74.830951, ST_GeomFromText('POLYGON((74.83089 34.125147, 74.831012 34.125147, 74.831012 34.125012, 74.83089 34.125012, 74.83089 34.125147))', 4326),
     'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 075", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 075", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1074", "khata_no": "DEMO-KT-2074", "mutation_history": [{"mutation_no": "DEMO-MUT-3074", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 8487355, "stamp_duty": 424368, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4074"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5074", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0404', '404', 'DEMO-JK-01-02-0404-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    4, 4.9, 23123.7, 'Commercial',
-    34.129468, 74.835671, ST_GeomFromText('POLYGON((74.835319 34.12921, 74.836018 34.129252, 74.835982 34.129574, 74.835825 34.129554, 74.835771 34.129551, 74.835774 34.129479, 74.835533 34.129477, 74.835524 34.129566, 74.835292 34.129551, 74.835319 34.12921))', 4326),
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "50", "mutation_history": [{"mutation_no": "MUT-SB-1064", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 25383505, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 25383505, "stamp_duty": 1269175, "stamp_duty_rate": "5% (Demo)", "registration_fee": 304602, "effective_year": "2025-26", "government_rate_inr": 25383505, "market_estimate_inr": 32490886, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90064", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0394', '394', 'DEMO-JK-01-02-0394-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.44, 8.9, 2420.0, 'Residential',
+    34.125089, 74.832112, ST_GeomFromText('POLYGON((74.832007 34.125142, 74.832155 34.125142, 74.832196 34.125114, 74.832196 34.125023, 74.832007 34.125023, 74.832007 34.125142))', 4326),
     'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 076", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 076", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1075", "khata_no": "DEMO-KT-2075", "mutation_history": [{"mutation_no": "DEMO-MUT-3075", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 21233884, "stamp_duty": 1061694, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1075", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-04-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5075", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0405', '405', 'DEMO-JK-01-02-0405-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    2, 14.7, 14894.2, 'Mixed Use',
-    34.128472, 74.834564, ST_GeomFromText('POLYGON((74.834215 34.128559, 74.834901 34.128582, 74.834909 34.128378, 74.834231 34.128368, 74.834215 34.128559))', 4326),
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "50", "mutation_history": [{"mutation_no": "MUT-SB-1065", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 34667060, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 34667060, "stamp_duty": 1733353, "stamp_duty_rate": "5% (Demo)", "registration_fee": 416005, "effective_year": "2025-26", "government_rate_inr": 34667060, "market_estimate_inr": 44373837, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-465", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Shakeel Ahmad Yatoo (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0395', '395', 'DEMO-JK-01-02-0395-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.86, 17.1, 4658.0, 'Residential',
+    34.125101, 74.832286, ST_GeomFromText('POLYGON((74.832169 34.12519, 74.83241 34.125186, 74.832403 34.12501, 74.832161 34.125017, 74.832169 34.12519))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "50", "mutation_history": [{"mutation_no": "MUT-SB-1066", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 68434843, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 68434843, "stamp_duty": 3421742, "stamp_duty_rate": "5% (Demo)", "registration_fee": 821218, "effective_year": "2025-26", "government_rate_inr": 68434843, "market_estimate_inr": 87596599, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0396', '396', 'DEMO-JK-01-02-0396-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.33, 6.6, 1809.0, 'Residential',
+    34.125056, 74.832523, ST_GeomFromText('POLYGON((74.832452 34.12513, 74.832574 34.12513, 74.832574 34.125032, 74.832563 34.124994, 74.832452 34.124994, 74.832452 34.12513))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "50", "mutation_history": [{"mutation_no": "MUT-SB-1067", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 27242778, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 27242778, "stamp_duty": 1362139, "stamp_duty_rate": "5% (Demo)", "registration_fee": 326913, "effective_year": "2025-26", "government_rate_inr": 27242778, "market_estimate_inr": 34870756, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0397', '397', 'DEMO-JK-01-02-0397-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.24, 4.8, 1297.0, 'Residential',
+    34.125055, 74.832666, ST_GeomFromText('POLYGON((74.832603 34.125102, 74.832728 34.125102, 74.832728 34.125008, 74.832603 34.125008, 74.832603 34.125102))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 077", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 077", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1076", "khata_no": "DEMO-KT-2076", "mutation_history": [{"mutation_no": "DEMO-MUT-3076", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 14360799, "stamp_duty": 718040, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5076", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0406', '406', 'DEMO-JK-01-02-0406-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    9, 12.2, 52338.5, 'Agricultural',
-    34.12794, 74.834539, ST_GeomFromText('POLYGON((74.834092 34.127558, 74.834036 34.128026, 74.834578 34.128053, 74.834559 34.128175, 74.83493 34.128197, 74.83504 34.127633, 74.834092 34.127558))', 4326),
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "51", "mutation_history": [{"mutation_no": "MUT-SB-1068", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 20015748, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 20015748, "stamp_duty": 1000787, "stamp_duty_rate": "5% (Demo)", "registration_fee": 240189, "effective_year": "2025-26", "government_rate_inr": 20015748, "market_estimate_inr": 25620157, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0398', '398', 'DEMO-JK-01-02-0398-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.09, 1.9, 507.0, 'Residential',
+    34.125165, 74.832739, ST_GeomFromText('POLYGON((74.832692 34.12519, 74.832757 34.12519, 74.832776 34.125178, 74.832776 34.125134, 74.832692 34.125134, 74.832692 34.12519))', 4326),
     'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 078", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 078", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1077", "khata_no": "DEMO-KT-2077", "mutation_history": [{"mutation_no": "DEMO-MUT-3077", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 52867172, "stamp_duty": 2643359, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4077"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5077", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0407', '407', 'DEMO-JK-01-02-0407-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    4, 3.1, 22620.7, 'Residential',
-    34.127667, 74.833869, ST_GeomFromText('POLYGON((74.833515 34.127786, 74.834187 34.127842, 74.834239 34.127544, 74.833535 34.127494, 74.833515 34.127786))', 4326),
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "51", "mutation_history": [{"mutation_no": "MUT-SB-1069", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 8005666, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 8005666, "stamp_duty": 400283, "stamp_duty_rate": "5% (Demo)", "registration_fee": 96068, "effective_year": "2025-26", "government_rate_inr": 8005666, "market_estimate_inr": 10247252, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90069", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0399', '399', 'DEMO-JK-01-02-0399-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.4, 647.0, 'Residential',
+    34.125164, 74.833625, ST_GeomFromText('POLYGON((74.833581 34.125196, 74.833676 34.125193, 74.833669 34.12513, 74.833573 34.125137, 74.833581 34.125196))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 079", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 079", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1078", "khata_no": "DEMO-KT-2078", "mutation_history": [{"mutation_no": "DEMO-MUT-3078", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 23887792, "stamp_duty": 1194390, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5078", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0408', '408', 'DEMO-JK-01-02-0408-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 11.4, 8547.2, 'Residential',
-    34.128534, 74.837056, ST_GeomFromText('POLYGON((74.83696 34.128644, 74.836963 34.128611, 74.83697 34.128518, 74.836973 34.128476, 74.836979 34.128403, 74.837292 34.12841, 74.837252 34.128677, 74.83696 34.128644))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 080", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 080", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1079", "khata_no": "DEMO-KT-2079", "mutation_history": [{"mutation_no": "DEMO-MUT-3079", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 9418402, "stamp_duty": 470920, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1079", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-08-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5079", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0409', '409', 'DEMO-JK-01-02-0409-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 15.1, 4114.5, 'Residential',
-    34.126973, 74.832649, ST_GeomFromText('POLYGON((74.832509 34.127013, 74.832724 34.127089, 74.832785 34.126926, 74.832578 34.126865, 74.832509 34.127013))', 4326),
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "51", "mutation_history": [{"mutation_no": "MUT-SB-1070", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 8798318, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 8798318, "stamp_duty": 439916, "stamp_duty_rate": "5% (Demo)", "registration_fee": 105580, "effective_year": "2025-26", "government_rate_inr": 8798318, "market_estimate_inr": 11261847, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0400', '400', 'DEMO-JK-01-02-0400-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.1, 848.0, 'Residential',
+    34.125038, 74.833648, ST_GeomFromText('POLYGON((74.83359 34.12508, 74.83369 34.12508, 74.83369 34.125024, 74.833679 34.125002, 74.83359 34.125002, 74.83359 34.12508))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "20", "khata_no": "51", "mutation_history": [{"mutation_no": "MUT-SB-1071", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11835209, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 11835209, "stamp_duty": 591760, "stamp_duty_rate": "5% (Demo)", "registration_fee": 142023, "effective_year": "2025-26", "government_rate_inr": 11835209, "market_estimate_inr": 15149068, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-471", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Mudisir Ahmad Parray (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0401', '401', 'DEMO-JK-01-02-0401-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.3, 6.1, 7096.0, 'Residential',
+    34.12511, 74.834351, ST_GeomFromText('POLYGON((74.834194 34.125212, 74.834509 34.125212, 74.834509 34.125008, 74.834194 34.125008, 74.834194 34.125212))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "52", "mutation_history": [{"mutation_no": "MUT-SB-1072", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 62644005, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 62644005, "stamp_duty": 3132200, "stamp_duty_rate": "5% (Demo)", "registration_fee": 751728, "effective_year": "2025-26", "government_rate_inr": 62644005, "market_estimate_inr": 80184326, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0402', '402', 'DEMO-JK-01-02-0402-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.26, 5.2, 1413.0, 'Residential',
+    34.124985, 74.830039, ST_GeomFromText('POLYGON((74.829952 34.125023, 74.830075 34.125023, 74.830109 34.125, 74.830109 34.124939, 74.829952 34.124939, 74.829952 34.125023))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "52", "mutation_history": [{"mutation_no": "MUT-SB-1073", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 20760847, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 20760847, "stamp_duty": 1038042, "stamp_duty_rate": "5% (Demo)", "registration_fee": 249130, "effective_year": "2025-26", "government_rate_inr": 20760847, "market_estimate_inr": 26573884, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0403', '403', 'DEMO-JK-01-02-0403-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.31, 6.2, 1681.0, 'Residential',
+    34.12499, 74.831629, ST_GeomFromText('POLYGON((74.831554 34.12504, 74.831712 34.125036, 74.831706 34.124939, 74.831546 34.124946, 74.831554 34.12504))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 081", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 081", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1080", "khata_no": "DEMO-KT-2080", "mutation_history": [{"mutation_no": "DEMO-MUT-3080", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 4722796, "stamp_duty": 236140, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1200000, "cersai_id": "DEMO-CERSAI-4080"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5080", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0410', '410', 'DEMO-JK-01-02-0410-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    8, 16.9, 48148.0, 'Commercial',
-    34.127074, 74.838083, ST_GeomFromText('POLYGON((74.837701 34.127308, 74.837736 34.127348, 74.838257 34.127407, 74.838267 34.127329, 74.838286 34.127329, 74.83831 34.127323, 74.838328 34.127299, 74.838348 34.127148, 74.838366 34.12713, 74.838386 34.127112, 74.838402 34.127087, 74.838428 34.127086, 74.838454 34.127088, 74.838507 34.127087, 74.838544 34.127082, 74.838578 34.127066, 74.83862 34.127042, 74.838643 34.127008, 74.838656 34.126957, 74.838656 34.126913, 74.838639 34.126868, 74.838605 34.126841, 74.838559 34.126814, 74.838528 34.126807, 74.838494 34.126805, 74.838453 34.12681, 74.838413 34.12682, 74.838381 34.126845, 74.83837 34.126862, 74.838355 34.126881, 74.838331 34.126909, 74.837901 34.126862, 74.837866 34.126908, 74.837851 34.126949, 74.837837 34.126994, 74.837847 34.12702, 74.837825 34.127043, 74.837723 34.127092, 74.837689 34.12707, 74.83765 34.127057, 74.837597 34.127038, 74.837546 34.127049, 74.837517 34.127052, 74.83748 34.127069, 74.83744 34.1271, 74.83742 34.127138, 74.837403 34.127184, 74.837412 34.127235, 74.837433 34.127284, 74.837491 34.127336, 74.837562 34.127351, 74.837612 34.127351, 74.837679 34.127332, 74.837701 34.127308))', 4326),
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "52", "mutation_history": [{"mutation_no": "MUT-SB-1074", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 25313713, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 25313713, "stamp_duty": 1265686, "stamp_duty_rate": "5% (Demo)", "registration_fee": 303765, "effective_year": "2025-26", "government_rate_inr": 25313713, "market_estimate_inr": 32401553, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90074", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0404', '404', 'DEMO-JK-01-02-0404-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.72, 14.4, 3908.0, 'Residential',
+    34.124848, 74.831734, ST_GeomFromText('POLYGON((74.831581 34.124923, 74.831839 34.124923, 74.831839 34.124824, 74.831828 34.124785, 74.831581 34.124785, 74.831581 34.124923))', 4326),
     'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 082", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 082", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1081", "khata_no": "DEMO-KT-2081", "mutation_history": [{"mutation_no": "DEMO-MUT-3081", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 57476951, "stamp_duty": 2873848, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5081", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0411', '411', 'DEMO-JK-01-02-0411-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 1.6, 5877.8, 'Mixed Use',
-    34.124665, 74.832, ST_GeomFromText('POLYGON((74.831984 34.124524, 74.832153 34.124602, 74.832046 34.12482, 74.831817 34.124715, 74.831984 34.124524))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 083", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 083", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1082", "khata_no": "DEMO-KT-2082", "mutation_history": [{"mutation_no": "DEMO-MUT-3082", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 7286529, "stamp_duty": 364326, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5082", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0412', '412', 'DEMO-JK-01-02-0412-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.3, 7164.4, 'Agricultural',
-    34.124211, 74.834093, ST_GeomFromText('POLYGON((74.834095 34.124044, 74.834241 34.124169, 74.834215 34.124241, 74.834045 34.124376, 74.833868 34.124225, 74.834095 34.124044))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 084", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 084", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1083", "khata_no": "DEMO-KT-2083", "mutation_history": [{"mutation_no": "DEMO-MUT-3083", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 9210432, "stamp_duty": 460522, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1083", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-03-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1650000, "cersai_id": "DEMO-CERSAI-4083"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5083", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0413', '413', 'DEMO-JK-01-02-0413-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.0, 4887.3, 'Residential',
-    34.124204, 74.836755, ST_GeomFromText('POLYGON((74.8369 34.124151, 74.836872 34.12422, 74.836751 34.12435, 74.836603 34.124257, 74.836659 34.124161, 74.836746 34.124083, 74.8369 34.124151))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 085", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 085", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1084", "khata_no": "DEMO-KT-2084", "mutation_history": [{"mutation_no": "DEMO-MUT-3084", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 6507424, "stamp_duty": 325371, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5084", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0414', '414', 'DEMO-JK-01-02-0414-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.9, 3233.2, 'Residential',
-    34.124196, 74.839221, ST_GeomFromText('POLYGON((74.839328 34.124101, 74.839358 34.124243, 74.839235 34.124261, 74.839224 34.124208, 74.839101 34.124226, 74.839082 34.124137, 74.839328 34.124101))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 086", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 086", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1085", "khata_no": "DEMO-KT-2085", "mutation_history": [{"mutation_no": "DEMO-MUT-3085", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 4453444, "stamp_duty": 222672, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5085", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0415', '415', 'DEMO-JK-01-02-0415-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.1, 4661.3, 'Residential',
-    34.124991, 74.832021, ST_GeomFromText('POLYGON((74.832005 34.124852, 74.832117 34.124922, 74.832062 34.124982, 74.83211 34.125012, 74.831995 34.125138, 74.831835 34.125038, 74.832005 34.124852))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 087", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 087", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1086", "khata_no": "DEMO-KT-2086", "mutation_history": [{"mutation_no": "DEMO-MUT-3086", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 6634541, "stamp_duty": 331727, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2100000, "cersai_id": "DEMO-CERSAI-4086"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5086", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0416', '416', 'DEMO-JK-01-02-0416-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 4.0, 6526.9, 'Commercial',
-    34.12463, 74.83407, ST_GeomFromText('POLYGON((74.83414 34.124489, 74.834254 34.124618, 74.83402 34.124794, 74.833866 34.124619, 74.83414 34.124489))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 088", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 088", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1087", "khata_no": "DEMO-KT-2087", "mutation_history": [{"mutation_no": "DEMO-MUT-3087", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 9589568, "stamp_duty": 479478, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1087", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-07-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5087", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0417', '417', 'DEMO-JK-01-02-0417-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.3, 4974.1, 'Mixed Use',
-    34.124646, 74.836747, ST_GeomFromText('POLYGON((74.836916 34.124609, 74.836778 34.124741, 74.836707 34.124739, 74.836584 34.124651, 74.836752 34.124491, 74.836916 34.124609))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 089", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 089", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1088", "khata_no": "DEMO-KT-2088", "mutation_history": [{"mutation_no": "DEMO-MUT-3088", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 7536515, "stamp_duty": 376826, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5088", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0418', '418', 'DEMO-JK-01-02-0418-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.6, 5610.8, 'Agricultural',
-    34.124562, 74.83922, ST_GeomFromText('POLYGON((74.839315 34.12445, 74.839343 34.12452, 74.839331 34.124684, 74.839118 34.124678, 74.839095 34.124574, 74.839116 34.124468, 74.839315 34.12445))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 090", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 090", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1089", "khata_no": "DEMO-KT-2089", "mutation_history": [{"mutation_no": "DEMO-MUT-3089", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 8758825, "stamp_duty": 437941, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2550000, "cersai_id": "DEMO-CERSAI-4089"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5089", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0419', '419', 'DEMO-JK-01-02-0419-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.3, 3618.7, 'Residential',
-    34.125327, 74.832007, ST_GeomFromText('POLYGON((74.831953 34.125194, 74.83212 34.125231, 74.832084 34.125344, 74.832021 34.12533, 74.831984 34.125442, 74.83188 34.125419, 74.831953 34.125194))', 4326),
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "52", "mutation_history": [{"mutation_no": "MUT-SB-1075", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 60283678, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 60283678, "stamp_duty": 3014184, "stamp_duty_rate": "5% (Demo)", "registration_fee": 723404, "effective_year": "2025-26", "government_rate_inr": 60283678, "market_estimate_inr": 77163108, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0405', '405', 'DEMO-JK-01-02-0405-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.6, 706.0, 'Residential',
+    34.12492, 74.832174, ST_GeomFromText('POLYGON((74.832135 34.124961, 74.832213 34.124961, 74.832213 34.124879, 74.832135 34.124879, 74.832135 34.124961))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 091", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 091", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1090", "khata_no": "DEMO-KT-2090", "mutation_history": [{"mutation_no": "DEMO-MUT-3090", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 3322957, "stamp_duty": 166148, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5090", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0420', '420', 'DEMO-JK-01-02-0420-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.2, 5227.3, 'Residential',
-    34.125053, 74.834092, ST_GeomFromText('POLYGON((74.834162 34.124915, 74.834228 34.125018, 74.834137 34.125058, 74.834166 34.125102, 74.833978 34.125185, 74.833884 34.125038, 74.834162 34.124915))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 092", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 092", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1091", "khata_no": "DEMO-KT-2091", "mutation_history": [{"mutation_no": "DEMO-MUT-3091", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 5040096, "stamp_duty": 252005, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1091", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-02-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5091", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0421', '421', 'DEMO-JK-01-02-0421-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.6, 4518.5, 'Residential',
-    34.12505, 74.83675, ST_GeomFromText('POLYGON((74.836884 34.125003, 74.836821 34.125155, 74.836605 34.125123, 74.83669 34.124918, 74.836884 34.125003))', 4326),
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "53", "mutation_history": [{"mutation_no": "MUT-SB-1076", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11154805, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 11154805, "stamp_duty": 557740, "stamp_duty_rate": "5% (Demo)", "registration_fee": 133858, "effective_year": "2025-26", "government_rate_inr": 11154805, "market_estimate_inr": 14278150, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0406', '406', 'DEMO-JK-01-02-0406-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.22, 4.3, 1182.0, 'Residential',
+    34.124974, 74.832302, ST_GeomFromText('POLYGON((74.8322 34.125004, 74.832344 34.125004, 74.832384 34.124978, 74.832384 34.124943, 74.8322 34.124943, 74.8322 34.125004))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "53", "mutation_history": [{"mutation_no": "MUT-SB-1077", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 16062915, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 16062915, "stamp_duty": 803146, "stamp_duty_rate": "5% (Demo)", "registration_fee": 192755, "effective_year": "2025-26", "government_rate_inr": 16062915, "market_estimate_inr": 20560531, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-477", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Farooq Ahmad Dar (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0407', '407', 'DEMO-JK-01-02-0407-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.35, 7.1, 1927.0, 'Residential',
+    34.124883, 74.833021, ST_GeomFromText('POLYGON((74.832947 34.124941, 74.833102 34.124938, 74.833095 34.124824, 74.832939 34.124831, 74.832947 34.124941))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "53", "mutation_history": [{"mutation_no": "MUT-SB-1078", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 26899402, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 26899402, "stamp_duty": 1344970, "stamp_duty_rate": "5% (Demo)", "registration_fee": 322793, "effective_year": "2025-26", "government_rate_inr": 26899402, "market_estimate_inr": 34431235, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0408', '408', 'DEMO-JK-01-02-0408-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.17, 3.3, 901.0, 'Residential',
+    34.12487, 74.833141, ST_GeomFromText('POLYGON((74.833079 34.124912, 74.833185 34.124912, 74.833185 34.124856, 74.833175 34.124834, 74.833079 34.124834, 74.833079 34.124912))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 093", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 093", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1092", "khata_no": "DEMO-KT-2092", "mutation_history": [{"mutation_no": "DEMO-MUT-3092", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 4564141, "stamp_duty": 228207, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4092"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5092", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0422', '422', 'DEMO-JK-01-02-0422-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.8, 5672.3, 'Commercial',
-    34.124965, 74.839231, ST_GeomFromText('POLYGON((74.839357 34.124856, 74.839335 34.125029, 74.839269 34.12506, 74.839083 34.125044, 74.839109 34.124834, 74.839357 34.124856))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 094", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 094", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1093", "khata_no": "DEMO-KT-2093", "mutation_history": [{"mutation_no": "DEMO-MUT-3093", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 5990032, "stamp_duty": 299502, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5093", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0423', '423', 'DEMO-JK-01-02-0423-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.2, 6327.2, 'Mixed Use',
-    34.125652, 74.831991, ST_GeomFromText('POLYGON((74.831914 34.125523, 74.832003 34.125529, 74.832177 34.125609, 74.83207 34.125787, 74.831945 34.125762, 74.831839 34.1257, 74.831914 34.125523))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 095", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 095", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1094", "khata_no": "DEMO-KT-2094", "mutation_history": [{"mutation_no": "DEMO-MUT-3094", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 6972121, "stamp_duty": 348606, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5094", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0424', '424', 'DEMO-JK-01-02-0424-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.9, 4065.2, 'Agricultural',
-    34.125476, 74.834073, ST_GeomFromText('POLYGON((74.834188 34.125358, 74.834248 34.125493, 74.8341 34.125538, 74.834077 34.125487, 74.83393 34.125531, 74.833892 34.125447, 74.834188 34.125358))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 096", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 096", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1095", "khata_no": "DEMO-KT-2095", "mutation_history": [{"mutation_no": "DEMO-MUT-3095", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 4666208, "stamp_duty": 233310, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1095", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-06-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4095"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5095", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0425', '425', 'DEMO-JK-01-02-0425-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3582.4, 'Residential',
-    34.125484, 74.836755, ST_GeomFromText('POLYGON((74.836892 34.125437, 74.836828 34.12554, 74.836766 34.125514, 74.836738 34.125558, 74.836608 34.125503, 74.836699 34.125355, 74.836892 34.125437))', 4326),
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "21", "khata_no": "53", "mutation_history": [{"mutation_no": "MUT-SB-1079", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 12903776, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 12903776, "stamp_duty": 645189, "stamp_duty_rate": "5% (Demo)", "registration_fee": 154845, "effective_year": "2025-26", "government_rate_inr": 12903776, "market_estimate_inr": 16516833, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90079", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0409', '409', 'DEMO-JK-01-02-0409-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.5, 1756.0, 'Residential',
+    34.124984, 74.833988, ST_GeomFromText('POLYGON((74.833917 34.12504, 74.834059 34.12504, 74.834059 34.124928, 74.833917 34.124928, 74.833917 34.12504))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 097", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 097", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1096", "khata_no": "DEMO-KT-2096", "mutation_history": [{"mutation_no": "DEMO-MUT-3096", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 4276511, "stamp_duty": 213826, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5096", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0426', '426', 'DEMO-JK-01-02-0426-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5206.6, 'Residential',
-    34.12533, 74.83922, ST_GeomFromText('POLYGON((74.839365 34.125277, 74.839318 34.125433, 74.839067 34.12541, 74.839131 34.1252, 74.839365 34.125277))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 098", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 098", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1097", "khata_no": "DEMO-KT-2097", "mutation_history": [{"mutation_no": "DEMO-MUT-3097", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 6454463, "stamp_duty": 322723, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5097", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0427', '427', 'DEMO-JK-01-02-0427-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.6, 6428.7, 'Residential',
-    34.125982, 74.832022, ST_GeomFromText('POLYGON((74.831963 34.125831, 74.832144 34.12592, 74.832146 34.125989, 74.832037 34.126139, 74.831818 34.126031, 74.831963 34.125831))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 099", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 099", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1098", "khata_no": "DEMO-KT-2098", "mutation_history": [{"mutation_no": "DEMO-MUT-3098", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 8264628, "stamp_duty": 413231, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4098"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5098", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0428', '428', 'DEMO-JK-01-02-0428-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.0, 7070.1, 'Commercial',
-    34.125884, 74.834064, ST_GeomFromText('POLYGON((74.834069 34.125733, 74.834149 34.125768, 74.834264 34.125903, 74.834056 34.126042, 74.833953 34.125977, 74.833891 34.125882, 74.834069 34.125733))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 100", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 100", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1099", "khata_no": "DEMO-KT-2099", "mutation_history": [{"mutation_no": "DEMO-MUT-3099", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 9413815, "stamp_duty": 470691, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1099", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-01-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5099", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0429', '429', 'DEMO-JK-01-02-0429-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 10.2, 2788.7, 'Mixed Use',
-    34.125895, 74.836746, ST_GeomFromText('POLYGON((74.836889 34.125883, 74.836789 34.126, 74.8367 34.125949, 74.836738 34.125905, 74.836649 34.125853, 74.836711 34.12578, 74.836889 34.125883))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 101", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 101", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1100", "khata_no": "DEMO-KT-2100", "mutation_history": [{"mutation_no": "DEMO-MUT-3100", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 3841185, "stamp_duty": 192059, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5100", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0430', '430', 'DEMO-JK-01-02-0430-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 15.2, 4133.0, 'Agricultural',
-    34.126308, 74.832018, ST_GeomFromText('POLYGON((74.831954 34.126188, 74.832084 34.126232, 74.832054 34.126294, 74.832109 34.126313, 74.832046 34.126442, 74.83186 34.12638, 74.831954 34.126188))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 102", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 102", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1101", "khata_no": "DEMO-KT-2101", "mutation_history": [{"mutation_no": "DEMO-MUT-3101", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 5882599, "stamp_duty": 294130, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4101"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5101", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0431', '431', 'DEMO-JK-01-02-0431-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 1.6, 5876.6, 'Residential',
-    34.12631, 74.83407, ST_GeomFromText('POLYGON((74.834167 34.126193, 74.834236 34.126343, 74.833985 34.126453, 74.833891 34.126251, 74.834167 34.126193))', 4326),
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "54", "mutation_history": [{"mutation_no": "MUT-SB-1080", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 25801483, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 25801483, "stamp_duty": 1290074, "stamp_duty_rate": "5% (Demo)", "registration_fee": 309618, "effective_year": "2025-26", "government_rate_inr": 25801483, "market_estimate_inr": 33025898, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0410', '410', 'DEMO-JK-01-02-0410-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.09, 1.9, 510.0, 'Residential',
+    34.124911, 74.834017, ST_GeomFromText('POLYGON((74.833979 34.124941, 74.834032 34.124941, 74.834047 34.124931, 74.834047 34.124872, 74.833979 34.124872, 74.833979 34.124941))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "54", "mutation_history": [{"mutation_no": "MUT-SB-1081", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 7677951, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 7677951, "stamp_duty": 383898, "stamp_duty_rate": "5% (Demo)", "registration_fee": 92135, "effective_year": "2025-26", "government_rate_inr": 7677951, "market_estimate_inr": 9827777, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0411', '411', 'DEMO-JK-01-02-0411-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.81, 16.1, 4392.0, 'Residential',
+    34.124909, 74.834172, ST_GeomFromText('POLYGON((74.83408 34.125014, 74.834271 34.12501, 74.834265 34.124802, 74.834072 34.124808, 74.83408 34.125014))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 103", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 103", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1102", "khata_no": "DEMO-KT-2102", "mutation_history": [{"mutation_no": "DEMO-MUT-3102", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 8634123, "stamp_duty": 431706, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5102", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0432', '432', 'DEMO-JK-01-02-0432-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.3, 7165.5, 'Residential',
-    34.126328, 74.836757, ST_GeomFromText('POLYGON((74.836947 34.126272, 74.836855 34.126429, 74.836765 34.126433, 74.836553 34.126348, 74.836664 34.126158, 74.836947 34.126272))', 4326),
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "54", "mutation_history": [{"mutation_no": "MUT-SB-1082", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 67761327, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 67761327, "stamp_duty": 3388066, "stamp_duty_rate": "5% (Demo)", "registration_fee": 813136, "effective_year": "2025-26", "government_rate_inr": 67761327, "market_estimate_inr": 86734499, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0412', '412', 'DEMO-JK-01-02-0412-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.22, 4.4, 1201.0, 'Residential',
+    34.124997, 74.834397, ST_GeomFromText('POLYGON((74.83433 34.125049, 74.834446 34.125049, 74.834446 34.12498, 74.834435 34.124954, 74.83433 34.124954, 74.83433 34.125049))', 4326),
     'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 104", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 104", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1103", "khata_no": "DEMO-KT-2103", "mutation_history": [{"mutation_no": "DEMO-MUT-3103", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 10856818, "stamp_duty": 542841, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1103", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-05-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5103", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0433', '433', 'DEMO-JK-01-02-0433-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.9, 4879.0, 'Residential',
-    34.12664, 74.831993, ST_GeomFromText('POLYGON((74.831956 34.126513, 74.832033 34.126547, 74.832166 34.126669, 74.83203 34.126773, 74.831926 34.126711, 74.831848 34.126626, 74.831956 34.126513))', 4326),
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "54", "mutation_history": [{"mutation_no": "MUT-SB-1083", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 18969544, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 18969544, "stamp_duty": 948477, "stamp_duty_rate": "5% (Demo)", "registration_fee": 227635, "effective_year": "2025-26", "government_rate_inr": 18969544, "market_estimate_inr": 24281016, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-483", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Mohammad Altaf Sheikh (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0413', '413', 'DEMO-JK-01-02-0413-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.37, 7.5, 2040.0, 'Residential',
+    34.124888, 74.834457, ST_GeomFromText('POLYGON((74.834382 34.12495, 74.834531 34.12495, 74.834531 34.124826, 74.834382 34.124826, 74.834382 34.12495))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 105", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 105", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1104", "khata_no": "DEMO-KT-2104", "mutation_history": [{"mutation_no": "DEMO-MUT-3104", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 7616437, "stamp_duty": 380822, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4104"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5104", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0434', '434', 'DEMO-JK-01-02-0434-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.8, 3214.6, 'Commercial',
-    34.126735, 74.834074, ST_GeomFromText('POLYGON((74.834135 34.126616, 74.834221 34.126741, 74.834113 34.126792, 74.834081 34.126746, 74.833973 34.126797, 74.833919 34.126719, 74.834135 34.126616))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 106", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 106", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1105", "khata_no": "DEMO-KT-2105", "mutation_history": [{"mutation_no": "DEMO-MUT-3105", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 2951882, "stamp_duty": 147594, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5105", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0435', '435', 'DEMO-JK-01-02-0435-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.1, 4666.3, 'Mixed Use',
-    34.126745, 74.836762, ST_GeomFromText('POLYGON((74.836914 34.126685, 74.836873 34.126796, 74.836785 34.126774, 74.836768 34.126821, 74.836586 34.126775, 74.836644 34.126616, 74.836914 34.126685))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 107", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 107", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1106", "khata_no": "DEMO-KT-2106", "mutation_history": [{"mutation_no": "DEMO-MUT-3106", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 4499187, "stamp_duty": 224959, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5106", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0436', '436', 'DEMO-JK-01-02-0436-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 4.1, 6550.0, 'Agricultural',
-    34.12647, 74.83922, ST_GeomFromText('POLYGON((74.839384 34.126399, 74.83937 34.126559, 74.839054 34.126569, 74.839072 34.126353, 74.839384 34.126399))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 108", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 108", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1107", "khata_no": "DEMO-KT-2107", "mutation_history": [{"mutation_no": "DEMO-MUT-3107", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 6616162, "stamp_duty": 330808, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1107", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-09-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4107"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5107", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0437', '437', 'DEMO-JK-01-02-0437-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.2, 4947.7, 'Residential',
-    34.126972, 74.832019, ST_GeomFromText('POLYGON((74.83192 34.126853, 74.832116 34.126916, 74.832138 34.126971, 74.83208 34.127097, 74.831842 34.127021, 74.83192 34.126853))', 4326),
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "55", "mutation_history": [{"mutation_no": "MUT-SB-1084", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 27726100, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 27726100, "stamp_duty": 1386305, "stamp_duty_rate": "5% (Demo)", "registration_fee": 332713, "effective_year": "2025-26", "government_rate_inr": 27726100, "market_estimate_inr": 35489408, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90084", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0414', '414', 'DEMO-JK-01-02-0414-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.15, 2.9, 794.0, 'Residential',
+    34.125, 74.834574, ST_GeomFromText('POLYGON((74.834501 34.125027, 74.834603 34.125027, 74.834632 34.125008, 74.834632 34.12497, 74.834501 34.12497, 74.834501 34.125027))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 109", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 109", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1108", "khata_no": "DEMO-KT-2108", "mutation_history": [{"mutation_no": "DEMO-MUT-3108", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 5224844, "stamp_duty": 261242, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5108", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0438', '438', 'DEMO-JK-01-02-0438-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.5, 5586.8, 'Residential',
-    34.127143, 74.834067, ST_GeomFromText('POLYGON((74.83411 34.127011, 74.834165 34.127068, 74.834221 34.127225, 74.834019 34.12728, 74.833954 34.127189, 74.83393 34.127084, 74.83411 34.127011))', 4326),
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "55", "mutation_history": [{"mutation_no": "MUT-SB-1085", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11083716, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 11083716, "stamp_duty": 554186, "stamp_duty_rate": "5% (Demo)", "registration_fee": 133005, "effective_year": "2025-26", "government_rate_inr": 11083716, "market_estimate_inr": 14187156, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0415', '415', 'DEMO-JK-01-02-0415-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.5, 961.0, 'Residential',
+    34.124955, 74.834993, ST_GeomFromText('POLYGON((74.834934 34.124991, 74.83506 34.124987, 74.835053 34.124917, 74.834926 34.124924, 74.834934 34.124991))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "55", "mutation_history": [{"mutation_no": "MUT-SB-1086", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13771718, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 13771718, "stamp_duty": 688586, "stamp_duty_rate": "5% (Demo)", "registration_fee": 165261, "effective_year": "2025-26", "government_rate_inr": 13771718, "market_estimate_inr": 17627799, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0416', '416', 'DEMO-JK-01-02-0416-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.41, 8.1, 2217.0, 'Residential',
+    34.124875, 74.835084, ST_GeomFromText('POLYGON((74.834993 34.124946, 74.835149 34.124946, 74.835149 34.124852, 74.835138 34.124816, 74.834993 34.124816, 74.834993 34.124946))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "22", "khata_no": "55", "mutation_history": [{"mutation_no": "MUT-SB-1087", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32579886, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 32579886, "stamp_duty": 1628994, "stamp_duty_rate": "5% (Demo)", "registration_fee": 390959, "effective_year": "2025-26", "government_rate_inr": 32579886, "market_estimate_inr": 41702254, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0417', '417', 'DEMO-JK-01-02-0417-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.37, 7.3, 1994.0, 'Residential',
+    34.124993, 74.8351, ST_GeomFromText('POLYGON((74.835026 34.125054, 74.835174 34.125054, 74.835174 34.124932, 74.835026 34.124932, 74.835026 34.125054))', 4326),
+    'NOT_VERIFIED', 'UNKNOWN',
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "56", "mutation_history": [{"mutation_no": "MUT-SB-1088", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 30025406, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 30025406, "stamp_duty": 1501270, "stamp_duty_rate": "5% (Demo)", "registration_fee": 360305, "effective_year": "2025-26", "government_rate_inr": 30025406, "market_estimate_inr": 38432520, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0418', '418', 'DEMO-JK-01-02-0418-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.17, 3.4, 921.0, 'Residential',
+    34.124845, 74.830737, ST_GeomFromText('POLYGON((74.830677 34.12488, 74.830761 34.12488, 74.830785 34.124864, 74.830785 34.124801, 74.830677 34.124801, 74.830677 34.12488))', 4326),
+    'RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "56", "mutation_history": [{"mutation_no": "MUT-SB-1089", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14206430, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 14206430, "stamp_duty": 710322, "stamp_duty_rate": "5% (Demo)", "registration_fee": 170477, "effective_year": "2025-26", "government_rate_inr": 14206430, "market_estimate_inr": 18184230, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-489", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Suhail Ahmad Baba (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90089", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0419', '419', 'DEMO-JK-01-02-0419-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.15, 3.0, 826.0, 'Residential',
+    34.124717, 74.830899, ST_GeomFromText('POLYGON((74.830865 34.124768, 74.83094 34.124764, 74.830933 34.124664, 74.830857 34.124671, 74.830865 34.124768))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "56", "mutation_history": [{"mutation_no": "MUT-SB-1090", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13041831, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 13041831, "stamp_duty": 652092, "stamp_duty_rate": "5% (Demo)", "registration_fee": 156502, "effective_year": "2025-26", "government_rate_inr": 13041831, "market_estimate_inr": 16693544, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0420', '420', 'DEMO-JK-01-02-0420-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.1, 855.0, 'Residential',
+    34.124788, 74.831065, ST_GeomFromText('POLYGON((74.831003 34.124828, 74.831109 34.124828, 74.831109 34.124774, 74.831099 34.124754, 74.831003 34.124754, 74.831003 34.124828))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "56", "mutation_history": [{"mutation_no": "MUT-SB-1091", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11620614, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 11620614, "stamp_duty": 581031, "stamp_duty_rate": "5% (Demo)", "registration_fee": 139447, "effective_year": "2025-26", "government_rate_inr": 11620614, "market_estimate_inr": 14874386, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0421', '421', 'DEMO-JK-01-02-0421-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.38, 7.6, 7517.0, 'Residential',
+    34.124764, 74.831791, ST_GeomFromText('POLYGON((74.831664 34.124898, 74.831918 34.124898, 74.831918 34.12463, 74.831664 34.12463, 74.831664 34.124898))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "57", "mutation_history": [{"mutation_no": "MUT-SB-1092", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 66913538, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 66913538, "stamp_duty": 3345677, "stamp_duty_rate": "5% (Demo)", "registration_fee": 802962, "effective_year": "2025-26", "government_rate_inr": 66913538, "market_estimate_inr": 85649329, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0422', '422', 'DEMO-JK-01-02-0422-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.17, 3.4, 929.0, 'Residential',
+    34.124711, 74.832063, ST_GeomFromText('POLYGON((74.832011 34.12475, 74.832084 34.12475, 74.832105 34.124737, 74.832105 34.124659, 74.832011 34.124659, 74.832011 34.12475))', 4326),
     'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 110", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 110", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1109", "khata_no": "DEMO-KT-2109", "mutation_history": [{"mutation_no": "DEMO-MUT-3109", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 6156253, "stamp_duty": 307813, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5109", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0439', '439', 'DEMO-JK-01-02-0439-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.3, 3630.6, 'Residential',
-    34.127155, 74.836747, ST_GeomFromText('POLYGON((74.836915 34.127134, 74.836841 34.127264, 74.836713 34.127215, 74.836741 34.127166, 74.836613 34.127117, 74.836659 34.127036, 74.836915 34.127134))', 4326),
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "57", "mutation_history": [{"mutation_no": "MUT-SB-1093", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13314558, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 13314558, "stamp_duty": 665728, "stamp_duty_rate": "5% (Demo)", "registration_fee": 159775, "effective_year": "2025-26", "government_rate_inr": 13314558, "market_estimate_inr": 17042634, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0423', '423', 'DEMO-JK-01-02-0423-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.41, 8.2, 2236.0, 'Residential',
+    34.124822, 74.832589, ST_GeomFromText('POLYGON((74.832497 34.124876, 74.832689 34.124873, 74.832682 34.124766, 74.832489 34.124773, 74.832497 34.124876))', 4326),
     'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 111", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 111", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1110", "khata_no": "DEMO-KT-2110", "mutation_history": [{"mutation_no": "DEMO-MUT-3110", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 4167355, "stamp_duty": 208368, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1200000, "cersai_id": "DEMO-CERSAI-4110"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5110", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0440', '440', 'DEMO-JK-01-02-0440-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5213.2, 'Commercial',
-    34.126864, 74.839235, ST_GeomFromText('POLYGON((74.839395 34.126796, 74.839366 34.12691, 74.839266 34.126892, 74.839253 34.126941, 74.839045 34.126904, 74.839087 34.126742, 74.839395 34.126796))', 4326),
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "57", "mutation_history": [{"mutation_no": "MUT-SB-1094", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32851702, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 32851702, "stamp_duty": 1642585, "stamp_duty_rate": "5% (Demo)", "registration_fee": 394220, "effective_year": "2025-26", "government_rate_inr": 32851702, "market_estimate_inr": 42050179, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90094", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0424', '424', 'DEMO-JK-01-02-0424-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.6, 984.0, 'Residential',
+    34.124766, 74.832905, ST_GeomFromText('POLYGON((74.832844 34.124813, 74.832949 34.124813, 74.832949 34.124751, 74.832939 34.124727, 74.832844 34.124727, 74.832844 34.124813))', 4326),
     'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 112", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 112", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1111", "khata_no": "DEMO-KT-2111", "mutation_history": [{"mutation_no": "DEMO-MUT-3111", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 6223287, "stamp_duty": 311164, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1111", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-04-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5111", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0441', '441', 'DEMO-JK-01-02-0441-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.5, 4504.8, 'Mixed Use',
-    34.127305, 74.832, ST_GeomFromText('POLYGON((74.831968 34.127188, 74.832137 34.127265, 74.832062 34.127436, 74.831833 34.127331, 74.831968 34.127188))', 4326),
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "23", "khata_no": "57", "mutation_history": [{"mutation_no": "MUT-SB-1095", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14816092, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 14816092, "stamp_duty": 740805, "stamp_duty_rate": "5% (Demo)", "registration_fee": 177793, "effective_year": "2025-26", "government_rate_inr": 14816092, "market_estimate_inr": 18964598, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-495", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Showkat Ahmad Zargar (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0425', '425', 'DEMO-JK-01-02-0425-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.1, 1122.0, 'Residential',
+    34.124781, 74.833357, ST_GeomFromText('POLYGON((74.833309 34.124835, 74.833404 34.124835, 74.833404 34.124728, 74.833309 34.124728, 74.833309 34.124835))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "58", "mutation_history": [{"mutation_no": "MUT-SB-1096", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17315414, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 17315414, "stamp_duty": 865771, "stamp_duty_rate": "5% (Demo)", "registration_fee": 207785, "effective_year": "2025-26", "government_rate_inr": 17315414, "market_estimate_inr": 22163730, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0426', '426', 'DEMO-JK-01-02-0426-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.28, 5.5, 1508.0, 'Residential',
+    34.124734, 74.833446, ST_GeomFromText('POLYGON((74.833358 34.124774, 74.833481 34.124774, 74.833516 34.124751, 74.833516 34.124685, 74.833358 34.124685, 74.833358 34.124774))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "58", "mutation_history": [{"mutation_no": "MUT-SB-1097", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 23822086, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 23822086, "stamp_duty": 1191104, "stamp_duty_rate": "5% (Demo)", "registration_fee": 285865, "effective_year": "2025-26", "government_rate_inr": 23822086, "market_estimate_inr": 30492270, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0427', '427', 'DEMO-JK-01-02-0427-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.28, 5.5, 6954.0, 'Residential',
+    34.124711, 74.834146, ST_GeomFromText('POLYGON((74.834 34.124818, 74.834298 34.124814, 74.834292 34.124602, 74.833992 34.124609, 74.834 34.124818))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 113", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 113", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1112", "khata_no": "DEMO-KT-2112", "mutation_history": [{"mutation_no": "DEMO-MUT-3112", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 5584463, "stamp_duty": 279223, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5112", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0442', '442', 'DEMO-JK-01-02-0442-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.9, 5684.2, 'Agricultural',
-    34.127573, 74.83409, ST_GeomFromText('POLYGON((74.834071 34.127422, 74.834217 34.127548, 74.834203 34.12761, 74.834069 34.127718, 74.833892 34.127566, 74.834071 34.127422))', 4326),
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "58", "mutation_history": [{"mutation_no": "MUT-SB-1098", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 57508342, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 57508342, "stamp_duty": 2875417, "stamp_duty_rate": "5% (Demo)", "registration_fee": 690100, "effective_year": "2025-26", "government_rate_inr": 57508342, "market_estimate_inr": 73610678, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0428', '428', 'DEMO-JK-01-02-0428-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.7, 722.0, 'Residential',
+    34.124796, 74.834327, ST_GeomFromText('POLYGON((74.83429 34.124852, 74.834355 34.124852, 74.834355 34.124778, 74.834344 34.124749, 74.83429 34.124749, 74.83429 34.124852))', 4326),
     'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 114", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 114", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1113", "khata_no": "DEMO-KT-2113", "mutation_history": [{"mutation_no": "DEMO-MUT-3113", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 7307511, "stamp_duty": 365376, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1650000, "cersai_id": "DEMO-CERSAI-4113"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5113", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0443', '443', 'DEMO-JK-01-02-0443-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.2, 6318.9, 'Residential',
-    34.127563, 74.836755, ST_GeomFromText('POLYGON((74.836921 34.127523, 74.836899 34.127594, 74.836774 34.127722, 74.83658 34.127604, 74.836632 34.127506, 74.836724 34.127431, 74.836921 34.127523))', 4326),
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "58", "mutation_history": [{"mutation_no": "MUT-SB-1099", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10072824, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 10072824, "stamp_duty": 503641, "stamp_duty_rate": "5% (Demo)", "registration_fee": 120874, "effective_year": "2025-26", "government_rate_inr": 10072824, "market_estimate_inr": 12893215, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90099", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0429', '429', 'DEMO-JK-01-02-0429-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.19, 3.8, 1043.0, 'Residential',
+    34.124729, 74.834435, ST_GeomFromText('POLYGON((74.834383 34.124774, 74.834488 34.124774, 74.834488 34.124684, 74.834383 34.124684, 74.834383 34.124774))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 115", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 115", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1114", "khata_no": "DEMO-KT-2114", "mutation_history": [{"mutation_no": "DEMO-MUT-3114", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 8413595, "stamp_duty": 420680, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5114", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0444', '444', 'DEMO-JK-01-02-0444-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.9, 4048.0, 'Residential',
-    34.127236, 74.839221, ST_GeomFromText('POLYGON((74.83936 34.127137, 74.83939 34.127278, 74.839235 34.127301, 74.839224 34.127248, 74.839069 34.12727, 74.83905 34.127182, 74.83936 34.127137))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 116", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 116", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1115", "khata_no": "DEMO-KT-2115", "mutation_history": [{"mutation_no": "DEMO-MUT-3115", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 5575758, "stamp_duty": 278788, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1115", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-08-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5115", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0445', '445', 'DEMO-JK-01-02-0445-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3594.6, 'Residential',
-    34.127633, 74.832018, ST_GeomFromText('POLYGON((74.831985 34.127513, 74.832097 34.127583, 74.832055 34.12763, 74.832103 34.12766, 74.832015 34.127757, 74.831855 34.127657, 74.831985 34.127513))', 4326),
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "59", "mutation_history": [{"mutation_no": "MUT-SB-1100", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14948046, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 14948046, "stamp_duty": 747402, "stamp_duty_rate": "5% (Demo)", "registration_fee": 179377, "effective_year": "2025-26", "government_rate_inr": 14948046, "market_estimate_inr": 19133499, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0430', '430', 'DEMO-JK-01-02-0430-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.43, 8.6, 2350.0, 'Residential',
+    34.12482, 74.834541, ST_GeomFromText('POLYGON((74.834421 34.124867, 74.83459 34.124867, 74.834637 34.124835, 74.834637 34.124765, 74.834421 34.124765, 74.834421 34.124867))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "59", "mutation_history": [{"mutation_no": "MUT-SB-1101", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 34523059, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 34523059, "stamp_duty": 1726153, "stamp_duty_rate": "5% (Demo)", "registration_fee": 414277, "effective_year": "2025-26", "government_rate_inr": 34523059, "market_estimate_inr": 44189516, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-501", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Bashir Ahmad Mir (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0431', '431', 'DEMO-JK-01-02-0431-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.44, 8.7, 2373.0, 'Residential',
+    34.124657, 74.83006, ST_GeomFromText('POLYGON((74.829991 34.124733, 74.830135 34.124729, 74.830129 34.12458, 74.829983 34.124586, 74.829991 34.124733))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "59", "mutation_history": [{"mutation_no": "MUT-SB-1102", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 35743898, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 35743898, "stamp_duty": 1787195, "stamp_duty_rate": "5% (Demo)", "registration_fee": 428927, "effective_year": "2025-26", "government_rate_inr": 35743898, "market_estimate_inr": 45752189, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0432', '432', 'DEMO-JK-01-02-0432-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.2, 858.0, 'Residential',
+    34.124552, 74.8302, ST_GeomFromText('POLYGON((74.830145 34.124597, 74.83024 34.124597, 74.83024 34.124537, 74.83023 34.124514, 74.830145 34.124514, 74.830145 34.124597))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "24", "khata_no": "59", "mutation_history": [{"mutation_no": "MUT-SB-1103", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13235724, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 13235724, "stamp_duty": 661786, "stamp_duty_rate": "5% (Demo)", "registration_fee": 158829, "effective_year": "2025-26", "government_rate_inr": 13235724, "market_estimate_inr": 16941727, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0433', '433', 'DEMO-JK-01-02-0433-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.36, 7.1, 1934.0, 'Residential',
+    34.124539, 74.830402, ST_GeomFromText('POLYGON((74.830339 34.124609, 74.830465 34.124609, 74.830465 34.12447, 74.830339 34.12447, 74.830339 34.124609))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 117", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 117", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1116", "khata_no": "DEMO-KT-2116", "mutation_history": [{"mutation_no": "DEMO-MUT-3116", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 5116281, "stamp_duty": 255814, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2100000, "cersai_id": "DEMO-CERSAI-4116"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5116", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0446', '446', 'DEMO-JK-01-02-0446-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5199.0, 'Commercial',
-    34.12799, 74.83407, ST_GeomFromText('POLYGON((74.834114 34.127864, 74.834228 34.127994, 74.834046 34.128138, 74.833892 34.127963, 74.834114 34.127864))', 4326),
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "60", "mutation_history": [{"mutation_no": "MUT-SB-1104", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 30544721, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 30544721, "stamp_duty": 1527236, "stamp_duty_rate": "5% (Demo)", "registration_fee": 366537, "effective_year": "2025-26", "government_rate_inr": 30544721, "market_estimate_inr": 39097243, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90104", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0434', '434', 'DEMO-JK-01-02-0434-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.63, 12.7, 3457.0, 'Residential',
+    34.124572, 74.830749, ST_GeomFromText('POLYGON((74.830643 34.124644, 74.830792 34.124644, 74.830834 34.124616, 74.830834 34.124477, 74.830643 34.124477, 74.830643 34.124644))', 4326),
     'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 118", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 118", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1117", "khata_no": "DEMO-KT-2117", "mutation_history": [{"mutation_no": "DEMO-MUT-3117", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 7638567, "stamp_duty": 381928, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5117", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0447', '447', 'DEMO-JK-01-02-0447-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.6, 6415.1, 'Mixed Use',
-    34.128008, 74.83675, ST_GeomFromText('POLYGON((74.83694 34.127987, 74.836802 34.128118, 74.83672 34.128108, 74.83656 34.127993, 74.836727 34.127834, 74.83694 34.127987))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 119", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 119", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1118", "khata_no": "DEMO-KT-2118", "mutation_history": [{"mutation_no": "DEMO-MUT-3118", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 9719848, "stamp_duty": 485992, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5118", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0448', '448', 'DEMO-JK-01-02-0448-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 5.9, 7042.2, 'Agricultural',
-    34.127603, 74.83922, ST_GeomFromText('POLYGON((74.839341 34.12749, 74.839375 34.127559, 74.839359 34.127723, 74.839091 34.127719, 74.839063 34.127615, 74.83909 34.127509, 74.839341 34.12749))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 120", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 120", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1119", "khata_no": "DEMO-KT-2119", "mutation_history": [{"mutation_no": "DEMO-MUT-3119", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 10993333, "stamp_duty": 549667, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1119", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-03-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2550000, "cersai_id": "DEMO-CERSAI-4119"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5119", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0449', '449', 'DEMO-JK-01-02-0449-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 10.3, 2796.9, 'Residential',
-    34.124667, 74.832407, ST_GeomFromText('POLYGON((74.832344 34.12456, 74.832512 34.124597, 74.832484 34.124684, 74.832421 34.12467, 74.832393 34.124756, 74.832288 34.124733, 74.832344 34.12456))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 121", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 121", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1120", "khata_no": "DEMO-KT-2120", "mutation_history": [{"mutation_no": "DEMO-MUT-3120", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 2568320, "stamp_duty": 128416, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5120", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0450', '450', 'DEMO-JK-01-02-0450-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 15.2, 4130.3, 'Residential',
-    34.124214, 74.834629, ST_GeomFromText('POLYGON((74.834673 34.124088, 74.834739 34.124191, 74.834667 34.124222, 74.834696 34.124266, 74.834547 34.124332, 74.834453 34.124185, 74.834673 34.124088))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 122", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 122", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1121", "khata_no": "DEMO-KT-2121", "mutation_history": [{"mutation_no": "DEMO-MUT-3121", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 3982383, "stamp_duty": 199119, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5121", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0451', '451', 'DEMO-JK-01-02-0451-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 1.7, 5898.3, 'Residential',
-    34.12421, 74.83725, ST_GeomFromText('POLYGON((74.837415 34.124172, 74.837352 34.124324, 74.837074 34.124275, 74.837159 34.124069, 74.837415 34.124172))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 123", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 123", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1122", "khata_no": "DEMO-KT-2122", "mutation_history": [{"mutation_no": "DEMO-MUT-3122", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 5957879, "stamp_duty": 297894, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4122"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5122", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0452', '452', 'DEMO-JK-01-02-0452-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.4, 7182.6, 'Commercial',
-    34.124205, 74.839674, ST_GeomFromText('POLYGON((74.83983 34.124099, 74.839808 34.124272, 74.839725 34.124302, 74.83949 34.124281, 74.839517 34.124071, 74.83983 34.124099))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 124", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 124", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1123", "khata_no": "DEMO-KT-2123", "mutation_history": [{"mutation_no": "DEMO-MUT-3123", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 7584931, "stamp_duty": 379247, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1123", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-07-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5123", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0453', '453', 'DEMO-JK-01-02-0453-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.9, 4870.8, 'Mixed Use',
-    34.124992, 74.832391, ST_GeomFromText('POLYGON((74.832304 34.124883, 74.83239 34.124894, 74.832566 34.12497, 74.832481 34.125106, 74.832358 34.125078, 74.832249 34.12502, 74.832304 34.124883))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 125", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 125", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1124", "khata_no": "DEMO-KT-2124", "mutation_history": [{"mutation_no": "DEMO-MUT-3124", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 5367273, "stamp_duty": 268364, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5124", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0454', '454', 'DEMO-JK-01-02-0454-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.8, 3223.3, 'Agricultural',
-    34.124636, 74.834612, ST_GeomFromText('POLYGON((74.834698 34.124527, 74.834757 34.124662, 74.83464 34.124698, 74.834617 34.124647, 74.8345 34.124682, 74.834463 34.124598, 74.834698 34.124527))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 126", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 126", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1125", "khata_no": "DEMO-KT-2125", "mutation_history": [{"mutation_no": "DEMO-MUT-3125", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 3699839, "stamp_duty": 184992, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4125"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5125", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0455', '455', 'DEMO-JK-01-02-0455-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.2, 4670.0, 'Residential',
-    34.124646, 74.837259, ST_GeomFromText('POLYGON((74.837421 34.124609, 74.837357 34.124713, 74.837276 34.124678, 74.837248 34.124723, 74.837079 34.124651, 74.83717 34.124503, 74.837421 34.124609))', 4326),
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "60", "mutation_history": [{"mutation_no": "MUT-SB-1105", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 46984170, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 46984170, "stamp_duty": 2349208, "stamp_duty_rate": "5% (Demo)", "registration_fee": 563810, "effective_year": "2025-26", "government_rate_inr": 46984170, "market_estimate_inr": 60139738, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0435', '435', 'DEMO-JK-01-02-0435-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.7, 1005.0, 'Residential',
+    34.124593, 74.831519, ST_GeomFromText('POLYGON((74.831462 34.124632, 74.831584 34.124629, 74.831577 34.124553, 74.831454 34.12456, 74.831462 34.124632))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 127", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 127", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1126", "khata_no": "DEMO-KT-2126", "mutation_history": [{"mutation_no": "DEMO-MUT-3126", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 5574839, "stamp_duty": 278742, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5126", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0456', '456', 'DEMO-JK-01-02-0456-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 4.0, 6545.7, 'Residential',
-    34.12457, 74.83966, ST_GeomFromText('POLYGON((74.839836 34.124524, 74.839789 34.124679, 74.839476 34.124644, 74.839539 34.124433, 74.839836 34.124524))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 128", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 128", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1127", "khata_no": "DEMO-KT-2127", "mutation_history": [{"mutation_no": "DEMO-MUT-3127", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 8114504, "stamp_duty": 405725, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1127", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-02-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5127", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0457', '457', 'DEMO-JK-01-02-0457-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.1, 4936.6, 'Residential',
-    34.125324, 74.83242, ST_GeomFromText('POLYGON((74.832347 34.125194, 74.832527 34.125283, 74.832537 34.125341, 74.832453 34.125456, 74.832235 34.125348, 74.832347 34.125194))', 4326),
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "60", "mutation_history": [{"mutation_no": "MUT-SB-1106", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14028653, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 14028653, "stamp_duty": 701433, "stamp_duty_rate": "5% (Demo)", "registration_fee": 168344, "effective_year": "2025-26", "government_rate_inr": 14028653, "market_estimate_inr": 17956676, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0436', '436', 'DEMO-JK-01-02-0436-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.25, 5.0, 1354.0, 'Residential',
+    34.124632, 74.832098, ST_GeomFromText('POLYGON((74.832034 34.124693, 74.832145 34.124693, 74.832145 34.124612, 74.832134 34.124581, 74.832034 34.124581, 74.832034 34.124693))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "60", "mutation_history": [{"mutation_no": "MUT-SB-1107", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 19394665, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 19394665, "stamp_duty": 969733, "stamp_duty_rate": "5% (Demo)", "registration_fee": 232736, "effective_year": "2025-26", "government_rate_inr": 19394665, "market_estimate_inr": 24825171, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-507", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Zahoor Ahmad Khan (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0437', '437', 'DEMO-JK-01-02-0437-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.37, 7.5, 2034.0, 'Residential',
+    34.124617, 74.832345, ST_GeomFromText('POLYGON((74.832284 34.124693, 74.832406 34.124693, 74.832406 34.124542, 74.832284 34.124542, 74.832284 34.124693))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "61", "mutation_history": [{"mutation_no": "MUT-SB-1108", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 29886749, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 29886749, "stamp_duty": 1494337, "stamp_duty_rate": "5% (Demo)", "registration_fee": 358641, "effective_year": "2025-26", "government_rate_inr": 29886749, "market_estimate_inr": 38255039, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0438', '438', 'DEMO-JK-01-02-0438-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.1, 2.0, 6000.0, 'Residential',
+    34.124666, 74.832469, ST_GeomFromText('POLYGON((74.832328 34.124761, 74.832526 34.124761, 74.832582 34.124724, 74.832582 34.124543, 74.832328 34.124543, 74.832328 34.124761))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 129", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 129", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1128", "khata_no": "DEMO-KT-2128", "mutation_history": [{"mutation_no": "DEMO-MUT-3128", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 6346410, "stamp_duty": 317320, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4128"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5128", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0458', '458', 'DEMO-JK-01-02-0458-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.6, 5594.8, 'Commercial',
-    34.125044, 74.834604, ST_GeomFromText('POLYGON((74.83459 34.124908, 74.834665 34.124946, 74.834783 34.125078, 74.834616 34.125187, 74.834517 34.125119, 74.834451 34.125027, 74.83459 34.124908))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 130", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 130", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1129", "khata_no": "DEMO-KT-2129", "mutation_history": [{"mutation_no": "DEMO-MUT-3129", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 7449458, "stamp_duty": 372473, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5129", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0459', '459', 'DEMO-JK-01-02-0459-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.4, 3639.2, 'Mixed Use',
-    34.125055, 74.837246, ST_GeomFromText('POLYGON((74.837415 34.125058, 74.837316 34.125176, 74.8372 34.125109, 74.837238 34.125065, 74.837122 34.124998, 74.837184 34.124924, 74.837415 34.125058))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 131", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 131", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1130", "khata_no": "DEMO-KT-2130", "mutation_history": [{"mutation_no": "DEMO-MUT-3130", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 5012672, "stamp_duty": 250634, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5130", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0460', '460', 'DEMO-JK-01-02-0460-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5203.1, 'Agricultural',
-    34.124959, 74.83968, ST_GeomFromText('POLYGON((74.839802 34.12485, 74.839821 34.124965, 74.83972 34.124977, 74.839729 34.125026, 74.839518 34.12505, 74.83949 34.124886, 74.839802 34.12485))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 132", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 132", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1131", "khata_no": "DEMO-KT-2131", "mutation_history": [{"mutation_no": "DEMO-MUT-3131", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 7405698, "stamp_duty": 370285, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1131", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-06-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4131"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5131", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0461', '461', 'DEMO-JK-01-02-0461-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.6, 4520.1, 'Residential',
-    34.125655, 74.8324, ST_GeomFromText('POLYGON((74.832393 34.125535, 74.832544 34.125636, 74.832434 34.125793, 74.83223 34.125657, 74.832393 34.125535))', 4326),
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "61", "mutation_history": [{"mutation_no": "MUT-SB-1109", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 49354513, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 49354513, "stamp_duty": 2467726, "stamp_duty_rate": "5% (Demo)", "registration_fee": 592254, "effective_year": "2025-26", "government_rate_inr": 49354513, "market_estimate_inr": 63173777, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90109", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0439', '439', 'DEMO-JK-01-02-0439-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.37, 7.3, 2000.0, 'Residential',
+    34.124684, 74.832611, ST_GeomFromText('POLYGON((74.832546 34.124751, 74.832683 34.124748, 74.832677 34.124615, 74.832538 34.124622, 74.832546 34.124751))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 133", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 133", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1132", "khata_no": "DEMO-KT-2132", "mutation_history": [{"mutation_no": "DEMO-MUT-3132", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 6641102, "stamp_duty": 332055, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5132", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0462', '462', 'DEMO-JK-01-02-0462-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.9, 5691.2, 'Residential',
-    34.125476, 74.83463, ST_GeomFromText('POLYGON((74.834642 34.125325, 74.83476 34.125469, 74.834733 34.125529, 74.834578 34.125615, 74.834435 34.12544, 74.834642 34.125325))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 134", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 134", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1133", "khata_no": "DEMO-KT-2133", "mutation_history": [{"mutation_no": "DEMO-MUT-3133", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 8623030, "stamp_duty": 431152, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5133", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0463', '463', 'DEMO-JK-01-02-0463-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.3, 6332.0, 'Residential',
-    34.125464, 74.837257, ST_GeomFromText('POLYGON((74.837429 34.125448, 74.837392 34.125515, 74.837241 34.125623, 74.837076 34.125479, 74.837147 34.12539, 74.837254 34.125329, 74.837429 34.125448))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 135", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 135", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1134", "khata_no": "DEMO-KT-2134", "mutation_history": [{"mutation_no": "DEMO-MUT-3134", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 9884665, "stamp_duty": 494233, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4134"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5134", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0464', '464', 'DEMO-JK-01-02-0464-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.9, 4056.5, 'Commercial',
-    34.125336, 74.83966, ST_GeomFromText('POLYGON((74.839817 34.125258, 74.839817 34.125402, 74.83966 34.125402, 74.83966 34.125348, 74.839503 34.125348, 74.839503 34.125258, 74.839817 34.125258))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 136", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 136", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1135", "khata_no": "DEMO-KT-2135", "mutation_history": [{"mutation_no": "DEMO-MUT-3135", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 3724977, "stamp_duty": 186249, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1135", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-01-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5135", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0465', '465', 'DEMO-JK-01-02-0465-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3591.6, 'Mixed Use',
-    34.125978, 74.832417, ST_GeomFromText('POLYGON((74.832336 34.125875, 74.83247 34.125909, 74.83245 34.125965, 74.832507 34.125979, 74.832464 34.126095, 74.832272 34.126047, 74.832336 34.125875))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 137", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 137", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1136", "khata_no": "DEMO-KT-2136", "mutation_history": [{"mutation_no": "DEMO-MUT-3136", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 3462975, "stamp_duty": 173149, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5136", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0466', '466', 'DEMO-JK-01-02-0466-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5210.4, 'Agricultural',
-    34.12589, 74.83461, ST_GeomFromText('POLYGON((74.83468 34.125773, 74.834765 34.125917, 74.834555 34.126033, 74.83444 34.125838, 74.83468 34.125773))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 138", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 138", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1137", "khata_no": "DEMO-KT-2137", "mutation_history": [{"mutation_no": "DEMO-MUT-3137", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 5263030, "stamp_duty": 263152, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4137"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5137", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0467', '467', 'DEMO-JK-01-02-0467-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.6, 6413.1, 'Residential',
-    34.125907, 74.837257, ST_GeomFromText('POLYGON((74.837427 34.125833, 74.837352 34.125996, 74.83727 34.126009, 74.837073 34.125947, 74.837164 34.12575, 74.837427 34.125833))', 4326),
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "61", "mutation_history": [{"mutation_no": "MUT-SB-1110", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 30854382, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 30854382, "stamp_duty": 1542719, "stamp_duty_rate": "5% (Demo)", "registration_fee": 370253, "effective_year": "2025-26", "government_rate_inr": 30854382, "market_estimate_inr": 39493609, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0440', '440', 'DEMO-JK-01-02-0440-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.42, 8.3, 2262.0, 'Residential',
+    34.124586, 74.833075, ST_GeomFromText('POLYGON((74.832987 34.124661, 74.833137 34.124661, 74.833137 34.124562, 74.833126 34.124523, 74.832987 34.124523, 74.832987 34.124661))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "25", "khata_no": "61", "mutation_history": [{"mutation_no": "MUT-SB-1111", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 35726987, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 35726987, "stamp_duty": 1786349, "stamp_duty_rate": "5% (Demo)", "registration_fee": 428724, "effective_year": "2025-26", "government_rate_inr": 35726987, "market_estimate_inr": 45730543, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0441', '441', 'DEMO-JK-01-02-0441-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.48, 9.7, 2631.0, 'Residential',
+    34.124613, 74.833341, ST_GeomFromText('POLYGON((74.833267 34.124694, 74.833415 34.124694, 74.833415 34.124533, 74.833267 34.124533, 74.833267 34.124694))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 139", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 139", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1138", "khata_no": "DEMO-KT-2138", "mutation_history": [{"mutation_no": "DEMO-MUT-3138", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 6772328, "stamp_duty": 338616, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5138", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0468', '468', 'DEMO-JK-01-02-0468-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.0, 7073.8, 'Residential',
-    34.12631, 74.832393, ST_GeomFromText('POLYGON((74.832366 34.126161, 74.832452 34.126184, 74.832594 34.1263, 74.832418 34.126467, 74.832303 34.126418, 74.832222 34.126332, 74.832366 34.126161))', 4326),
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "62", "mutation_history": [{"mutation_no": "MUT-SB-1112", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 35757558, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 35757558, "stamp_duty": 1787878, "stamp_duty_rate": "5% (Demo)", "registration_fee": 429091, "effective_year": "2025-26", "government_rate_inr": 35757558, "market_estimate_inr": 45769674, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0442', '442', 'DEMO-JK-01-02-0442-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.38, 7.6, 2082.0, 'Residential',
+    34.124606, 74.833509, ST_GeomFromText('POLYGON((74.83344 34.124671, 74.833537 34.124671, 74.833564 34.124653, 74.833564 34.124517, 74.83344 34.124517, 74.83344 34.124671))', 4326),
     'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 140", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 140", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1139", "khata_no": "DEMO-KT-2139", "mutation_history": [{"mutation_no": "DEMO-MUT-3139", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 7794821, "stamp_duty": 389741, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1139", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-05-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5139", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0469', '469', 'DEMO-JK-01-02-0469-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 10.3, 2796.7, 'Residential',
-    34.126315, 74.834614, ST_GeomFromText('POLYGON((74.834649 34.1262, 74.834749 34.126317, 74.83466 34.126369, 74.834622 34.126325, 74.834534 34.126376, 74.834471 34.126303, 74.834649 34.1262))', 4326),
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "62", "mutation_history": [{"mutation_no": "MUT-SB-1113", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 29056167, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 29056167, "stamp_duty": 1452808, "stamp_duty_rate": "5% (Demo)", "registration_fee": 348674, "effective_year": "2025-26", "government_rate_inr": 29056167, "market_estimate_inr": 37191894, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-513", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Fayaz Ahmad Reshi (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0443', '443', 'DEMO-JK-01-02-0443-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.12, 2.5, 678.0, 'Residential',
+    34.124588, 74.833744, ST_GeomFromText('POLYGON((74.833692 34.124617, 74.833804 34.124613, 74.833798 34.124558, 74.833684 34.124564, 74.833692 34.124617))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 141", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 141", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1140", "khata_no": "DEMO-KT-2140", "mutation_history": [{"mutation_no": "DEMO-MUT-3140", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 3210170, "stamp_duty": 160508, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1200000, "cersai_id": "DEMO-CERSAI-4140"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5140", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0470', '470', 'DEMO-JK-01-02-0470-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 15.2, 4142.9, 'Commercial',
-    34.126326, 74.837252, ST_GeomFromText('POLYGON((74.83741 34.126317, 74.837316 34.126404, 74.837256 34.126359, 74.837215 34.126396, 74.83709 34.126303, 74.837224 34.126179, 74.83741 34.126317))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 142", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 142", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1141", "khata_no": "DEMO-KT-2141", "mutation_history": [{"mutation_no": "DEMO-MUT-3141", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 4945611, "stamp_duty": 247281, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5141", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0471', '471', 'DEMO-JK-01-02-0471-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 1.5, 5855.7, 'Mixed Use',
-    34.12609, 74.83966, ST_GeomFromText('POLYGON((74.839799 34.126008, 74.839803 34.126168, 74.839521 34.1262, 74.839517 34.125984, 74.839799 34.126008))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 143", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 143", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1142", "khata_no": "DEMO-KT-2142", "mutation_history": [{"mutation_no": "DEMO-MUT-3142", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 7259132, "stamp_duty": 362957, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5142", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0472', '472', 'DEMO-JK-01-02-0472-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.3, 7152.6, 'Agricultural',
-    34.126636, 74.83242, ST_GeomFromText('POLYGON((74.832321 34.126491, 74.832523 34.126539, 74.832544 34.126611, 74.832479 34.126799, 74.832234 34.126741, 74.832321 34.126491))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 144", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 144", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1143", "khata_no": "DEMO-KT-2143", "mutation_history": [{"mutation_no": "DEMO-MUT-3143", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 9195262, "stamp_duty": 459763, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1143", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-09-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1650000, "cersai_id": "DEMO-CERSAI-4143"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5143", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0473', '473', 'DEMO-JK-01-02-0473-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.9, 4862.5, 'Residential',
-    34.126723, 74.834606, ST_GeomFromText('POLYGON((74.834623 34.126593, 74.834681 34.126648, 74.834756 34.126799, 74.834585 34.126858, 74.834513 34.126771, 74.834475 34.126669, 74.834623 34.126593))', 4326),
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "62", "mutation_history": [{"mutation_no": "MUT-SB-1114", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9706970, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 9706970, "stamp_duty": 485348, "stamp_duty_rate": "5% (Demo)", "registration_fee": 116484, "effective_year": "2025-26", "government_rate_inr": 9706970, "market_estimate_inr": 12424922, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90114", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0444', '444', 'DEMO-JK-01-02-0444-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.5, 10.1, 2745.0, 'Residential',
+    34.124544, 74.834114, ST_GeomFromText('POLYGON((74.834023 34.124632, 74.834178 34.124632, 74.834178 34.124515, 74.834167 34.12447, 74.834023 34.12447, 74.834023 34.124632))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 145", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 145", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1144", "khata_no": "DEMO-KT-2144", "mutation_history": [{"mutation_no": "DEMO-MUT-3144", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 6474403, "stamp_duty": 323720, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5144", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0474', '474', 'DEMO-JK-01-02-0474-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.9, 3229.5, 'Residential',
-    34.126736, 74.837248, ST_GeomFromText('POLYGON((74.837397 34.126698, 74.837338 34.126833, 74.83722 34.126798, 74.837243 34.126747, 74.837125 34.126712, 74.837162 34.126627, 74.837397 34.126698))', 4326),
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "62", "mutation_history": [{"mutation_no": "MUT-SB-1115", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 40335899, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 40335899, "stamp_duty": 2016795, "stamp_duty_rate": "5% (Demo)", "registration_fee": 484031, "effective_year": "2025-26", "government_rate_inr": 40335899, "market_estimate_inr": 51629951, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0445', '445', 'DEMO-JK-01-02-0445-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.44, 8.8, 2388.0, 'Residential',
+    34.124578, 74.834261, ST_GeomFromText('POLYGON((74.834175 34.12464, 74.834348 34.12464, 74.834348 34.124515, 74.834175 34.124515, 74.834175 34.12464))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "63", "mutation_history": [{"mutation_no": "MUT-SB-1116", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 35960138, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 35960138, "stamp_duty": 1798007, "stamp_duty_rate": "5% (Demo)", "registration_fee": 431522, "effective_year": "2025-26", "government_rate_inr": 35960138, "market_estimate_inr": 46028977, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0446', '446', 'DEMO-JK-01-02-0446-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.6, 705.0, 'Residential',
+    34.124702, 74.834323, ST_GeomFromText('POLYGON((74.83428 34.124737, 74.834341 34.124737, 74.834358 34.124726, 74.834358 34.124654, 74.83428 34.124654, 74.83428 34.124737))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "63", "mutation_history": [{"mutation_no": "MUT-SB-1117", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10868796, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 10868796, "stamp_duty": 543440, "stamp_duty_rate": "5% (Demo)", "registration_fee": 130426, "effective_year": "2025-26", "government_rate_inr": 10868796, "market_estimate_inr": 13912059, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0447', '447', 'DEMO-JK-01-02-0447-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.11, 2.2, 611.0, 'Residential',
+    34.124551, 74.834384, ST_GeomFromText('POLYGON((74.834342 34.124583, 74.834432 34.12458, 74.834426 34.124518, 74.834334 34.124524, 74.834342 34.124583))', 4326),
+    'NOT_VERIFIED', 'UNKNOWN',
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "63", "mutation_history": [{"mutation_no": "MUT-SB-1118", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9656606, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 9656606, "stamp_duty": 482830, "stamp_duty_rate": "5% (Demo)", "registration_fee": 115879, "effective_year": "2025-26", "government_rate_inr": 9656606, "market_estimate_inr": 12360456, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0448', '448', 'DEMO-JK-01-02-0448-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.3, 5.9, 1617.0, 'Residential',
+    34.124612, 74.834453, ST_GeomFromText('POLYGON((74.834373 34.124671, 74.83451 34.124671, 74.83451 34.124593, 74.8345 34.124563, 74.834373 34.124563, 74.834373 34.124671))', 4326),
+    'RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "26", "khata_no": "63", "mutation_history": [{"mutation_no": "MUT-SB-1119", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 21978937, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 21978937, "stamp_duty": 1098947, "stamp_duty_rate": "5% (Demo)", "registration_fee": 263747, "effective_year": "2025-26", "government_rate_inr": 21978937, "market_estimate_inr": 28133039, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-519", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Hilal Ahmad Kakroo (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90119", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0449', '449', 'DEMO-JK-01-02-0449-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.35, 7.0, 1909.0, 'Residential',
+    34.124577, 74.834525, ST_GeomFromText('POLYGON((74.834451 34.124635, 74.8346 34.124635, 74.8346 34.124519, 74.834451 34.124519, 74.834451 34.124635))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "64", "mutation_history": [{"mutation_no": "MUT-SB-1120", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 26638537, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 26638537, "stamp_duty": 1331927, "stamp_duty_rate": "5% (Demo)", "registration_fee": 319662, "effective_year": "2025-26", "government_rate_inr": 26638537, "market_estimate_inr": 34097327, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0450', '450', 'DEMO-JK-01-02-0450-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.72, 14.5, 3934.0, 'Residential',
+    34.124677, 74.834622, ST_GeomFromText('POLYGON((74.834495 34.124748, 74.834673 34.124748, 74.834723 34.124714, 74.834723 34.124588, 74.834495 34.124588, 74.834495 34.124748))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "64", "mutation_history": [{"mutation_no": "MUT-SB-1121", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 56358668, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 56358668, "stamp_duty": 2817933, "stamp_duty_rate": "5% (Demo)", "registration_fee": 676304, "effective_year": "2025-26", "government_rate_inr": 56358668, "market_estimate_inr": 72139095, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0451', '451', 'DEMO-JK-01-02-0451-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.1, 2.1, 567.0, 'Residential',
+    34.12464, 74.835114, ST_GeomFromText('POLYGON((74.835068 34.124667, 74.835167 34.124663, 74.835161 34.124611, 74.83506 34.124617, 74.835068 34.124667))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "64", "mutation_history": [{"mutation_no": "MUT-SB-1122", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 8330841, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 8330841, "stamp_duty": 416542, "stamp_duty_rate": "5% (Demo)", "registration_fee": 99970, "effective_year": "2025-26", "government_rate_inr": 8330841, "market_estimate_inr": 10663476, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0452', '452', 'DEMO-JK-01-02-0452-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.33, 6.7, 1814.0, 'Residential',
+    34.124454, 74.831402, ST_GeomFromText('POLYGON((74.831308 34.12451, 74.831469 34.12451, 74.831469 34.124436, 74.831458 34.124407, 74.831308 34.124407, 74.831308 34.12451))', 4326),
     'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 146", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 146", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1145", "khata_no": "DEMO-KT-2145", "mutation_history": [{"mutation_no": "DEMO-MUT-3145", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 4448347, "stamp_duty": 222417, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5145", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0475', '475', 'DEMO-JK-01-02-0475-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.1, 4661.3, 'Residential',
-    34.126971, 74.832421, ST_GeomFromText('POLYGON((74.832405 34.126832, 74.832517 34.126902, 74.832462 34.126962, 74.83251 34.126992, 74.832395 34.127118, 74.832235 34.127018, 74.832405 34.126832))', 4326),
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "64", "mutation_history": [{"mutation_no": "MUT-SB-1123", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 27311165, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 27311165, "stamp_duty": 1365558, "stamp_duty_rate": "5% (Demo)", "registration_fee": 327734, "effective_year": "2025-26", "government_rate_inr": 27311165, "market_estimate_inr": 34958291, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0453', '453', 'DEMO-JK-01-02-0453-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.24, 4.8, 1301.0, 'Residential',
+    34.124381, 74.831826, ST_GeomFromText('POLYGON((74.831749 34.124419, 74.831902 34.124419, 74.831902 34.124342, 74.831749 34.124342, 74.831749 34.124419))', 4326),
     'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 147", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 147", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1146", "khata_no": "DEMO-KT-2146", "mutation_history": [{"mutation_no": "DEMO-MUT-3146", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 6634541, "stamp_duty": 331727, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2100000, "cersai_id": "DEMO-CERSAI-4146"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5146", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0476', '476', 'DEMO-JK-01-02-0476-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 4.0, 6526.7, 'Commercial',
-    34.12715, 74.83461, ST_GeomFromText('POLYGON((74.83468 34.127009, 74.834794 34.127138, 74.83456 34.127314, 74.834406 34.127139, 74.83468 34.127009))', 4326),
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "65", "mutation_history": [{"mutation_no": "MUT-SB-1124", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 20068613, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 20068613, "stamp_duty": 1003431, "stamp_duty_rate": "5% (Demo)", "registration_fee": 240823, "effective_year": "2025-26", "government_rate_inr": 20068613, "market_estimate_inr": 25687825, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90124", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0454', '454', 'DEMO-JK-01-02-0454-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.19, 3.8, 1029.0, 'Residential',
+    34.124496, 74.832711, ST_GeomFromText('POLYGON((74.832651 34.124534, 74.832736 34.124534, 74.832759 34.124518, 74.832759 34.124446, 74.832651 34.124446, 74.832651 34.124534))', 4326),
     'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 148", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 148", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1147", "khata_no": "DEMO-KT-2147", "mutation_history": [{"mutation_no": "DEMO-MUT-3147", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 9589275, "stamp_duty": 479464, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1147", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-04-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5147", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0477', '477', 'DEMO-JK-01-02-0477-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.3, 4974.0, 'Mixed Use',
-    34.127166, 74.837247, ST_GeomFromText('POLYGON((74.837416 34.127129, 74.837278 34.127261, 74.837207 34.127259, 74.837084 34.127171, 74.837252 34.127011, 74.837416 34.127129))', 4326),
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "65", "mutation_history": [{"mutation_no": "MUT-SB-1125", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 16254059, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 16254059, "stamp_duty": 812703, "stamp_duty_rate": "5% (Demo)", "registration_fee": 195049, "effective_year": "2025-26", "government_rate_inr": 16254059, "market_estimate_inr": 20805196, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-525", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Ghulam Mohammad Bhat (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0455', '455', 'DEMO-JK-01-02-0455-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.43, 8.7, 2362.0, 'Residential',
+    34.124501, 74.833087, ST_GeomFromText('POLYGON((74.833027 34.124586, 74.833155 34.124582, 74.833149 34.124415, 74.833019 34.124422, 74.833027 34.124586))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "65", "mutation_history": [{"mutation_no": "MUT-SB-1126", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32096116, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 32096116, "stamp_duty": 1604806, "stamp_duty_rate": "5% (Demo)", "registration_fee": 385153, "effective_year": "2025-26", "government_rate_inr": 32096116, "market_estimate_inr": 41083028, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0456', '456', 'DEMO-JK-01-02-0456-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.3, 6.1, 1651.0, 'Residential',
+    34.124499, 74.833224, ST_GeomFromText('POLYGON((74.833176 34.124597, 74.83326 34.124597, 74.83326 34.124467, 74.83325 34.124416, 74.833176 34.124416, 74.833176 34.124597))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "27", "khata_no": "65", "mutation_history": [{"mutation_no": "MUT-SB-1127", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 23040114, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 23040114, "stamp_duty": 1152006, "stamp_duty_rate": "5% (Demo)", "registration_fee": 276481, "effective_year": "2025-26", "government_rate_inr": 23040114, "market_estimate_inr": 29491346, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0457', '457', 'DEMO-JK-01-02-0457-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.4, 8.0, 2167.0, 'Residential',
+    34.124413, 74.833652, ST_GeomFromText('POLYGON((74.833574 34.124476, 74.833731 34.124476, 74.833731 34.124351, 74.833574 34.124351, 74.833574 34.124476))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 149", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 149", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1148", "khata_no": "DEMO-KT-2148", "mutation_history": [{"mutation_no": "DEMO-MUT-3148", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 7536364, "stamp_duty": 376818, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5148", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0478', '478', 'DEMO-JK-01-02-0478-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.6, 5610.6, 'Agricultural',
-    34.126842, 74.83966, ST_GeomFromText('POLYGON((74.839755 34.12673, 74.839783 34.1268, 74.839771 34.126964, 74.839558 34.126958, 74.839535 34.126854, 74.839556 34.126748, 74.839755 34.12673))', 4326),
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "66", "mutation_history": [{"mutation_no": "MUT-SB-1128", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 31042306, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 31042306, "stamp_duty": 1552115, "stamp_duty_rate": "5% (Demo)", "registration_fee": 372508, "effective_year": "2025-26", "government_rate_inr": 31042306, "market_estimate_inr": 39734152, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0458', '458', 'DEMO-JK-01-02-0458-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.53, 10.7, 2905.0, 'Residential',
+    34.124423, 74.834251, ST_GeomFromText('POLYGON((74.834151 34.124488, 74.834292 34.124488, 74.834331 34.124462, 74.834331 34.124339, 74.834151 34.124339, 74.834151 34.124488))', 4326),
     'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 150", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 150", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1149", "khata_no": "DEMO-KT-2149", "mutation_history": [{"mutation_no": "DEMO-MUT-3149", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 8758512, "stamp_duty": 437926, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2550000, "cersai_id": "DEMO-CERSAI-4149"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5149", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0479', '479', 'DEMO-JK-01-02-0479-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.3, 3618.7, 'Residential',
-    34.127307, 74.832407, ST_GeomFromText('POLYGON((74.832353 34.127174, 74.83252 34.127211, 74.832484 34.127324, 74.832421 34.12731, 74.832384 34.127422, 74.83228 34.127399, 74.832353 34.127174))', 4326),
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "66", "mutation_history": [{"mutation_no": "MUT-SB-1129", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 42688649, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 42688649, "stamp_duty": 2134432, "stamp_duty_rate": "5% (Demo)", "registration_fee": 512264, "effective_year": "2025-26", "government_rate_inr": 42688649, "market_estimate_inr": 54641471, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90129", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0459', '459', 'DEMO-JK-01-02-0459-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.28, 5.6, 1532.0, 'Residential',
+    34.124389, 74.83462, ST_GeomFromText('POLYGON((74.83453 34.124428, 74.834716 34.124424, 74.83471 34.124349, 74.834522 34.124355, 74.83453 34.124428))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 151", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 151", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1150", "khata_no": "DEMO-KT-2150", "mutation_history": [{"mutation_no": "DEMO-MUT-3150", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 3322957, "stamp_duty": 166148, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5150", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0480', '480', 'DEMO-JK-01-02-0480-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.2, 5227.2, 'Residential',
-    34.127573, 74.834632, ST_GeomFromText('POLYGON((74.834702 34.127435, 74.834768 34.127538, 74.834677 34.127578, 74.834706 34.127622, 74.834518 34.127705, 74.834424 34.127558, 74.834702 34.127435))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 152", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 152", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1151", "khata_no": "DEMO-KT-2151", "mutation_history": [{"mutation_no": "DEMO-MUT-3151", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 5040000, "stamp_duty": 252000, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1151", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-08-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5151", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0481', '481', 'DEMO-JK-01-02-0481-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.6, 4518.4, 'Residential',
-    34.12757, 74.83725, ST_GeomFromText('POLYGON((74.837384 34.127523, 74.837321 34.127675, 74.837105 34.127643, 74.83719 34.127438, 74.837384 34.127523))', 4326),
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "66", "mutation_history": [{"mutation_no": "MUT-SB-1130", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 23069311, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 23069311, "stamp_duty": 1153466, "stamp_duty_rate": "5% (Demo)", "registration_fee": 276832, "effective_year": "2025-26", "government_rate_inr": 23069311, "market_estimate_inr": 29528718, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0460', '460', 'DEMO-JK-01-02-0460-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.14, 2.8, 758.0, 'Residential',
+    34.124381, 74.834928, ST_GeomFromText('POLYGON((74.834861 34.124414, 74.834977 34.124414, 74.834977 34.124371, 74.834966 34.124354, 74.834861 34.124354, 74.834861 34.124414))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "66", "mutation_history": [{"mutation_no": "MUT-SB-1131", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11696799, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 11696799, "stamp_duty": 584840, "stamp_duty_rate": "5% (Demo)", "registration_fee": 140362, "effective_year": "2025-26", "government_rate_inr": 11696799, "market_estimate_inr": 14971903, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-531", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Manzoor Ahmad Rather (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0461', '461', 'DEMO-JK-01-02-0461-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.2, 1141.0, 'Residential',
+    34.124446, 74.835043, ST_GeomFromText('POLYGON((74.834982 34.124488, 74.835105 34.124488, 74.835105 34.124404, 74.834982 34.124404, 74.834982 34.124488))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "67", "mutation_history": [{"mutation_no": "MUT-SB-1132", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 18018892, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 18018892, "stamp_duty": 900945, "stamp_duty_rate": "5% (Demo)", "registration_fee": 216227, "effective_year": "2025-26", "government_rate_inr": 18018892, "market_estimate_inr": 23064182, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0462', '462', 'DEMO-JK-01-02-0462-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.1, 1127.0, 'Residential',
+    34.124219, 74.830556, ST_GeomFromText('POLYGON((74.830483 34.124255, 74.830585 34.124255, 74.830614 34.124236, 74.830614 34.124175, 74.830483 34.124175, 74.830483 34.124255))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "67", "mutation_history": [{"mutation_no": "MUT-SB-1133", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 15313484, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 15313484, "stamp_duty": 765674, "stamp_duty_rate": "5% (Demo)", "registration_fee": 183762, "effective_year": "2025-26", "government_rate_inr": 15313484, "market_estimate_inr": 19601260, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0463', '463', 'DEMO-JK-01-02-0463-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.5, 1762.0, 'Residential',
+    34.12432, 74.831632, ST_GeomFromText('POLYGON((74.831575 34.124387, 74.831696 34.124383, 74.83169 34.124251, 74.831567 34.124258, 74.831575 34.124387))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 153", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 153", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1152", "khata_no": "DEMO-KT-2152", "mutation_history": [{"mutation_no": "DEMO-MUT-3152", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 4564040, "stamp_duty": 228202, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4152"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5152", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0482', '482', 'DEMO-JK-01-02-0482-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.8, 5672.1, 'Commercial',
-    34.127245, 74.839671, ST_GeomFromText('POLYGON((74.839797 34.127136, 74.839775 34.127309, 74.839709 34.12734, 74.839523 34.127324, 74.839549 34.127114, 74.839797 34.127136))', 4326),
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "67", "mutation_history": [{"mutation_no": "MUT-SB-1134", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 24597093, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 24597093, "stamp_duty": 1229855, "stamp_duty_rate": "5% (Demo)", "registration_fee": 295165, "effective_year": "2025-26", "government_rate_inr": 24597093, "market_estimate_inr": 31484279, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90134", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0464', '464', 'DEMO-JK-01-02-0464-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.15, 2.9, 794.0, 'Residential',
+    34.124296, 74.831718, ST_GeomFromText('POLYGON((74.831662 34.124337, 74.831758 34.124337, 74.831758 34.124282, 74.831748 34.124261, 74.831662 34.124261, 74.831662 34.124337))', 4326),
     'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 154", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 154", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1153", "khata_no": "DEMO-KT-2153", "mutation_history": [{"mutation_no": "DEMO-MUT-3153", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 5989821, "stamp_duty": 299491, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5153", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0483', '483', 'DEMO-JK-01-02-0483-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.2, 6327.1, 'Mixed Use',
-    34.127632, 74.832391, ST_GeomFromText('POLYGON((74.832314 34.127503, 74.832403 34.127509, 74.832577 34.127589, 74.83247 34.127767, 74.832345 34.127742, 74.832239 34.12768, 74.832314 34.127503))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 155", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 155", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1154", "khata_no": "DEMO-KT-2154", "mutation_history": [{"mutation_no": "DEMO-MUT-3154", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 6972011, "stamp_duty": 348601, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5154", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0484', '484', 'DEMO-JK-01-02-0484-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.9, 4054.2, 'Agricultural',
-    34.127995, 74.837245, ST_GeomFromText('POLYGON((74.837426 34.128019, 74.837315 34.128129, 74.837194 34.128045, 74.837236 34.128004, 74.837116 34.12792, 74.837185 34.127851, 74.837426 34.128019))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 156", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 156", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1155", "khata_no": "DEMO-KT-2155", "mutation_history": [{"mutation_no": "DEMO-MUT-3155", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 4653581, "stamp_duty": 232679, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1155", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-03-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4155"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5155", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0485', '485', 'DEMO-JK-01-02-0485-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3593.3, 'Residential',
-    34.12762, 74.839673, ST_GeomFromText('POLYGON((74.839763 34.127522, 74.83977 34.127638, 74.8397 34.127642, 74.839703 34.127691, 74.839557 34.127698, 74.839546 34.127532, 74.839763 34.127522))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 157", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 157", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1156", "khata_no": "DEMO-KT-2156", "mutation_history": [{"mutation_no": "DEMO-MUT-3156", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 4289522, "stamp_duty": 214476, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5156", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0486', '486', 'DEMO-JK-01-02-0486-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5200.6, 'Residential',
-    34.124665, 74.8328, ST_GeomFromText('POLYGON((74.832817 34.124535, 74.832956 34.124646, 74.832808 34.124815, 74.832619 34.124664, 74.832817 34.124535))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 158", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 158", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1157", "khata_no": "DEMO-KT-2157", "mutation_history": [{"mutation_no": "DEMO-MUT-3157", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 6447025, "stamp_duty": 322351, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5157", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0487', '487', 'DEMO-JK-01-02-0487-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.7, 6447.7, 'Residential',
-    34.124216, 74.835171, ST_GeomFromText('POLYGON((74.835212 34.124061, 74.835314 34.124213, 74.835274 34.124274, 74.835088 34.124359, 74.834965 34.124174, 74.835212 34.124061))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 159", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 159", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1158", "khata_no": "DEMO-KT-2158", "mutation_history": [{"mutation_no": "DEMO-MUT-3158", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 8289054, "stamp_duty": 414453, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4158"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5158", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0488', '488', 'DEMO-JK-01-02-0488-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 5.9, 7049.4, 'Commercial',
-    34.124203, 74.837753, ST_GeomFromText('POLYGON((74.837913 34.124131, 74.837917 34.124206, 74.837834 34.124355, 74.837584 34.124276, 74.8376 34.12417, 74.83767 34.124078, 74.837913 34.124131))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 160", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 160", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1159", "khata_no": "DEMO-KT-2159", "mutation_history": [{"mutation_no": "DEMO-MUT-3159", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 9386253, "stamp_duty": 469313, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1159", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-07-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5159", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0489', '489', 'DEMO-JK-01-02-0489-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 10.3, 2805.8, 'Mixed Use',
-    34.124196, 74.840099, ST_GeomFromText('POLYGON((74.840216 34.124126, 74.840201 34.124269, 74.840092 34.124262, 74.840098 34.124208, 74.83999 34.1242, 74.839999 34.124111, 74.840216 34.124126))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 161", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 161", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1160", "khata_no": "DEMO-KT-2160", "mutation_history": [{"mutation_no": "DEMO-MUT-3160", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 3864738, "stamp_duty": 193237, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5160", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0490', '490', 'DEMO-JK-01-02-0490-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 15.2, 4133.0, 'Agricultural',
-    34.124988, 74.832818, ST_GeomFromText('POLYGON((74.832754 34.124868, 74.832884 34.124912, 74.832854 34.124974, 74.832909 34.124993, 74.832846 34.125122, 74.83266 34.12506, 74.832754 34.124868))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 162", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 162", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1161", "khata_no": "DEMO-KT-2161", "mutation_history": [{"mutation_no": "DEMO-MUT-3161", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 5882599, "stamp_duty": 294130, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4161"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5161", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0491', '491', 'DEMO-JK-01-02-0491-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 1.6, 5876.8, 'Residential',
-    34.12463, 74.83515, ST_GeomFromText('POLYGON((74.835247 34.124513, 74.835316 34.124663, 74.835065 34.124773, 74.834971 34.124571, 74.835247 34.124513))', 4326),
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "28", "khata_no": "67", "mutation_history": [{"mutation_no": "MUT-SB-1135", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11373887, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 11373887, "stamp_duty": 568694, "stamp_duty_rate": "5% (Demo)", "registration_fee": 136487, "effective_year": "2025-26", "government_rate_inr": 11373887, "market_estimate_inr": 14558575, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0465', '465', 'DEMO-JK-01-02-0465-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.6, 704.0, 'Residential',
+    34.124308, 74.831839, ST_GeomFromText('POLYGON((74.831781 34.124335, 74.831897 34.124335, 74.831897 34.12428, 74.831781 34.12428, 74.831781 34.124335))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 163", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 163", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1162", "khata_no": "DEMO-KT-2162", "mutation_history": [{"mutation_no": "DEMO-MUT-3162", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 8634417, "stamp_duty": 431721, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5162", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0492', '492', 'DEMO-JK-01-02-0492-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.3, 7165.6, 'Residential',
-    34.124648, 74.837757, ST_GeomFromText('POLYGON((74.837947 34.124592, 74.837855 34.124749, 74.837765 34.124753, 74.837553 34.124668, 74.837664 34.124478, 74.837947 34.124592))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 164", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 164", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1163", "khata_no": "DEMO-KT-2163", "mutation_history": [{"mutation_no": "DEMO-MUT-3163", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 10856970, "stamp_duty": 542848, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1163", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-02-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5163", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0493', '493', 'DEMO-JK-01-02-0493-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.9, 4879.1, 'Residential',
-    34.12532, 74.832793, ST_GeomFromText('POLYGON((74.832756 34.125193, 74.832833 34.125227, 74.832966 34.125349, 74.83283 34.125453, 74.832726 34.125391, 74.832648 34.125306, 74.832756 34.125193))', 4326),
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "68", "mutation_history": [{"mutation_no": "MUT-SB-1136", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10350308, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 10350308, "stamp_duty": 517515, "stamp_duty_rate": "5% (Demo)", "registration_fee": 124204, "effective_year": "2025-26", "government_rate_inr": 10350308, "market_estimate_inr": 13248394, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0466', '466', 'DEMO-JK-01-02-0466-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.38, 7.5, 2052.0, 'Residential',
+    34.124276, 74.831934, ST_GeomFromText('POLYGON((74.831862 34.124338, 74.831964 34.124338, 74.831992 34.124319, 74.831992 34.124193, 74.831862 34.124193, 74.831862 34.124338))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "68", "mutation_history": [{"mutation_no": "MUT-SB-1137", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 30903664, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 30903664, "stamp_duty": 1545183, "stamp_duty_rate": "5% (Demo)", "registration_fee": 370844, "effective_year": "2025-26", "government_rate_inr": 30903664, "market_estimate_inr": 39556690, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-537", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Shabir Ahmad Wagay (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0467', '467', 'DEMO-JK-01-02-0467-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.23, 4.7, 1274.0, 'Residential',
+    34.124319, 74.832066, ST_GeomFromText('POLYGON((74.832003 34.124364, 74.832136 34.12436, 74.83213 34.124273, 74.831994 34.12428, 74.832003 34.124364))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "68", "mutation_history": [{"mutation_no": "MUT-SB-1138", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 19659639, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 19659639, "stamp_duty": 982982, "stamp_duty_rate": "5% (Demo)", "registration_fee": 235916, "effective_year": "2025-26", "government_rate_inr": 19659639, "market_estimate_inr": 25164338, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0468', '468', 'DEMO-JK-01-02-0468-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.08, 1.6, 448.0, 'Residential',
+    34.124322, 74.834071, ST_GeomFromText('POLYGON((74.834029 34.124352, 74.834103 34.124352, 74.834103 34.124312, 74.834092 34.124296, 74.834029 34.124296, 74.834029 34.124352))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 165", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 165", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1164", "khata_no": "DEMO-KT-2164", "mutation_history": [{"mutation_no": "DEMO-MUT-3164", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 7616593, "stamp_duty": 380830, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4164"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5164", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0494', '494', 'DEMO-JK-01-02-0494-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.8, 3214.6, 'Commercial',
-    34.125055, 74.835154, ST_GeomFromText('POLYGON((74.835215 34.124936, 74.835301 34.125061, 74.835193 34.125112, 74.835161 34.125066, 74.835053 34.125117, 74.834999 34.125039, 74.835215 34.124936))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 166", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 166", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1165", "khata_no": "DEMO-KT-2165", "mutation_history": [{"mutation_no": "DEMO-MUT-3165", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 2951882, "stamp_duty": 147594, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5165", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0495', '495', 'DEMO-JK-01-02-0495-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.1, 4666.3, 'Mixed Use',
-    34.125065, 74.837762, ST_GeomFromText('POLYGON((74.837914 34.125005, 74.837873 34.125116, 74.837785 34.125094, 74.837768 34.125141, 74.837586 34.125095, 74.837644 34.124936, 74.837914 34.125005))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 167", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 167", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1166", "khata_no": "DEMO-KT-2166", "mutation_history": [{"mutation_no": "DEMO-MUT-3166", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 4499187, "stamp_duty": 224959, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5166", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0496', '496', 'DEMO-JK-01-02-0496-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 4.1, 6550.1, 'Agricultural',
-    34.12495, 74.8401, ST_GeomFromText('POLYGON((74.840264 34.124879, 74.84025 34.125039, 74.839934 34.125049, 74.839952 34.124833, 74.840264 34.124879))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 168", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 168", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1167", "khata_no": "DEMO-KT-2167", "mutation_history": [{"mutation_no": "DEMO-MUT-3167", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 6616263, "stamp_duty": 330813, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1167", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-06-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4167"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5167", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0497', '497', 'DEMO-JK-01-02-0497-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.2, 4947.7, 'Residential',
-    34.125652, 74.832819, ST_GeomFromText('POLYGON((74.83272 34.125533, 74.832916 34.125596, 74.832938 34.125651, 74.83288 34.125777, 74.832642 34.125701, 74.83272 34.125533))', 4326),
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "68", "mutation_history": [{"mutation_no": "MUT-SB-1139", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 7073941, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 7073941, "stamp_duty": 353697, "stamp_duty_rate": "5% (Demo)", "registration_fee": 84887, "effective_year": "2025-26", "government_rate_inr": 7073941, "market_estimate_inr": 9054644, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90139", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0469', '469', 'DEMO-JK-01-02-0469-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.11, 2.2, 612.0, 'Residential',
+    34.124276, 74.834154, ST_GeomFromText('POLYGON((74.834116 34.124312, 74.834193 34.124312, 74.834193 34.12424, 74.834116 34.12424, 74.834116 34.124312))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 169", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 169", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1168", "khata_no": "DEMO-KT-2168", "mutation_history": [{"mutation_no": "DEMO-MUT-3168", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 5224844, "stamp_duty": 261242, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5168", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0498', '498', 'DEMO-JK-01-02-0498-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.5, 5586.9, 'Residential',
-    34.125463, 74.835147, ST_GeomFromText('POLYGON((74.83519 34.125331, 74.835245 34.125388, 74.835301 34.125545, 74.835099 34.1256, 74.835034 34.125509, 74.83501 34.125404, 74.83519 34.125331))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 170", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 170", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1169", "khata_no": "DEMO-KT-2169", "mutation_history": [{"mutation_no": "DEMO-MUT-3169", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 6156364, "stamp_duty": 307818, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5169", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0499', '499', 'DEMO-JK-01-02-0499-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.3, 3630.7, 'Residential',
-    34.125475, 74.837747, ST_GeomFromText('POLYGON((74.837915 34.125454, 74.837841 34.125584, 74.837713 34.125535, 74.837741 34.125486, 74.837613 34.125437, 74.837659 34.125356, 74.837915 34.125454))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 171", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 171", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1170", "khata_no": "DEMO-KT-2170", "mutation_history": [{"mutation_no": "DEMO-MUT-3170", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 4167470, "stamp_duty": 208374, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1200000, "cersai_id": "DEMO-CERSAI-4170"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5170", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0500', '500', 'DEMO-JK-01-02-0500-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5197.3, 'Commercial',
-    34.125981, 74.832822, ST_GeomFromText('POLYGON((74.832831 34.125833, 74.832935 34.12591, 74.832867 34.125973, 74.832911 34.126007, 74.832769 34.126137, 74.83262 34.126026, 74.832831 34.125833))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 172", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 172", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1171", "khata_no": "DEMO-KT-2171", "mutation_history": [{"mutation_no": "DEMO-MUT-3171", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 6204307, "stamp_duty": 310215, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1171", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-01-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5171", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0501', '501', 'DEMO-JK-01-02-0501-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.6, 4525.9, 'Mixed Use',
-    34.12589, 74.83515, ST_GeomFromText('POLYGON((74.835193 34.125775, 74.835293 34.125912, 74.835124 34.126029, 74.834989 34.125843, 74.835193 34.125775))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 173", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 173", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1172", "khata_no": "DEMO-KT-2172", "mutation_history": [{"mutation_no": "DEMO-MUT-3172", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 5610620, "stamp_duty": 280531, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5172", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0502', '502', 'DEMO-JK-01-02-0502-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.9, 5690.3, 'Agricultural',
-    34.125906, 74.837757, ST_GeomFromText('POLYGON((74.837905 34.125817, 74.837847 34.125984, 74.837775 34.126006, 74.837595 34.125963, 74.837665 34.12576, 74.837905 34.125817))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 174", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 174", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1173", "khata_no": "DEMO-KT-2173", "mutation_history": [{"mutation_no": "DEMO-MUT-3173", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 7315354, "stamp_duty": 365768, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1650000, "cersai_id": "DEMO-CERSAI-4173"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5173", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0503', '503', 'DEMO-JK-01-02-0503-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.3, 6334.8, 'Residential',
-    34.125702, 74.8401, ST_GeomFromText('POLYGON((74.84022 34.125598, 74.840244 34.125669, 74.840212 34.125832, 74.839974 34.12581, 74.839959 34.125704, 74.839994 34.1256, 74.84022 34.125598))', 4326),
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "69", "mutation_history": [{"mutation_no": "MUT-SB-1140", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 8319744, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 8319744, "stamp_duty": 415987, "stamp_duty_rate": "5% (Demo)", "registration_fee": 99837, "effective_year": "2025-26", "government_rate_inr": 8319744, "market_estimate_inr": 10649272, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0470', '470', 'DEMO-JK-01-02-0470-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.3, 6.0, 1622.0, 'Residential',
+    34.124305, 74.834279, ST_GeomFromText('POLYGON((74.834199 34.124351, 74.834311 34.124351, 74.834342 34.12433, 74.834342 34.124246, 74.834199 34.124246, 74.834199 34.124351))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "69", "mutation_history": [{"mutation_no": "MUT-SB-1141", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 22639866, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 22639866, "stamp_duty": 1131993, "stamp_duty_rate": "5% (Demo)", "registration_fee": 271678, "effective_year": "2025-26", "government_rate_inr": 22639866, "market_estimate_inr": 28979028, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0471', '471', 'DEMO-JK-01-02-0471-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.46, 9.3, 2524.0, 'Residential',
+    34.124334, 74.834362, ST_GeomFromText('POLYGON((74.834294 34.124415, 74.834437 34.124411, 74.834431 34.124251, 74.834286 34.124258, 74.834294 34.124415))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 175", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 175", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1174", "khata_no": "DEMO-KT-2174", "mutation_history": [{"mutation_no": "DEMO-MUT-3174", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 8434766, "stamp_duty": 421738, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5174", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0504', '504', 'DEMO-JK-01-02-0504-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.9, 4060.1, 'Residential',
-    34.126317, 74.832807, ST_GeomFromText('POLYGON((74.832772 34.126168, 74.832935 34.126217, 74.832882 34.12634, 74.83282 34.126321, 74.832767 34.126444, 74.832665 34.126413, 74.832772 34.126168))', 4326),
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "69", "mutation_history": [{"mutation_no": "MUT-SB-1142", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 36163521, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 36163521, "stamp_duty": 1808176, "stamp_duty_rate": "5% (Demo)", "registration_fee": 433962, "effective_year": "2025-26", "government_rate_inr": 36163521, "market_estimate_inr": 46289307, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0472', '472', 'DEMO-JK-01-02-0472-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.42, 8.3, 2262.0, 'Residential',
+    34.124115, 74.831757, ST_GeomFromText('POLYGON((74.83168 34.1242, 74.831812 34.1242, 74.831812 34.124087, 74.831801 34.124043, 74.83168 34.124043, 74.83168 34.1242))', 4326),
     'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 176", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 176", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1175", "khata_no": "DEMO-KT-2175", "mutation_history": [{"mutation_no": "DEMO-MUT-3175", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 5592424, "stamp_duty": 279621, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1175", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-05-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5175", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0505', '505', 'DEMO-JK-01-02-0505-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3604.7, 'Residential',
-    34.126316, 74.835167, ST_GeomFromText('POLYGON((74.835211 34.126198, 74.835266 34.126305, 74.835201 34.126328, 74.835224 34.126374, 74.835089 34.126422, 74.835011 34.126269, 74.835211 34.126198))', 4326),
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "29", "khata_no": "69", "mutation_history": [{"mutation_no": "MUT-SB-1143", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 33228537, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 33228537, "stamp_duty": 1661427, "stamp_duty_rate": "5% (Demo)", "registration_fee": 398742, "effective_year": "2025-26", "government_rate_inr": 33228537, "market_estimate_inr": 42532527, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-543", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Bilal Ahmad Beigh (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0473', '473', 'DEMO-JK-01-02-0473-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.89, 17.8, 4852.0, 'Residential',
+    34.124139, 74.831964, ST_GeomFromText('POLYGON((74.831871 34.124257, 74.832058 34.124257, 74.832058 34.124022, 74.831871 34.124022, 74.831871 34.124257))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 177", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 177", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1176", "khata_no": "DEMO-KT-2176", "mutation_history": [{"mutation_no": "DEMO-MUT-3176", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 5130657, "stamp_duty": 256533, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2100000, "cersai_id": "DEMO-CERSAI-4176"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5176", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0506', '506', 'DEMO-JK-01-02-0506-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.0, 5183.4, 'Commercial',
-    34.12631, 74.83775, ST_GeomFromText('POLYGON((74.837903 34.126279, 74.837825 34.126425, 74.837583 34.126367, 74.837689 34.126169, 74.837903 34.126279))', 4326),
-    'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 178", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 178", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1177", "khata_no": "DEMO-KT-2177", "mutation_history": [{"mutation_no": "DEMO-MUT-3177", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 7615647, "stamp_duty": 380782, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5177", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0507', '507', 'DEMO-JK-01-02-0507-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.6, 6425.2, 'Mixed Use',
-    34.126645, 74.832822, ST_GeomFromText('POLYGON((74.832796 34.126488, 74.832955 34.126602, 74.832943 34.12667, 74.832804 34.126802, 74.832611 34.126664, 74.832796 34.126488))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 179", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 179", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1178", "khata_no": "DEMO-KT-2178", "mutation_history": [{"mutation_no": "DEMO-MUT-3178", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 9735152, "stamp_duty": 486758, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5178", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0508', '508', 'DEMO-JK-01-02-0508-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 5.9, 7053.8, 'Agricultural',
-    34.126723, 74.835145, ST_GeomFromText('POLYGON((74.835182 34.126576, 74.835254 34.126621, 74.835338 34.12677, 74.835104 34.126878, 74.835017 34.126799, 74.834976 34.126696, 74.835182 34.126576))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 180", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 180", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1179", "khata_no": "DEMO-KT-2179", "mutation_history": [{"mutation_no": "DEMO-MUT-3179", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 11011442, "stamp_duty": 550572, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1179", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-09-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2550000, "cersai_id": "DEMO-CERSAI-4179"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5179", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0509', '509', 'DEMO-JK-01-02-0509-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 10.3, 2791.0, 'Residential',
-    34.126736, 74.837748, ST_GeomFromText('POLYGON((74.837877 34.126684, 74.837832 34.126823, 74.837728 34.126799, 74.837744 34.126747, 74.83764 34.126724, 74.837668 34.126637, 74.837877 34.126684))', 4326),
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "70", "mutation_history": [{"mutation_no": "MUT-SB-1144", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 73076195, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 73076195, "stamp_duty": 3653810, "stamp_duty_rate": "5% (Demo)", "registration_fee": 876914, "effective_year": "2025-26", "government_rate_inr": 73076195, "market_estimate_inr": 93537530, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90144", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0474', '474', 'DEMO-JK-01-02-0474-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.5, 1765.0, 'Residential',
+    34.124201, 74.83212, ST_GeomFromText('POLYGON((74.832038 34.12425, 74.832153 34.12425, 74.832185 34.124229, 74.832185 34.124139, 74.832038 34.124139, 74.832038 34.12425))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 181", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 181", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1180", "khata_no": "DEMO-KT-2180", "mutation_history": [{"mutation_no": "DEMO-MUT-3180", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 2562902, "stamp_duty": 128145, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5180", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0510', '510', 'DEMO-JK-01-02-0510-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 15.1, 4115.8, 'Residential',
-    34.126481, 74.840114, ST_GeomFromText('POLYGON((74.840228 34.126391, 74.840223 34.126507, 74.840142 34.126504, 74.84014 34.126554, 74.839972 34.126549, 74.839979 34.126383, 74.840228 34.126391))', 4326),
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "70", "mutation_history": [{"mutation_no": "MUT-SB-1145", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 27223234, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 27223234, "stamp_duty": 1361162, "stamp_duty_rate": "5% (Demo)", "registration_fee": 326679, "effective_year": "2025-26", "government_rate_inr": 27223234, "market_estimate_inr": 34845740, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0475', '475', 'DEMO-JK-01-02-0475-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.15, 2.9, 795.0, 'Residential',
+    34.124087, 74.834743, ST_GeomFromText('POLYGON((74.834692 34.124121, 74.834802 34.124117, 74.834796 34.124051, 74.834684 34.124058, 74.834692 34.124121))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "70", "mutation_history": [{"mutation_no": "MUT-SB-1146", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 12553057, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 12553057, "stamp_duty": 627653, "stamp_duty_rate": "5% (Demo)", "registration_fee": 150637, "effective_year": "2025-26", "government_rate_inr": 12553057, "market_estimate_inr": 16067913, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0476', '476', 'DEMO-JK-01-02-0476-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.24, 4.9, 1331.0, 'Residential',
+    34.124143, 74.834875, ST_GeomFromText('POLYGON((74.834816 34.124208, 74.834918 34.124208, 74.834918 34.124122, 74.834907 34.124088, 74.834816 34.124088, 74.834816 34.124208))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "70", "mutation_history": [{"mutation_no": "MUT-SB-1147", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 18087494, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 18087494, "stamp_duty": 904375, "stamp_duty_rate": "5% (Demo)", "registration_fee": 217050, "effective_year": "2025-26", "government_rate_inr": 18087494, "market_estimate_inr": 23151992, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0477', '477', 'DEMO-JK-01-02-0477-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.19, 3.9, 1055.0, 'Residential',
+    34.123956, 74.83032, ST_GeomFromText('POLYGON((74.830268 34.124002, 74.830373 34.124002, 74.830373 34.123911, 74.830268 34.123911, 74.830268 34.124002))', 4326),
+    'NOT_VERIFIED', 'UNKNOWN',
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "71", "mutation_history": [{"mutation_no": "MUT-SB-1148", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14726154, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 14726154, "stamp_duty": 736308, "stamp_duty_rate": "5% (Demo)", "registration_fee": 176714, "effective_year": "2025-26", "government_rate_inr": 14726154, "market_estimate_inr": 18849477, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0478', '478', 'DEMO-JK-01-02-0478-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.32, 6.3, 1728.0, 'Residential',
+    34.123969, 74.831036, ST_GeomFromText('POLYGON((74.830934 34.12401, 74.831078 34.12401, 74.831118 34.123983, 74.831118 34.123922, 74.830934 34.123922, 74.830934 34.12401))', 4326),
+    'RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "71", "mutation_history": [{"mutation_no": "MUT-SB-1149", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 24757711, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 24757711, "stamp_duty": 1237886, "stamp_duty_rate": "5% (Demo)", "registration_fee": 297093, "effective_year": "2025-26", "government_rate_inr": 24757711, "market_estimate_inr": 31689870, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-549", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Aijaz Ahmad Chadoora (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90149", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0479', '479', 'DEMO-JK-01-02-0479-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.47, 9.4, 2551.0, 'Residential',
+    34.123895, 74.832117, ST_GeomFromText('POLYGON((74.832035 34.123964, 74.832206 34.123961, 74.832199 34.123825, 74.832027 34.123831, 74.832035 34.123964))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "71", "mutation_history": [{"mutation_no": "MUT-SB-1150", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 37476584, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 37476584, "stamp_duty": 1873829, "stamp_duty_rate": "5% (Demo)", "registration_fee": 449719, "effective_year": "2025-26", "government_rate_inr": 37476584, "market_estimate_inr": 47970028, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0480', '480', 'DEMO-JK-01-02-0480-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.2, 4.0, 1089.0, 'Residential',
+    34.123996, 74.832129, ST_GeomFromText('POLYGON((74.832071 34.12405, 74.832171 34.12405, 74.832171 34.123978, 74.832161 34.12395, 74.832071 34.12395, 74.832071 34.12405))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "30", "khata_no": "71", "mutation_history": [{"mutation_no": "MUT-SB-1151", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 16395944, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 16395944, "stamp_duty": 819797, "stamp_duty_rate": "5% (Demo)", "registration_fee": 196751, "effective_year": "2025-26", "government_rate_inr": 16395944, "market_estimate_inr": 20986808, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0481', '481', 'DEMO-JK-01-02-0481-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.3, 885.0, 'Residential',
+    34.123955, 74.832673, ST_GeomFromText('POLYGON((74.832624 34.123996, 74.832723 34.123996, 74.832723 34.123915, 74.832624 34.123915, 74.832624 34.123996))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "72", "mutation_history": [{"mutation_no": "MUT-SB-1152", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13660266, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 13660266, "stamp_duty": 683013, "stamp_duty_rate": "5% (Demo)", "registration_fee": 163923, "effective_year": "2025-26", "government_rate_inr": 13660266, "market_estimate_inr": 17485140, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0482', '482', 'DEMO-JK-01-02-0482-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.47, 9.3, 2545.0, 'Residential',
+    34.123929, 74.833426, ST_GeomFromText('POLYGON((74.833341 34.123995, 74.833461 34.123995, 74.833494 34.123973, 74.833494 34.123842, 74.833341 34.123842, 74.833341 34.123995))', 4326),
     'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 182", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 182", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1181", "khata_no": "DEMO-KT-2181", "mutation_history": [{"mutation_no": "DEMO-MUT-3181", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 3968402, "stamp_duty": 198420, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5181", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0511', '511', 'DEMO-JK-01-02-0511-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 1.5, 5856.9, 'Residential',
-    34.12715, 74.83515, ST_GeomFromText('POLYGON((74.835193 34.127013, 74.83532 34.127134, 74.835129 34.127308, 74.834958 34.127145, 74.835193 34.127013))', 4326),
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "72", "mutation_history": [{"mutation_no": "MUT-SB-1153", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 40192694, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 40192694, "stamp_duty": 2009635, "stamp_duty_rate": "5% (Demo)", "registration_fee": 482312, "effective_year": "2025-26", "government_rate_inr": 40192694, "market_estimate_inr": 51446648, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0483', '483', 'DEMO-JK-01-02-0483-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.1, 2.0, 538.0, 'Residential',
+    34.123978, 74.833815, ST_GeomFromText('POLYGON((74.833779 34.12401, 74.833858 34.124007, 74.833852 34.123945, 74.833771 34.123951, 74.833779 34.12401))', 4326),
     'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 183", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 183", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1182", "khata_no": "DEMO-KT-2182", "mutation_history": [{"mutation_no": "DEMO-MUT-3182", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 5916061, "stamp_duty": 295803, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1500000, "cersai_id": "DEMO-CERSAI-4182"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5182", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0512', '512', 'DEMO-JK-01-02-0512-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 6.4, 7174.7, 'Commercial',
-    34.127169, 74.837753, ST_GeomFromText('POLYGON((74.837952 34.127141, 74.837829 34.127282, 74.837739 34.127274, 74.837548 34.127159, 74.837698 34.126988, 74.837952 34.127141))', 4326),
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "72", "mutation_history": [{"mutation_no": "MUT-SB-1154", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 7310026, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 7310026, "stamp_duty": 365501, "stamp_duty_rate": "5% (Demo)", "registration_fee": 87720, "effective_year": "2025-26", "government_rate_inr": 7310026, "market_estimate_inr": 9356833, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90154", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0484', '484', 'DEMO-JK-01-02-0484-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.24, 4.8, 1314.0, 'Residential',
+    34.123957, 74.834043, ST_GeomFromText('POLYGON((74.833976 34.124014, 74.834092 34.124014, 74.834092 34.123939, 74.834081 34.12391, 74.833976 34.12391, 74.833976 34.124014))', 4326),
     'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 184", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 184", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1183", "khata_no": "DEMO-KT-2183", "mutation_history": [{"mutation_no": "DEMO-MUT-3183", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 7576589, "stamp_duty": 378829, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2023/1183", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2023-04-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5183", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0513', '513', 'DEMO-JK-01-02-0513-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.0, 4892.0, 'Mixed Use',
-    34.126842, 74.840099, ST_GeomFromText('POLYGON((74.840169 34.126725, 74.840201 34.126793, 74.840209 34.126957, 74.840024 34.126964, 74.839992 34.126861, 74.839998 34.126754, 74.840169 34.126725))', 4326),
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "72", "mutation_history": [{"mutation_no": "MUT-SB-1155", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 18347171, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 18347171, "stamp_duty": 917359, "stamp_duty_rate": "5% (Demo)", "registration_fee": 220166, "effective_year": "2025-26", "government_rate_inr": 18347171, "market_estimate_inr": 23484379, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-555", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Tariq Ahmad Lone (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0485', '485', 'DEMO-JK-01-02-0485-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.49, 9.9, 2684.0, 'Residential',
+    34.123842, 74.830238, ST_GeomFromText('POLYGON((74.830128 34.123898, 74.830347 34.123898, 74.830347 34.123787, 74.830128 34.123787, 74.830128 34.123898))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "73", "mutation_history": [{"mutation_no": "MUT-SB-1156", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 38451429, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 38451429, "stamp_duty": 1922571, "stamp_duty_rate": "5% (Demo)", "registration_fee": 461417, "effective_year": "2025-26", "government_rate_inr": 38451429, "market_estimate_inr": 49217829, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0486', '486', 'DEMO-JK-01-02-0486-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.49, 9.8, 2672.0, 'Residential',
+    34.123884, 74.831098, ST_GeomFromText('POLYGON((74.830998 34.123944, 74.831138 34.123944, 74.831177 34.123918, 74.831177 34.123806, 74.830998 34.123806, 74.830998 34.123944))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "73", "mutation_history": [{"mutation_no": "MUT-SB-1157", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 39253270, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 39253270, "stamp_duty": 1962664, "stamp_duty_rate": "5% (Demo)", "registration_fee": 471039, "effective_year": "2025-26", "government_rate_inr": 39253270, "market_estimate_inr": 50244186, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0487', '487', 'DEMO-JK-01-02-0487-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.06, 1.2, 5776.0, 'Residential',
+    34.123742, 74.831179, ST_GeomFromText('POLYGON((74.831077 34.123867, 74.831289 34.123864, 74.831282 34.123616, 74.831069 34.123623, 74.831077 34.123867))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 185", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 185", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1184", "khata_no": "DEMO-KT-2184", "mutation_history": [{"mutation_no": "DEMO-MUT-3184", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 5390634, "stamp_duty": 269532, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5184", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0514', '514', 'DEMO-JK-01-02-0514-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 11.8, 3224.2, 'Agricultural',
-    34.127309, 74.832806, ST_GeomFromText('POLYGON((74.832814 34.12718, 74.832947 34.127272, 74.832867 34.127351, 74.832817 34.127317, 74.832736 34.127396, 74.832653 34.127338, 74.832814 34.12718))', 4326),
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "73", "mutation_history": [{"mutation_no": "MUT-SB-1158", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 45990601, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 45990601, "stamp_duty": 2299530, "stamp_duty_rate": "5% (Demo)", "registration_fee": 551887, "effective_year": "2025-26", "government_rate_inr": 45990601, "market_estimate_inr": 58867969, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0488', '488', 'DEMO-JK-01-02-0488-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.02, 0.3, 5540.0, 'Residential',
+    34.123826, 74.831404, ST_GeomFromText('POLYGON((74.831265 34.123942, 74.831501 34.123942, 74.831501 34.123788, 74.83149 34.123728, 74.831265 34.123728, 74.831265 34.123942))', 4326),
     'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 186", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 186", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1185", "khata_no": "DEMO-KT-2185", "mutation_history": [{"mutation_no": "DEMO-MUT-3185", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6250000, "unit": "per kanal", "government_value": 3700872, "stamp_duty": 185044, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1950000, "cersai_id": "DEMO-CERSAI-4185"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5185", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0515', '515', 'DEMO-JK-01-02-0515-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 17.1, 4658.0, 'Residential',
-    34.127572, 74.835171, ST_GeomFromText('POLYGON((74.835214 34.127437, 74.83529 34.127534, 74.835213 34.127576, 74.835246 34.127617, 74.835086 34.127703, 74.834977 34.127564, 74.835214 34.127437))', 4326),
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "31", "khata_no": "73", "mutation_history": [{"mutation_no": "MUT-SB-1159", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 43469175, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 43469175, "stamp_duty": 2173459, "stamp_duty_rate": "5% (Demo)", "registration_fee": 521630, "effective_year": "2025-26", "government_rate_inr": 43469175, "market_estimate_inr": 55640544, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90159", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0489', '489', 'DEMO-JK-01-02-0489-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.59, 11.8, 3208.0, 'Residential',
+    34.123839, 74.833929, ST_GeomFromText('POLYGON((74.833841 34.123922, 74.834016 34.123922, 74.834016 34.123756, 74.833841 34.123756, 74.833841 34.123922))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 187", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 187", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1186", "khata_no": "DEMO-KT-2186", "mutation_history": [{"mutation_no": "DEMO-MUT-3186", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6500000, "unit": "per kanal", "government_value": 5560514, "stamp_duty": 278026, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5186", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0516', '516', 'DEMO-JK-01-02-0516-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 4.1, 6551.4, 'Residential',
-    34.12757, 74.83775, ST_GeomFromText('POLYGON((74.83793 34.127603, 74.837796 34.127718, 74.837546 34.127558, 74.837728 34.127401, 74.83793 34.127603))', 4326),
-    'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 188", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 188", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1187", "khata_no": "DEMO-KT-2187", "mutation_history": [{"mutation_no": "DEMO-MUT-3187", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6750000, "unit": "per kanal", "government_value": 8121570, "stamp_duty": 406078, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2022/1187", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2022-08-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5187", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0517', '517', 'DEMO-JK-01-02-0517-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 18.2, 4945.3, 'Residential',
-    34.127244, 74.840111, ST_GeomFromText('POLYGON((74.840211 34.127126, 74.840207 34.1273, 74.840152 34.127336, 74.839989 34.127334, 74.839994 34.127123, 74.840211 34.127126))', 4326),
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "74", "mutation_history": [{"mutation_no": "MUT-SB-1160", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 50664145, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 50664145, "stamp_duty": 2533207, "stamp_duty_rate": "5% (Demo)", "registration_fee": 607970, "effective_year": "2025-26", "government_rate_inr": 50664145, "market_estimate_inr": 64850106, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0490', '490', 'DEMO-JK-01-02-0490-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.53, 10.6, 2884.0, 'Residential',
+    34.123797, 74.83406, ST_GeomFromText('POLYGON((74.833955 34.123859, 74.834102 34.123859, 74.834143 34.123831, 74.834143 34.123717, 74.833955 34.123717, 74.833955 34.123859))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "74", "mutation_history": [{"mutation_no": "MUT-SB-1161", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 39200142, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 39200142, "stamp_duty": 1960007, "stamp_duty_rate": "5% (Demo)", "registration_fee": 470402, "effective_year": "2025-26", "government_rate_inr": 39200142, "market_estimate_inr": 50176182, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-561", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Parvaiz Ahmad Ganie (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0491', '491', 'DEMO-JK-01-02-0491-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.5, 688.0, 'Residential',
+    34.123835, 74.834083, ST_GeomFromText('POLYGON((74.834046 34.123875, 74.834126 34.123872, 74.83412 34.123794, 74.834038 34.1238, 74.834046 34.123875))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "74", "mutation_history": [{"mutation_no": "MUT-SB-1162", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 9598629, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 9598629, "stamp_duty": 479931, "stamp_duty_rate": "5% (Demo)", "registration_fee": 115184, "effective_year": "2025-26", "government_rate_inr": 9598629, "market_estimate_inr": 12286245, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0492', '492', 'DEMO-JK-01-02-0492-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.71, 14.1, 3843.0, 'Residential',
+    34.123818, 74.834854, ST_GeomFromText('POLYGON((74.834715 34.123899, 74.83495 34.123899, 74.83495 34.123792, 74.83494 34.12375, 74.834715 34.12375, 74.834715 34.123899))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "74", "mutation_history": [{"mutation_no": "MUT-SB-1163", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 55054346, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 55054346, "stamp_duty": 2752717, "stamp_duty_rate": "5% (Demo)", "registration_fee": 660652, "effective_year": "2025-26", "government_rate_inr": 55054346, "market_estimate_inr": 70469563, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0493', '493', 'DEMO-JK-01-02-0493-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.37, 7.5, 2036.0, 'Residential',
+    34.12358, 74.831046, ST_GeomFromText('POLYGON((74.830956 34.123632, 74.831135 34.123632, 74.831135 34.123529, 74.830956 34.123529, 74.830956 34.123632))', 4326),
     'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 189", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 189", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1188", "khata_no": "DEMO-KT-2188", "mutation_history": [{"mutation_no": "DEMO-MUT-3188", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7000000, "unit": "per kanal", "government_value": 6357594, "stamp_duty": 317880, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2400000, "cersai_id": "DEMO-CERSAI-4188"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5188", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0518', '518', 'DEMO-JK-01-02-0518-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.6, 5601.7, 'Commercial',
-    34.127632, 74.832791, ST_GeomFromText('POLYGON((74.832697 34.12752, 74.832785 34.127522, 74.832967 34.127588, 74.832888 34.127751, 74.832761 34.127733, 74.832648 34.127681, 74.832697 34.12752))', 4326),
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "75", "mutation_history": [{"mutation_no": "MUT-SB-1164", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 29911151, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 29911151, "stamp_duty": 1495558, "stamp_duty_rate": "5% (Demo)", "registration_fee": 358934, "effective_year": "2025-26", "government_rate_inr": 29911151, "market_estimate_inr": 38286273, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90164", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0494', '494', 'DEMO-JK-01-02-0494-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.74, 14.8, 4016.0, 'Residential',
+    34.123688, 74.831394, ST_GeomFromText('POLYGON((74.831276 34.123764, 74.831441 34.123764, 74.831488 34.123733, 74.831488 34.123589, 74.831276 34.123589, 74.831276 34.123764))', 4326),
     'DATA_UNAVAILABLE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 190", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 190", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1189", "khata_no": "DEMO-KT-2189", "mutation_history": [{"mutation_no": "DEMO-MUT-3189", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7250000, "unit": "per kanal", "government_value": 7458646, "stamp_duty": 372932, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5189", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0519', '519', 'DEMO-JK-01-02-0519-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.4, 3641.7, 'Mixed Use',
-    34.127995, 74.835153, ST_GeomFromText('POLYGON((74.835241 34.127876, 74.835315 34.128006, 74.835187 34.128055, 74.835159 34.128006, 74.835031 34.128056, 74.834985 34.127974, 74.835241 34.127876))', 4326),
-    'NOT_VERIFIED', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 191", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 191", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1190", "khata_no": "DEMO-KT-2190", "mutation_history": [{"mutation_no": "DEMO-MUT-3190", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7500000, "unit": "per kanal", "government_value": 5016116, "stamp_duty": 250806, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5190", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0520', '520', 'DEMO-JK-01-02-0520-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.1, 5200.9, 'Agricultural',
-    34.128006, 74.837762, ST_GeomFromText('POLYGON((74.837933 34.127962, 74.837881 34.12807, 74.837786 34.128038, 74.837763 34.128084, 74.837567 34.128018, 74.837642 34.127864, 74.837933 34.127962))', 4326),
-    'RECORDED_CASE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 192", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 192", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1191", "khata_no": "DEMO-KT-2191", "mutation_history": [{"mutation_no": "DEMO-MUT-3191", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 7750000, "unit": "per kanal", "government_value": 7402567, "stamp_duty": 370128, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2021/1191", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2021-03-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1350000, "cersai_id": "DEMO-CERSAI-4191"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5191", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0521', '521', 'DEMO-JK-01-02-0521-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 16.6, 4515.0, 'Residential',
-    34.12761, 74.8401, ST_GeomFromText('POLYGON((74.840222 34.127545, 74.840192 34.127703, 74.839972 34.127703, 74.840013 34.127489, 74.840222 34.127545))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 193", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 193", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1192", "khata_no": "DEMO-KT-2192", "mutation_history": [{"mutation_no": "DEMO-MUT-3192", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8000000, "unit": "per kanal", "government_value": 6633609, "stamp_duty": 331680, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5192", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0522', '522', 'DEMO-JK-01-02-0522-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 0.9, 5687.6, 'Residential',
-    34.124662, 74.83322, ST_GeomFromText('POLYGON((74.83314 34.124526, 74.833329 34.124602, 74.833342 34.124665, 74.83326 34.124804, 74.833031 34.124712, 74.83314 34.124526))', 4326),
-    'DATA_UNAVAILABLE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 194", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 194", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1193", "khata_no": "DEMO-KT-2193", "mutation_history": [{"mutation_no": "DEMO-MUT-3193", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8250000, "unit": "per kanal", "government_value": 8617576, "stamp_duty": 430879, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5193", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0523', '523', 'DEMO-JK-01-02-0523-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.3, 6333.2, 'Residential',
-    34.124203, 74.835687, ST_GeomFromText('POLYGON((74.835757 34.124071, 74.835808 34.124131, 74.835846 34.124293, 74.835612 34.12434, 74.835555 34.124244, 74.835545 34.124137, 74.835757 34.124071))', 4326),
-    'NOT_VERIFIED', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 195", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 195", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1194", "khata_no": "DEMO-KT-2194", "mutation_history": [{"mutation_no": "DEMO-MUT-3194", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 8500000, "unit": "per kanal", "government_value": 9886538, "stamp_duty": 494327, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 1800000, "cersai_id": "DEMO-CERSAI-4194"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5194", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0524', '524', 'DEMO-JK-01-02-0524-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 14.9, 4047.1, 'Commercial',
-    34.124215, 74.838246, ST_GeomFromText('POLYGON((74.83843 34.124213, 74.838343 34.124337, 74.838207 34.124272, 74.838239 34.124226, 74.838103 34.12416, 74.838157 34.124083, 74.83843 34.124213))', 4326),
-    'RECORDED_CASE', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 196", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 196", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1195", "khata_no": "DEMO-KT-2195", "mutation_history": [{"mutation_no": "DEMO-MUT-3195", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5000000, "unit": "per kanal", "government_value": 3716345, "stamp_duty": 185817, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2020/1195", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2020-07-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5195", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0525', '525', 'DEMO-JK-01-02-0525-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 13.2, 3589.9, 'Mixed Use',
-    34.124198, 74.840556, ST_GeomFromText('POLYGON((74.840623 34.124089, 74.840655 34.124202, 74.840586 34.124215, 74.8406 34.124264, 74.840457 34.124291, 74.840412 34.124129, 74.840623 34.124089))', 4326),
-    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 197", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 197", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1196", "khata_no": "DEMO-KT-2196", "mutation_history": [{"mutation_no": "DEMO-MUT-3196", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5250000, "unit": "per kanal", "government_value": 3461336, "stamp_duty": 173067, "effective_year": "2025-26"}'::jsonb, '{"status": "VERIFIED_NO_RECORDED_CASE", "cases": []}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5196", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0526', '526', 'DEMO-JK-01-02-0526-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    0, 19.0, 5180.2, 'Agricultural',
-    34.124995, 74.8332, ST_GeomFromText('POLYGON((74.833189 34.124865, 74.83335 34.124954, 74.833239 34.125141, 74.833022 34.12502, 74.833189 34.124865))', 4326),
-    'DATA_UNAVAILABLE', 'MORTGAGED',
-    '{"current_owner": {"name": "Demo Owner 198", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 198", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1197", "khata_no": "DEMO-KT-2197", "mutation_history": [{"mutation_no": "DEMO-MUT-3197", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5500000, "unit": "per kanal", "government_value": 5232525, "stamp_duty": 261626, "effective_year": "2025-26"}'::jsonb, '{"status": "DATA_UNAVAILABLE", "cases": []}'::jsonb, '{"status": "MORTGAGED", "records": [{"bank_name": "Demo Bank (NOT REAL)", "loan_amount": 2250000, "cersai_id": "DEMO-CERSAI-4197"}]}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5197", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0527', '527', 'DEMO-JK-01-02-0527-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 3.7, 6451.2, 'Residential',
-    34.124633, 74.835711, ST_GeomFromText('POLYGON((74.835719 34.124474, 74.835852 34.12461, 74.835825 34.124675, 74.835661 34.124786, 74.8355 34.124621, 74.835719 34.124474))', 4326),
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "75", "mutation_history": [{"mutation_no": "MUT-SB-1165", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 60482659, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 60482659, "stamp_duty": 3024133, "stamp_duty_rate": "5% (Demo)", "registration_fee": 725792, "effective_year": "2025-26", "government_rate_inr": 60482659, "market_estimate_inr": 77417804, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0495', '495', 'DEMO-JK-01-02-0495-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.48, 9.6, 2621.0, 'Residential',
+    34.123672, 74.831543, ST_GeomFromText('POLYGON((74.831473 34.123753, 74.831621 34.123749, 74.831615 34.123589, 74.831464 34.123596, 74.831473 34.123753))', 4326),
     'NOT_VERIFIED', 'UNENCUMBERED',
-    '{"current_owner": {"name": "Demo Owner 199", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 199", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1198", "khata_no": "DEMO-KT-2198", "mutation_history": [{"mutation_no": "DEMO-MUT-3198", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 5750000, "unit": "per kanal", "government_value": 6812562, "stamp_duty": 340628, "effective_year": "2025-26"}'::jsonb, '{"status": "NOT_VERIFIED", "cases": []}'::jsonb, '{"status": "UNENCUMBERED", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5198", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-),
-(
-    'SB-DEMO-0528', '528', 'DEMO-JK-01-02-0528-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal',
-    1, 5.9, 7058.9, 'Residential',
-    34.124624, 74.838256, ST_GeomFromText('POLYGON((74.838436 34.124602, 74.838409 34.124673, 74.838269 34.12479, 74.838066 34.124645, 74.838126 34.12455, 74.838229 34.124483, 74.838436 34.124602))', 4326),
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "75", "mutation_history": [{"mutation_no": "MUT-SB-1166", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 40435282, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 40435282, "stamp_duty": 2021764, "stamp_duty_rate": "5% (Demo)", "registration_fee": 485223, "effective_year": "2025-26", "government_rate_inr": 40435282, "market_estimate_inr": 51757161, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0496', '496', 'DEMO-JK-01-02-0496-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.2, 4.0, 1085.0, 'Residential',
+    34.123682, 74.831811, ST_GeomFromText('POLYGON((74.83175 34.123734, 74.831855 34.123734, 74.831855 34.123666, 74.831844 34.123639, 74.83175 34.123639, 74.83175 34.123734))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "32", "khata_no": "75", "mutation_history": [{"mutation_no": "MUT-SB-1167", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17137969, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 17137969, "stamp_duty": 856898, "stamp_duty_rate": "5% (Demo)", "registration_fee": 205656, "effective_year": "2025-26", "government_rate_inr": 17137969, "market_estimate_inr": 21936600, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-567", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Nazir Ahmad Naqash (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0497', '497', 'DEMO-JK-01-02-0497-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.2, 4.0, 1079.0, 'Residential',
+    34.123689, 74.831981, ST_GeomFromText('POLYGON((74.831925 34.123733, 74.832036 34.123733, 74.832036 34.123645, 74.831925 34.123645, 74.831925 34.123733))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "76", "mutation_history": [{"mutation_no": "MUT-SB-1168", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14658053, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 14658053, "stamp_duty": 732903, "stamp_duty_rate": "5% (Demo)", "registration_fee": 175897, "effective_year": "2025-26", "government_rate_inr": 14658053, "market_estimate_inr": 18762308, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0498', '498', 'DEMO-JK-01-02-0498-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.4, 8.0, 2176.0, 'Residential',
+    34.123622, 74.832119, ST_GeomFromText('POLYGON((74.832022 34.123673, 74.832158 34.123673, 74.832196 34.123648, 74.832196 34.123557, 74.832022 34.123557, 74.832022 34.123673))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "76", "mutation_history": [{"mutation_no": "MUT-SB-1169", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 30376048, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 30376048, "stamp_duty": 1518802, "stamp_duty_rate": "5% (Demo)", "registration_fee": 364513, "effective_year": "2025-26", "government_rate_inr": 30376048, "market_estimate_inr": 38881341, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90169", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0499', '499', 'DEMO-JK-01-02-0499-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.22, 4.4, 1208.0, 'Residential',
+    34.12362, 74.832737, ST_GeomFromText('POLYGON((74.832691 34.123676, 74.832791 34.123673, 74.832784 34.123563, 74.832683 34.123569, 74.832691 34.123676))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "76", "mutation_history": [{"mutation_no": "MUT-SB-1170", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17301306, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 17301306, "stamp_duty": 865065, "stamp_duty_rate": "5% (Demo)", "registration_fee": 207616, "effective_year": "2025-26", "government_rate_inr": 17301306, "market_estimate_inr": 22145672, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0500', '500', 'DEMO-JK-01-02-0500-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.3, 1169.0, 'Residential',
+    34.123584, 74.832822, ST_GeomFromText('POLYGON((74.832756 34.123636, 74.832869 34.123636, 74.832869 34.123568, 74.832858 34.123541, 74.832756 34.123541, 74.832756 34.123636))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "76", "mutation_history": [{"mutation_no": "MUT-SB-1171", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17175043, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 17175043, "stamp_duty": 858752, "stamp_duty_rate": "5% (Demo)", "registration_fee": 206101, "effective_year": "2025-26", "government_rate_inr": 17175043, "market_estimate_inr": 21984055, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0501', '501', 'DEMO-JK-01-02-0501-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.23, 4.6, 1252.0, 'Residential',
+    34.123712, 74.833094, ST_GeomFromText('POLYGON((74.833031 34.123757, 74.833157 34.123757, 74.833157 34.123667, 74.833031 34.123667, 74.833031 34.123757))', 4326),
+    'NOT_VERIFIED', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "77", "mutation_history": [{"mutation_no": "MUT-SB-1172", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 18857219, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 18857219, "stamp_duty": 942861, "stamp_duty_rate": "5% (Demo)", "registration_fee": 226287, "effective_year": "2025-26", "government_rate_inr": 18857219, "market_estimate_inr": 24137240, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0502', '502', 'DEMO-JK-01-02-0502-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.91, 18.3, 4974.0, 'Residential',
+    34.123572, 74.833565, ST_GeomFromText('POLYGON((74.833445 34.123663, 74.833613 34.123663, 74.833661 34.123632, 74.833661 34.123451, 74.833445 34.123451, 74.833445 34.123663))', 4326),
     'RECORDED_CASE', 'UNKNOWN',
-    '{"current_owner": {"name": "Demo Owner 200", "share": "1/1"}, "previous_owners": [{"name": "Former Demo Owner 200", "from_date": "2014-04-01", "to_date": "2021-08-15"}], "khewat_no": "DEMO-KH-1199", "khata_no": "DEMO-KT-2199", "mutation_history": [{"mutation_no": "DEMO-MUT-3199", "date": "2021-08-15", "type": "Sale/Transfer (DEMO)"}]}'::jsonb, '{"circle_rate": 6000000, "unit": "per kanal", "government_value": 7778402, "stamp_duty": 388920, "effective_year": "2025-26"}'::jsonb, '{"status": "RECORDED_CASE", "cases": [{"case_number": "DEMO/CASE/2024/1199", "court": "Demo Court (NOT REAL)", "case_type": "Property Dispute", "status": "Pending", "filing_date": "2024-02-15", "disposal_date": null, "source": "DEMO DATA"}]}'::jsonb, '{"status": "UNKNOWN", "records": []}'::jsonb,
-    '{"documents": [{"type": "Jamabandi (DEMO)", "document_number": "DEMO-JAM-5199", "date": "2025-04-01", "source": "DEMO DATA", "source_url": null}]}'::jsonb, '{"source_name": "DEMO DATASET \u2014 NOT GOVERNMENT DATA", "source_url": null, "record_date": "2026-09-19", "last_verified": "2026-09-19"}'::jsonb,
-    true, 'DEMO_ONLY', 'SYNTHETIC_DEMO', 'ALL RECORDS ARE FICTIONAL/DEMO. NOT OFFICIAL GOVERNMENT DATA.'
-)
-ON CONFLICT (district, tehsil, mouza, khasra_no) DO UPDATE SET
-    parcel_id = EXCLUDED.parcel_id,
-    upin = EXCLUDED.upin,
-    area_kanal = EXCLUDED.area_kanal,
-    area_marla = EXCLUDED.area_marla,
-    area_sqft = EXCLUDED.area_sqft,
-    land_type = EXCLUDED.land_type,
-    latitude = EXCLUDED.latitude,
-    longitude = EXCLUDED.longitude,
-    geometry = EXCLUDED.geometry,
-    legal_status = EXCLUDED.legal_status,
-    encumbrance_status = EXCLUDED.encumbrance_status,
-    ownership_details = EXCLUDED.ownership_details,
-    valuation_details = EXCLUDED.valuation_details,
-    litigation_details = EXCLUDED.litigation_details,
-    mortgage_details = EXCLUDED.mortgage_details,
-    documents_details = EXCLUDED.documents_details,
-    provenance_details = EXCLUDED.provenance_details,
-    is_demo_data = EXCLUDED.is_demo_data,
-    dataset_type = EXCLUDED.dataset_type,
-    data_origin_tag = EXCLUDED.data_origin_tag,
-    verification_disclaimer = EXCLUDED.verification_disclaimer,
-    updated_at = timezone('utc'::text, now());
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "77", "mutation_history": [{"mutation_no": "MUT-SB-1173", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 76737359, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 76737359, "stamp_duty": 3836868, "stamp_duty_rate": "5% (Demo)", "registration_fee": 920848, "effective_year": "2025-26", "government_rate_inr": 76737359, "market_estimate_inr": 98223820, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-573", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Riyaz Ahmad Khanday (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0503', '503', 'DEMO-JK-01-02-0503-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.38, 7.5, 2048.0, 'Residential',
+    34.123678, 74.834294, ST_GeomFromText('POLYGON((74.834234 34.123751, 74.834362 34.123748, 74.834356 34.123603, 74.834226 34.123609, 74.834234 34.123751))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "77", "mutation_history": [{"mutation_no": "MUT-SB-1174", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 32339106, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 32339106, "stamp_duty": 1616955, "stamp_duty_rate": "5% (Demo)", "registration_fee": 388069, "effective_year": "2025-26", "government_rate_inr": 32339106, "market_estimate_inr": 41394056, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90174", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0504', '504', 'DEMO-JK-01-02-0504-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.19, 3.7, 1013.0, 'Residential',
+    34.12367, 74.834514, ST_GeomFromText('POLYGON((74.834452 34.123717, 74.834559 34.123717, 74.834559 34.123655, 74.834548 34.12363, 74.834452 34.12363, 74.834452 34.123717))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Ghulam Mohammad Bhat", "father_husband_name": "Khazir Bhat", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Khazir Bhat", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "33", "khata_no": "77", "mutation_history": [{"mutation_no": "MUT-SB-1175", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 13763764, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 13763764, "stamp_duty": 688188, "stamp_duty_rate": "5% (Demo)", "registration_fee": 165165, "effective_year": "2025-26", "government_rate_inr": 13763764, "market_estimate_inr": 17617618, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0505', '505', 'DEMO-JK-01-02-0505-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.35, 6.9, 1880.0, 'Residential',
+    34.123687, 74.834599, ST_GeomFromText('POLYGON((74.834534 34.123752, 74.834665 34.123752, 74.834665 34.123622, 74.834534 34.123622, 74.834534 34.123752))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Bashir Ahmad Mir", "father_husband_name": "Abdul Gani Mir", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Gani Mir", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "78", "mutation_history": [{"mutation_no": "MUT-SB-1176", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 26247091, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 26247091, "stamp_duty": 1312355, "stamp_duty_rate": "5% (Demo)", "registration_fee": 314965, "effective_year": "2025-26", "government_rate_inr": 26247091, "market_estimate_inr": 33596276, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0506', '506', 'DEMO-JK-01-02-0506-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.27, 5.5, 1487.0, 'Residential',
+    34.123629, 74.8348, ST_GeomFromText('POLYGON((74.834736 34.12368, 74.834826 34.12368, 74.834852 34.123663, 74.834852 34.123562, 74.834736 34.123562, 74.834736 34.12368))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Farooq Ahmad Dar", "father_husband_name": "Mohammad Sultan Dar", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Sultan Dar", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "78", "mutation_history": [{"mutation_no": "MUT-SB-1177", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 21301907, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 21301907, "stamp_duty": 1065095, "stamp_duty_rate": "5% (Demo)", "registration_fee": 255623, "effective_year": "2025-26", "government_rate_inr": 21301907, "market_estimate_inr": 27266441, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0507', '507', 'DEMO-JK-01-02-0507-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.61, 12.3, 3345.0, 'Residential',
+    34.123596, 74.834925, ST_GeomFromText('POLYGON((74.834815 34.123664, 74.835044 34.12366, 74.835037 34.123527, 74.834806 34.123534, 74.834815 34.123664))', 4326),
+    'NOT_VERIFIED', 'UNKNOWN',
+    '{"current_owner": {"name": "Abdul Rashid Wani", "father_husband_name": "Ghulam Nabi Wani", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Nabi Wani", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "78", "mutation_history": [{"mutation_no": "MUT-SB-1178", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 49139637, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 49139637, "stamp_duty": 2456982, "stamp_duty_rate": "5% (Demo)", "registration_fee": 589676, "effective_year": "2025-26", "government_rate_inr": 49139637, "market_estimate_inr": 62898735, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0508', '508', 'DEMO-JK-01-02-0508-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.27, 5.4, 1471.0, 'Residential',
+    34.12353, 74.830587, ST_GeomFromText('POLYGON((74.8305 34.123579, 74.830648 34.123579, 74.830648 34.123514, 74.830637 34.123488, 74.8305 34.123488, 74.8305 34.123579))', 4326),
+    'RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Mushtaq Ahmad Shah", "father_husband_name": "Syed Jalaluddin Shah", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Syed Jalaluddin Shah", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "78", "mutation_history": [{"mutation_no": "MUT-SB-1179", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 22158443, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 22158443, "stamp_duty": 1107922, "stamp_duty_rate": "5% (Demo)", "registration_fee": 265901, "effective_year": "2025-26", "government_rate_inr": 22158443, "market_estimate_inr": 28362807, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-579", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Mushtaq Ahmad Shah (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b91,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90179", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0509', '509', 'DEMO-JK-01-02-0509-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.67, 13.4, 3646.0, 'Residential',
+    34.123441, 74.830714, ST_GeomFromText('POLYGON((74.830637 34.123547, 74.830792 34.123547, 74.830792 34.123334, 74.830637 34.123334, 74.830637 34.123547))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Tariq Ahmad Lone", "father_husband_name": "Habibullah Lone", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Habibullah Lone", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "79", "mutation_history": [{"mutation_no": "MUT-SB-1180", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 56239988, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 56239988, "stamp_duty": 2811999, "stamp_duty_rate": "5% (Demo)", "registration_fee": 674880, "effective_year": "2025-26", "government_rate_inr": 56239988, "market_estimate_inr": 71987185, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0510', '510', 'DEMO-JK-01-02-0510-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.3, 5.9, 1615.0, 'Residential',
+    34.123445, 74.831067, ST_GeomFromText('POLYGON((74.831003 34.1235, 74.831093 34.1235, 74.831118 34.123483, 74.831118 34.123371, 74.831003 34.123371, 74.831003 34.1235))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Manzoor Ahmad Rather", "father_husband_name": "Ghulam Qadir Rather", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Qadir Rather", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "79", "mutation_history": [{"mutation_no": "MUT-SB-1181", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 25501915, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 25501915, "stamp_duty": 1275096, "stamp_duty_rate": "5% (Demo)", "registration_fee": 306023, "effective_year": "2025-26", "government_rate_inr": 25501915, "market_estimate_inr": 32642451, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0511', '511', 'DEMO-JK-01-02-0511-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.3, 1160.0, 'Residential',
+    34.123441, 74.83115, ST_GeomFromText('POLYGON((74.831093 34.123486, 74.831213 34.123482, 74.831207 34.123394, 74.831085 34.123401, 74.831093 34.123486))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Zahoor Ahmad Khan", "father_husband_name": "Noor Mohammad Khan", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Noor Mohammad Khan", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "79", "mutation_history": [{"mutation_no": "MUT-SB-1182", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 15764629, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 15764629, "stamp_duty": 788231, "stamp_duty_rate": "5% (Demo)", "registration_fee": 189176, "effective_year": "2025-26", "government_rate_inr": 15764629, "market_estimate_inr": 20178725, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0512', '512', 'DEMO-JK-01-02-0512-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.5, 10.0, 2721.0, 'Residential',
+    34.123432, 74.83125, ST_GeomFromText('POLYGON((74.831168 34.123529, 74.831308 34.123529, 74.831308 34.123401, 74.831297 34.123351, 74.831168 34.123351, 74.831168 34.123529))', 4326),
+    'DATA_UNAVAILABLE', 'UNKNOWN',
+    '{"current_owner": {"name": "Mohammad Altaf Sheikh", "father_husband_name": "Mohammad Ramzan Sheikh", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Ramzan Sheikh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "34", "khata_no": "79", "mutation_history": [{"mutation_no": "MUT-SB-1183", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 37984292, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 37984292, "stamp_duty": 1899215, "stamp_duty_rate": "5% (Demo)", "registration_fee": 455812, "effective_year": "2025-26", "government_rate_inr": 37984292, "market_estimate_inr": 48619894, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0513', '513', 'DEMO-JK-01-02-0513-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.22, 4.3, 1173.0, 'Residential',
+    34.123554, 74.831292, ST_GeomFromText('POLYGON((74.831245 34.123611, 74.831339 34.123611, 74.831339 34.123498, 74.831245 34.123498, 74.831245 34.123611))', 4326),
+    'NOT_VERIFIED', 'MORTGAGED',
+    '{"current_owner": {"name": "Javid Ahmad Sofi", "father_husband_name": "Abdul Salam Sofi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Salam Sofi", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "80", "mutation_history": [{"mutation_no": "MUT-SB-1184", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 16801984, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 16801984, "stamp_duty": 840099, "stamp_duty_rate": "5% (Demo)", "registration_fee": 201624, "effective_year": "2025-26", "government_rate_inr": 16801984, "market_estimate_inr": 21506540, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90184", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0514', '514', 'DEMO-JK-01-02-0514-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.6, 981.0, 'Residential',
+    34.12344, 74.83159, ST_GeomFromText('POLYGON((74.83153 34.123477, 74.831614 34.123477, 74.831638 34.123461, 74.831638 34.123393, 74.83153 34.123393, 74.83153 34.123477))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nissar Ahmad Malik", "father_husband_name": "Mohammad Maqbool Malik", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Maqbool Malik", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "80", "mutation_history": [{"mutation_no": "MUT-SB-1185", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14405921, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 14405921, "stamp_duty": 720296, "stamp_duty_rate": "5% (Demo)", "registration_fee": 172871, "effective_year": "2025-26", "government_rate_inr": 14405921, "market_estimate_inr": 18439579, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-585", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Nissar Ahmad Malik (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0515', '515', 'DEMO-JK-01-02-0515-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.61, 12.3, 3346.0, 'Residential',
+    34.123495, 74.831801, ST_GeomFromText('POLYGON((74.831724 34.123591, 74.831884 34.123588, 74.831878 34.123398, 74.831716 34.123405, 74.831724 34.123591))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Parvaiz Ahmad Ganie", "father_husband_name": "Ali Mohammad Ganie", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ali Mohammad Ganie", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "80", "mutation_history": [{"mutation_no": "MUT-SB-1186", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 50390607, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 50390607, "stamp_duty": 2519530, "stamp_duty_rate": "5% (Demo)", "registration_fee": 604687, "effective_year": "2025-26", "government_rate_inr": 50390607, "market_estimate_inr": 64499977, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0516', '516', 'DEMO-JK-01-02-0516-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.21, 4.2, 1153.0, 'Residential',
+    34.123434, 74.832193, ST_GeomFromText('POLYGON((74.832135 34.123491, 74.832236 34.123491, 74.832236 34.123415, 74.832225 34.123386, 74.832135 34.123386, 74.832135 34.123491))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shabir Ahmad Wagay", "father_husband_name": "Ghulam Ahmad Wagay", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Ahmad Wagay", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "80", "mutation_history": [{"mutation_no": "MUT-SB-1187", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 17793146, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 17793146, "stamp_duty": 889657, "stamp_duty_rate": "5% (Demo)", "registration_fee": 213518, "effective_year": "2025-26", "government_rate_inr": 17793146, "market_estimate_inr": 22775227, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0517', '517', 'DEMO-JK-01-02-0517-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.74, 14.7, 4016.0, 'Residential',
+    34.1235, 74.83233, ST_GeomFromText('POLYGON((74.832243 34.123605, 74.832417 34.123605, 74.832417 34.123396, 74.832243 34.123396, 74.832243 34.123605))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Fayaz Ahmad Reshi", "father_husband_name": "Abdul Aziz Reshi", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Aziz Reshi", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "81", "mutation_history": [{"mutation_no": "MUT-SB-1188", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 63423404, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 63423404, "stamp_duty": 3171170, "stamp_duty_rate": "5% (Demo)", "registration_fee": 761081, "effective_year": "2025-26", "government_rate_inr": 63423404, "market_estimate_inr": 81181957, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0518', '518', 'DEMO-JK-01-02-0518-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.28, 5.7, 1545.0, 'Residential',
+    34.123498, 74.833131, ST_GeomFromText('POLYGON((74.833051 34.123542, 74.833163 34.123542, 74.833194 34.123522, 74.833194 34.123442, 74.833051 34.123442, 74.833051 34.123542))', 4326),
+    'DATA_UNAVAILABLE', 'MORTGAGED',
+    '{"current_owner": {"name": "Suhail Ahmad Baba", "father_husband_name": "Ghulam Hassan Baba", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Hassan Baba", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "81", "mutation_history": [{"mutation_no": "MUT-SB-1189", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 20994933, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 20994933, "stamp_duty": 1049747, "stamp_duty_rate": "5% (Demo)", "registration_fee": 251939, "effective_year": "2025-26", "government_rate_inr": 20994933, "market_estimate_inr": 26873514, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b92,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90189", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0519', '519', 'DEMO-JK-01-02-0519-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.88, 17.6, 4801.0, 'Residential',
+    34.123383, 74.830545, ST_GeomFromText('POLYGON((74.830437 34.123482, 74.830661 34.123478, 74.830654 34.123283, 74.830429 34.12329, 74.830437 34.123482))', 4326),
+    'NOT_VERIFIED', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Shakeel Ahmad Yatoo", "father_husband_name": "Mohammad Shaban Yatoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Shaban Yatoo", "relationship": "Father (Late)", "transfer_year": 2012, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "81", "mutation_history": [{"mutation_no": "MUT-SB-1190", "date": "2012-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 67016104, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 67016104, "stamp_duty": 3350805, "stamp_duty_rate": "5% (Demo)", "registration_fee": 804193, "effective_year": "2025-26", "government_rate_inr": 67016104, "market_estimate_inr": 85780613, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0520', '520', 'DEMO-JK-01-02-0520-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.11, 2.1, 577.0, 'Residential',
+    34.123281, 74.830976, ST_GeomFromText('POLYGON((74.830934 34.123321, 74.831007 34.123321, 74.831007 34.123269, 74.830997 34.123248, 74.830934 34.123248, 74.830934 34.123321))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mohammad Shafi Matoo", "father_husband_name": "Abdul Rehman Matoo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Rehman Matoo", "relationship": "Father (Late)", "transfer_year": 2013, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "35", "khata_no": "81", "mutation_history": [{"mutation_no": "MUT-SB-1191", "date": "2013-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 8262910, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 8262910, "stamp_duty": 413146, "stamp_duty_rate": "5% (Demo)", "registration_fee": 99155, "effective_year": "2025-26", "government_rate_inr": 8262910, "market_estimate_inr": 10576525, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-591", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Mohammad Shafi Matoo (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0521', '521', 'DEMO-JK-01-02-0521-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.13, 2.6, 706.0, 'Residential',
+    34.123254, 74.831653, ST_GeomFromText('POLYGON((74.831608 34.123289, 74.831698 34.123289, 74.831698 34.123218, 74.831608 34.123218, 74.831608 34.123289))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Nazir Ahmad Naqash", "father_husband_name": "Ghulam Rasool Naqash", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Ghulam Rasool Naqash", "relationship": "Father (Late)", "transfer_year": 2014, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "82", "mutation_history": [{"mutation_no": "MUT-SB-1192", "date": "2014-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 10366987, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 10366987, "stamp_duty": 518349, "stamp_duty_rate": "5% (Demo)", "registration_fee": 124404, "effective_year": "2025-26", "government_rate_inr": 10366987, "market_estimate_inr": 13269743, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0522', '522', 'DEMO-JK-01-02-0522-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.28, 5.5, 1503.0, 'Residential',
+    34.123276, 74.831924, ST_GeomFromText('POLYGON((74.831851 34.123322, 74.831953 34.123322, 74.831982 34.123303, 74.831982 34.123216, 74.831851 34.123216, 74.831851 34.123322))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Bilal Ahmad Beigh", "father_husband_name": "Mirza Mohammad Beigh", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mirza Mohammad Beigh", "relationship": "Father (Late)", "transfer_year": 2015, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "82", "mutation_history": [{"mutation_no": "MUT-SB-1193", "date": "2015-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 22633665, "unit": "per plot (Demo)", "circle_rate_marla": 2050000.0, "government_value": 22633665, "stamp_duty": 1131683, "stamp_duty_rate": "5% (Demo)", "registration_fee": 271604, "effective_year": "2025-26", "government_rate_inr": 22633665, "market_estimate_inr": 28971091, "circle_rate_marla_inr": 2050000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0523', '523', 'DEMO-JK-01-02-0523-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.17, 3.5, 944.0, 'Residential',
+    34.123396, 74.832512, ST_GeomFromText('POLYGON((74.832445 34.123428, 74.832587 34.123424, 74.83258 34.123363, 74.832436 34.12337, 74.832445 34.123428))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Hilal Ahmad Kakroo", "father_husband_name": "Abdul Khaliq Kakroo", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Abdul Khaliq Kakroo", "relationship": "Father (Late)", "transfer_year": 2016, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "82", "mutation_history": [{"mutation_no": "MUT-SB-1194", "date": "2016-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14568701, "unit": "per plot (Demo)", "circle_rate_marla": 2100000.0, "government_value": 14568701, "stamp_duty": 728435, "stamp_duty_rate": "5% (Demo)", "registration_fee": 174824, "effective_year": "2025-26", "government_rate_inr": 14568701, "market_estimate_inr": 18647937, "circle_rate_marla_inr": 2100000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,400,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90194", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0524', '524', 'DEMO-JK-01-02-0524-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    1.3, 6.0, 7080.0, 'Residential',
+    34.123285, 74.834019, ST_GeomFromText('POLYGON((74.833851 34.123409, 74.834135 34.123409, 74.834135 34.123245, 74.834124 34.123182, 74.833851 34.123182, 74.833851 34.123409))', 4326),
+    'DATA_UNAVAILABLE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Showkat Ahmad Zargar", "father_husband_name": "Mohammad Sidiq Zargar", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Mohammad Sidiq Zargar", "relationship": "Father (Late)", "transfer_year": 2017, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "82", "mutation_history": [{"mutation_no": "MUT-SB-1195", "date": "2017-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 68829957, "unit": "per plot (Demo)", "circle_rate_marla": 2150000.0, "government_value": 68829957, "stamp_duty": 3441498, "stamp_duty_rate": "5% (Demo)", "registration_fee": 825959, "effective_year": "2025-26", "government_rate_inr": 68829957, "market_estimate_inr": 88102345, "circle_rate_marla_inr": 2150000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0525', '525', 'DEMO-JK-01-02-0525-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.16, 3.2, 860.0, 'Residential',
+    34.123388, 74.834087, ST_GeomFromText('POLYGON((74.834039 34.123429, 74.834134 34.123429, 74.834134 34.123347, 74.834039 34.123347, 74.834039 34.123429))', 4326),
+    'NOT_VERIFIED', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Mudisir Ahmad Parray", "father_husband_name": "Ghulam Mohiuddin Parray", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Ghulam Mohiuddin Parray", "relationship": "Father (Late)", "transfer_year": 2018, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "83", "mutation_history": [{"mutation_no": "MUT-SB-1196", "date": "2018-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 11690328, "unit": "per plot (Demo)", "circle_rate_marla": 1850000.0, "government_value": 11690328, "stamp_duty": 584516, "stamp_duty_rate": "5% (Demo)", "registration_fee": 140284, "effective_year": "2025-26", "government_rate_inr": 11690328, "market_estimate_inr": 14963620, "circle_rate_marla_inr": 1850000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0526', '526', 'DEMO-JK-01-02-0526-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.46, 9.2, 2504.0, 'Residential',
+    34.123195, 74.829913, ST_GeomFromText('POLYGON((74.829808 34.12325, 74.829955 34.12325, 74.829997 34.123223, 74.829997 34.123127, 74.829808 34.123127, 74.829808 34.12325))', 4326),
+    'RECORDED_CASE', 'UNENCUMBERED',
+    '{"current_owner": {"name": "Irfan Ahmad Ahanger", "father_husband_name": "Mohammad Subhan Ahanger", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Subhan Ahanger", "relationship": "Father (Late)", "transfer_year": 2019, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "83", "mutation_history": [{"mutation_no": "MUT-SB-1197", "date": "2019-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 34955138, "unit": "per plot (Demo)", "circle_rate_marla": 1900000.0, "government_value": 34955138, "stamp_duty": 1747757, "stamp_duty_rate": "5% (Demo)", "registration_fee": 419462, "effective_year": "2025-26", "government_rate_inr": 34955138, "market_estimate_inr": 44742577, "circle_rate_marla_inr": 1900000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "RECORDED_DISPUTE_ACTIVE", "cases": [{"case_number": "JK-HC-SGR-WP-2024-597", "court": "Hon''ble High Court of J&K and Ladakh, Srinagar Bench", "petitioner": "Irfan Ahmad Ahanger (DEMO PETITIONER)", "respondent": "State of J&K / Revenue Dept & Others", "matter": "Title & Boundary Wall Demarcation Dispute (FICTIONAL DEMO)", "status": "Pending Hearing / Demo Notice Issued", "case_type": "Civil Writ Petition", "filing_date": "2022-03-15", "disposal_date": null, "source": "High Court Case Information System (Demo)"}]}'::jsonb,
+    '{"status": "UNENCUMBERED", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0527', '527', 'DEMO-JK-01-02-0527-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.31, 6.1, 1666.0, 'Residential',
+    34.123178, 74.829995, ST_GeomFromText('POLYGON((74.829948 34.123254, 74.830049 34.12325, 74.830043 34.123101, 74.82994 34.123108, 74.829948 34.123254))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'UNKNOWN',
+    '{"current_owner": {"name": "Riyaz Ahmad Khanday", "father_husband_name": "Abdul Samad Khanday", "share": "1/2 (Co-Sharer)"}, "previous_owners": [{"name": "Abdul Samad Khanday", "relationship": "Father (Late)", "transfer_year": 2020, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "83", "mutation_history": [{"mutation_no": "MUT-SB-1198", "date": "2020-05-14", "type": "Varasat (Inheritance)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 23858751, "unit": "per plot (Demo)", "circle_rate_marla": 1950000.0, "government_value": 23858751, "stamp_duty": 1192938, "stamp_duty_rate": "5% (Demo)", "registration_fee": 286305, "effective_year": "2025-26", "government_rate_inr": 23858751, "market_estimate_inr": 30539201, "circle_rate_marla_inr": 1950000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "UNKNOWN", "records": []}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+INSERT INTO parcels (
+    parcel_id, khasra_no, upin, state, district, tehsil, mouza,
+    area_kanal, area_marla, area_sqft, land_type,
+    latitude, longitude, geometry,
+    legal_status, encumbrance_status,
+    ownership_details, valuation_details, litigation_details, mortgage_details,
+    is_demo_data, dataset_type, data_origin_tag, verification_disclaimer
+) VALUES (
+    'SB-DEMO-0528', '528', 'DEMO-JK-01-02-0528-X', 'Jammu & Kashmir (UT)', 'Srinagar', 'North Srinagar', 'Sarbaldal (Hazratbal)',
+    0.18, 3.7, 1002.0, 'Residential',
+    34.123228, 74.831024, ST_GeomFromText('POLYGON((74.830966 34.123278, 74.831066 34.123278, 74.831066 34.123212, 74.831056 34.123186, 74.830966 34.123186, 74.830966 34.123278))', 4326),
+    'VERIFIED_NO_RECORDED_CASE', 'MORTGAGED',
+    '{"current_owner": {"name": "Aijaz Ahmad Chadoora", "father_husband_name": "Mohammad Yousuf Chadoora", "share": "1/1 (Sole Owner)"}, "previous_owners": [{"name": "Mohammad Yousuf Chadoora", "relationship": "Father (Late)", "transfer_year": 2021, "transfer_mode": "Varasat (Inheritance)"}], "khewat_no": "36", "khata_no": "83", "mutation_history": [{"mutation_no": "MUT-SB-1199", "date": "2021-05-14", "type": "Baye (Sale Deed)", "status": "SANCTIONED_DEMO"}]}'::jsonb,
+    '{"circle_rate": 14714493, "unit": "per plot (Demo)", "circle_rate_marla": 2000000.0, "government_value": 14714493, "stamp_duty": 735725, "stamp_duty_rate": "5% (Demo)", "registration_fee": 176574, "effective_year": "2025-26", "government_rate_inr": 14714493, "market_estimate_inr": 18834551, "circle_rate_marla_inr": 2000000.0, "valuation_year": 2026}'::jsonb,
+    '{"status": "NO_RECORDED_LITIGATION", "cases": []}'::jsonb,
+    '{"status": "MORTGAGED", "records": [{"bank_name": "Jammu & Kashmir Bank Ltd.", "loan_amount": "\u20b93,900,000 (DEMO)", "cersai_id": "CERSAI-DEMO-SGR-90199", "charge_status": "ACTIVE_LIEN_REGISTERED"}]}'::jsonb,
+    true, 'DEMO_ONLY', 'SYNTHETIC_SATELLITE_DEMO', 'THIS DATA IS 100% FICTIONAL DEMO. NOT REAL GOVERNMENT DATA.'
+);
+
+COMMIT;
