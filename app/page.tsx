@@ -80,6 +80,7 @@ export default function BhoomiSutraHome() {
   const [selectedKhasra, setSelectedKhasra] = useState<string>("329");
   const [activeTab, setActiveTab] = useState<DossierTab>("overview");
   const [showPdfModal, setShowPdfModal] = useState<boolean>(false);
+  const [showDossier, setShowDossier] = useState<boolean>(false);
 
   // GPS Coordinates Search State
   const [searchMode, setSearchMode] = useState<"khasra" | "coords">("khasra");
@@ -156,8 +157,14 @@ export default function BhoomiSutraHome() {
     return mouz ? mouz.availableKhasras : ["329", "330", "338", "350", "352"];
   }, [geojsonData, currentMouzas, selectedMouza]);
 
+  const handleSelectKhasra = (khasra: string) => {
+    setSelectedKhasra(khasra);
+    setShowDossier(true);
+  };
+
   const handleKhasraSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowDossier(true);
   };
 
   const handleGpsSearch = async (e: React.FormEvent) => {
@@ -172,11 +179,13 @@ export default function BhoomiSutraHome() {
     setSelectedKhasra(record.khasra_no);
     setDataOrigin(source);
     setLoadingParcel(false);
+    setShowDossier(true);
   };
 
   const handleCoordinateClickOnMap = (lat: number, lng: number) => {
     setInputLat(lat.toFixed(5));
     setInputLng(lng.toFixed(5));
+    setShowDossier(true);
   };
 
   const copyCoordsToClipboard = (lat: number, lng: number) => {
@@ -643,8 +652,8 @@ export default function BhoomiSutraHome() {
       <main className="w-full px-2 sm:px-3 py-2 flex-1">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-stretch">
           
-          {/* LEFT PANE (MAP) - FULL WIDTH COVERAGE */}
-          <div className="lg:col-span-8 xl:col-span-8 2xl:col-span-8 flex flex-col bg-white border border-slate-300 rounded shadow-xs overflow-hidden">
+          {/* LEFT PANE (MAP) - FULL WIDTH BY DEFAULT, SPLITS WHEN DOSSIER OPENS */}
+          <div className={`${showDossier ? "lg:col-span-8 xl:col-span-8 2xl:col-span-8" : "lg:col-span-12 xl:col-span-12 2xl:col-span-12"} flex flex-col bg-white border border-slate-300 rounded shadow-xs overflow-hidden transition-all duration-300`}>
             {/* Workspace Bar */}
             <div className="bg-[#0f2e5c] text-white px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-[#c99736]">
               <div className="flex items-center gap-2 text-xs">
@@ -663,15 +672,30 @@ export default function BhoomiSutraHome() {
                     DEMO DATA
                   </span>
                 )}
+
+                {/* Full Map vs Details Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowDossier(!showDossier)}
+                  className="ml-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                  title="Toggle Dossier Details"
+                >
+                  <FileText className="w-3 h-3" />
+                  <span>
+                    {showDossier
+                      ? (lang === "hi" ? "पूरा मैप (Full Map)" : "Hide Details (Full Map)")
+                      : (lang === "hi" ? "विवरण देखें (Dossier)" : "View Dossier")}
+                  </span>
+                </button>
               </div>
             </div>
 
             {/* Map Container */}
-            <div className="w-full h-[600px] xl:h-[660px] 2xl:h-[720px] relative">
+            <div className="w-full h-[640px] xl:h-[700px] 2xl:h-[760px] relative">
               {mounted ? (
                 <MapComponent
                   selectedKhasra={selectedKhasra}
-                  onSelectKhasra={(khasra) => setSelectedKhasra(khasra)}
+                  onSelectKhasra={handleSelectKhasra}
                   lang={lang}
                   onCoordinateClick={handleCoordinateClickOnMap}
                   geojsonData={geojsonData}
@@ -700,40 +724,51 @@ export default function BhoomiSutraHome() {
             </div>
           </div>
 
-          {/* RIGHT PANE (DOSSIER - MULTI TAB GOVERNANCE MODULES) */}
-          <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-4 flex flex-col bg-white border border-slate-300 rounded shadow-xs overflow-hidden h-[660px] xl:h-[720px] 2xl:h-[780px]">
-            {/* Dossier Header */}
-            <div className="bg-[#1b365d] text-white p-3 border-b border-[#c99736]">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] uppercase tracking-wider text-amber-300 font-bold block">
-                      {t.dossierTitle}
-                    </span>
-                    {activeRecord.is_demo_data || activeRecord.dataset_type === "DEMO_ONLY" ? (
-                      <span className="bg-amber-400/20 text-amber-300 border border-amber-400/50 text-[9px] font-mono px-1.5 py-0.5 rounded font-bold flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3 text-amber-300" />
-                        <span>{lang === "hi" ? "फ़ेक / सिमुलेटेड डेटा (DEMO ONLY)" : "DEMO / SYNTHETIC DATA"}</span>
+          {/* RIGHT PANE (DOSSIER - MULTI TAB GOVERNANCE MODULES) - OPENS ON PARCEL CLICK */}
+          {showDossier && (
+            <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-4 flex flex-col bg-white border border-slate-300 rounded shadow-xs overflow-hidden h-[640px] xl:h-[700px] 2xl:h-[760px] animate-in fade-in slide-in-from-right-2 duration-200">
+              {/* Dossier Header */}
+              <div className="bg-[#1b365d] text-white p-3 border-b border-[#c99736]">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] uppercase tracking-wider text-amber-300 font-bold block">
+                        {t.dossierTitle}
                       </span>
-                    ) : (
-                      <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 text-[9px] font-mono px-1.5 py-0.5 rounded font-bold flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                        <span>{lang === "hi" ? "प्रमाणित सरकारी अभिलेख" : "OFFICIAL GOVT RECORD"}</span>
-                      </span>
-                    )}
+                      {activeRecord.is_demo_data || activeRecord.dataset_type === "DEMO_ONLY" ? (
+                        <span className="bg-amber-400/20 text-amber-300 border border-amber-400/50 text-[9px] font-mono px-1.5 py-0.5 rounded font-bold flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3 text-amber-300" />
+                          <span>{lang === "hi" ? "फ़ेक / सिमुलेटेड डेटा (DEMO ONLY)" : "DEMO / SYNTHETIC DATA"}</span>
+                        </span>
+                      ) : (
+                        <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 text-[9px] font-mono px-1.5 py-0.5 rounded font-bold flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                          <span>{lang === "hi" ? "प्रमाणित सरकारी अभिलेख" : "OFFICIAL GOVT RECORD"}</span>
+                        </span>
+                      )}
+                    </div>
+                    <h2 className="text-base font-bold font-serif flex items-center gap-1 mt-0.5">
+                      <span>{lang === "hi" ? "खसरा #" : "Khasra #"}</span>
+                      <span className="font-mono text-amber-200">{activeRecord.khasra_no}</span>
+                    </h2>
                   </div>
-                  <h2 className="text-base font-bold font-serif flex items-center gap-1 mt-0.5">
-                    <span>{lang === "hi" ? "खसरा #" : "Khasra #"}</span>
-                    <span className="font-mono text-amber-200">{activeRecord.khasra_no}</span>
-                  </h2>
-                </div>
 
-                {/* Status Badges */}
-                <div className="flex flex-col items-end gap-1">
-                  {renderLegalStatusBadge(activeRecord.legal_status)}
-                  {renderEncumbranceStatusBadge(activeRecord.encumbrance_status)}
+                  {/* Status Badges & Close Button */}
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-1.5">
+                      {renderLegalStatusBadge(activeRecord.legal_status)}
+                      <button
+                        type="button"
+                        onClick={() => setShowDossier(false)}
+                        className="p-1 bg-white/10 hover:bg-red-500/30 text-white rounded border border-white/20 transition-colors cursor-pointer"
+                        title={lang === "hi" ? "पैनल बंद करें (पूरा मैप देखें)" : "Close panel (Full Map)"}
+                      >
+                        <X className="w-3.5 h-3.5 text-red-300" />
+                      </button>
+                    </div>
+                    {renderEncumbranceStatusBadge(activeRecord.encumbrance_status)}
+                  </div>
                 </div>
-              </div>
 
               {/* Bhu-Aadhaar UPIN & GPS Coordinates Bar */}
               <div className="mt-2 pt-1.5 border-t border-blue-400/30 flex flex-col gap-1.5 text-[11px]">
@@ -1294,6 +1329,7 @@ export default function BhoomiSutraHome() {
               </button>
             </div>
           </div>
+        )}
 
         </div>
       </main>

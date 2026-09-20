@@ -43,7 +43,7 @@ export default function MapComponent({
   const esriLayerRef = useRef<L.TileLayer | null>(null);
 
   // Precise coordinates for Saderbal Cadastral Zone & All-India center
-  const srinagarCenter: [number, number] = [34.1253, 74.8368];
+  const srinagarCenter: [number, number] = [34.1260, 74.8373];
   const indiaCenter: [number, number] = [22.9734, 78.6569];
 
   // Helper to re-render parcel centroid badges
@@ -108,16 +108,16 @@ export default function MapComponent({
         const legalStatus = feature.properties?.legalStatus;
         const encumbranceStatus = feature.properties?.encumbranceStatus;
 
-        // Thin cadastral blue/green boundary by default or status-coded
-        let strokeColor = "#0284c7"; // Clean cadastral boundary blue
+        // Vibrant cadastral house boundary: always clearly visible on satellite imagery
+        let strokeColor = "#00e5ff"; // High-visibility cadastral cyan border
         if (legalStatus === "RECORDED_CASE") strokeColor = "#ef4444"; // Court dispute red
         else if (encumbranceStatus === "MORTGAGED") strokeColor = "#f59e0b"; // Bank lien amber
-        else if (legalStatus === "VERIFIED_NO_RECORDED_CASE") strokeColor = "#10b981"; // Verified emerald
+        else if (legalStatus === "VERIFIED_NO_RECORDED_CASE") strokeColor = "#10e885"; // Verified emerald
 
         return {
           color: isSelected ? "#f59e0b" : strokeColor,
-          weight: isSelected ? 3.5 : 1.6,
-          opacity: 0.95,
+          weight: isSelected ? 3.5 : 2.0,
+          opacity: 1,
           fill: true,
           fillColor: isSelected ? "#f59e0b" : strokeColor,
           fillOpacity: isSelected ? 0.22 : 0.05
@@ -313,7 +313,19 @@ export default function MapComponent({
       }
     });
 
+    // Auto-resize observer so map immediately fills full container on toggle
+    const resizeObserver = new ResizeObserver(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    });
+
+    if (mapContainerRef.current) {
+      resizeObserver.observe(mapContainerRef.current);
+    }
+
     return () => {
+      resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
@@ -355,15 +367,15 @@ export default function MapComponent({
         const legalStatus = layer.feature.properties?.legalStatus;
         const encumbranceStatus = layer.feature.properties?.encumbranceStatus;
 
-        let strokeColor = "#0284c7";
+        let strokeColor = "#00e5ff";
         if (legalStatus === "RECORDED_CASE") strokeColor = "#ef4444";
         else if (encumbranceStatus === "MORTGAGED") strokeColor = "#f59e0b";
-        else if (legalStatus === "VERIFIED_NO_RECORDED_CASE") strokeColor = "#10b981";
+        else if (legalStatus === "VERIFIED_NO_RECORDED_CASE") strokeColor = "#10e885";
 
         layer.setStyle({
           color: isSelected ? "#f59e0b" : strokeColor,
-          weight: isSelected ? 3.5 : 1.6,
-          opacity: 0.95,
+          weight: isSelected ? 3.5 : 2.0,
+          opacity: 1,
           fill: true,
           fillColor: isSelected ? "#f59e0b" : strokeColor,
           fillOpacity: isSelected ? 0.22 : 0.05
